@@ -5,15 +5,17 @@
 
 //kapoio filter isws
 //element name, frequency
-import { writeFileSync } from "fs";
+//importing one of tehse causes a problem
+// import { writeFileSync } from "fs";
+// import {s} from "fs"
 //dont include whole libraries it increases compile time
-import { write } from "xlsx";
+// import { write } from "xlsx";
 export default function saveToCsv(data, outputFileName, ext) {
     //proper layout for the generated excel
-    //Name of file = Name of the diagram, ext = depends on requirements
+    //Name of file = Name of the diagram | Headers = Typos
     //For Node ESM we need to do it this way
-    const buffer = write(data, { type: "buffer", bookType: "xlsx" });
+    // const buffer = write(data, { type: "buffer", bookType: "xlsx" });
     //XLSX.writeFile(workbook,`output.xlsx`)
     //might have a problem with sync i could do it async
-    const workbook = writeFileSync(`${outputFileName}.${ext}`, buf);
+    // const workbook = writeFileSync(`${outputFileName}.${ext}`, buf);
 }

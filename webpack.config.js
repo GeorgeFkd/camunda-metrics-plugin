@@ -42,4 +42,7 @@ module.exports = {
         // { filename: "style.css" }
         //new MiniCssExtractPlugin({ filename: "style.css" }),
     ],
+    externals: {
+        fs: "commonjs fs",
+    },
 };
