@@ -10,8 +10,22 @@
     border: black solid 2px;
     padding:1rem;
     display: flex;
+    justify-content: space-around;
 }
 
+
+/* probably to metrics-container tha einai megalytero soon */
+.elements-table-container{
+    flex:1;
+}
+
+.metrics-container{
+    flex:1;
+}
+
+.tools-container{
+    flex:1;
+}
 .element-component{
     display:flex;
     flex-direction: row;

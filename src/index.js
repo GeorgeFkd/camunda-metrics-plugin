@@ -9,7 +9,7 @@ import {
     registerBpmnJSPlugin,
     registerClientExtension,
 } from "camunda-modeler-plugin-helpers";
-import MetricsPlugin from "./components/MetricsPlugin";
+import MetricsPlugin from "./components/MetricsPlugin.jsx";
 import BpmnJsExtensionPlugin from "./BpmnJsExtension/index";
 
 registerClientExtension(MetricsPlugin);

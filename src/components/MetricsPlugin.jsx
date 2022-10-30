@@ -3,14 +3,21 @@ import * as React from "camunda-modeler-plugin-helpers/react";
 import * as ReactDOM from "react-dom";
 import "../style.css";
 import { Fill, Slot } from "camunda-modeler-plugin-helpers/components";
-
+import { DataProvider } from "../contexts/XMLDataContext.jsx";
 import { analyzeXMLString } from "../utils/analyzeXMLString";
 import saveAnalysisToCsv from "../utils/saveAnalysisToCsv";
+import { numberOfActivitiesMetric, numberOfEvents } from "../utils/metrics";
 import "../style.css";
+//needs the .jsx for some reason
+import StatsTable from "./StatsTable.jsx";
+import MetricsTable from "./MetricsTable.jsx"
+import { XMLDataContext } from "../contexts/XMLDataContext.jsx";
 export default function MetricsPlugin(props) {
     //me to subscribe mporw na parw prosvash se events tou eventBus
     const { config, subscribe, triggerAction } = props;
     const [analysis, setAnalysis] = React.useState(new Map());
+    const cont = React.useContext(XMLDataContext);
+    console.log(cont);
     const [open, setOpen] = React.useState(false);
 
     React.useEffect(() => {
@@ -41,26 +48,34 @@ export default function MetricsPlugin(props) {
         if (!open) {
             triggerAction("save").then((tab) => {
                 console.log(tab, "im here bro");
-                setAnalysis(analyzeXMLString(tab.file.contents));
+                //doesnt see this as a function
+                //updateXmlData(tab.file.contents);
+                setAnalysis((prev) => {
+                    return analyzeXMLString(tab.file.contents);
+                });
+
                 console.info("Kowalski im done");
+                //console.log(xmlData)
             });
         }
         setOpen((open) => !open);
     }
     // shows a click me button at the bottom part of the app
     return (
-        <React.Fragment>
-            {console.log("Kowalski", analysis)}
-            <Fill slot="status-bar__app" group="1_autosave">
-                <button onClick={toggleTable}>Click Me</button>
-            </Fill>
-            {open
-                ? ReactDOM.render(
-                      <ResultsTable data={analysis} />,
-                      document.getElementById("table-root")
-                  )
-                : null}
-        </React.Fragment>
+            <DataProvider>
+                <React.Fragment>
+                    {console.log("Kowalski", analysis)}
+                    <Fill slot="status-bar__app" group="1_autosave">
+                        <button onClick={toggleTable}>Click Me</button>
+                    </Fill>
+                    {open
+                        ? ReactDOM.render(
+                            <ResultsTable data={analysis} />,
+                            document.getElementById("table-root")
+                            )
+                            : null}
+                </React.Fragment>
+            </DataProvider>
     );
 }
 
@@ -74,6 +89,7 @@ export default function MetricsPlugin(props) {
 function ResultsTable({ data }) {
     //data will come in as a map mb later as object
     const bpmnElementsToKeep = [
+        "task",
         "subProcess",
         "startEvent",
         "intermediateThrowEvent",
@@ -83,6 +99,8 @@ function ResultsTable({ data }) {
         React.useState(bpmnElementsToKeep);
     const [elementsRemoved, setElementsRemoved] = React.useState([]);
     console.log("data i work with", data);
+    numberOfActivitiesMetric(data);
+    numberOfEvents(data);
 
     function removeElement(elemNameToRemove) {
         setElementsRemoved((prev) => [...prev, elemNameToRemove]);
@@ -93,27 +111,9 @@ function ResultsTable({ data }) {
 
     return (
         <div className="app-container">
-            <div className="elements-table-container">
-                {elementsToKeep.map((bpmnEl, idx) => {
-                    return (
-                        <div
-                            key={`removed-elems-${idx}`}
-                            className="element-component"
-                        >
-                            {/* edw sto mellon tha mporouse na mpei icon */}
-                            <span className="element-name">{bpmnEl}</span>
-                            <span className="element-count">
-                                {data.get(bpmnEl)}
-                            </span>
-                            <button
-                                className="remove-element"
-                                onClick={() => removeElement(bpmnEl)}
-                            >
-                                X
-                            </button>
-                        </div>
-                    );
-                })}
+            <StatsTable data={data} removeElement={removeElement} elementsToKeep = {elementsToKeep} />
+            <div className="metrics-container">
+                <MetricsTable />
             </div>
             <div className="tools-container">
                 <WidgetForRemovedElements
