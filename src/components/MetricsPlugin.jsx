@@ -12,7 +12,10 @@ const CLICKED_BTN_WITH_WINDOW_CLOSED = "NOT_OPEN_WINDOW";
 const CLICKED_BTN_WITH_WINDOW_OPEN = "OPEN_WINDOW";
 const DATA_FETCHED = "FETCHED_DATA";
 export default function MetricsPlugin(props) {
-    const { config, subscribe, triggerAction } = props;
+    //prosoxh genika me to triggerAction evgaze
+    //kati periergo for some reason
+    //otan phgaina na to kleisw
+    const { config, subscribe } = props;
     const [state, dispatch] = React.useReducer(reducer, {
         open: false,
         analysisData: new Map(),
@@ -56,13 +59,29 @@ export default function MetricsPlugin(props) {
             dispatch({ type: DATA_FETCHED, payload: analyzeXMLString(xml) });
         }
         subscribe("bpmn.modeler.created", (arg) => {
-            fetchData(arg.tab.file.contents);
+            console.info("event modeler created", arg);
+            if (arg.tab.type === "empty") {
+                console.log("no diagram yet");
+            } else {
+                fetchData(arg.tab.file.contents);
+            }
         });
         subscribe("app.activeTabChanged", ({ activeTab }) => {
-            fetchData(activeTab.file.contents);
+            //this event is also fired when the app closes
+            console.info("event active tab changed", activeTab);
+            if (activeTab.type === "empty") {
+                console.log("byeeee");
+            } else {
+                fetchData(activeTab.file.contents);
+            }
         });
         subscribe("tab.saved", ({ tab }) => {
-            fetchData(tab.file.contents);
+            console.info("event tab.saved", tab);
+            if (tab.type === "empty") {
+                console.log("empty");
+            } else {
+                fetchData(tab.file.contents);
+            }
         });
     }, []);
 
