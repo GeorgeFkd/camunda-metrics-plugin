@@ -9,6 +9,9 @@ import { DOMParser } from "xmldom";
 
 const parser = new DOMParser();
 export function analyzeXMLString(xmlStr) {
+    if (!xmlStr) {
+        return new Map();
+    }
     const xmlDoc = parser.parseFromString(xmlStr);
     let allEls = xpath.select("//*", xmlDoc);
 
@@ -23,6 +26,9 @@ export function analyzeXMLString(xmlStr) {
 }
 
 function BpmnTagsCountOccurences(uniqueTagsInDiagram, allTags) {
+    if (!uniqueTagsInDiagram) {
+        return new Map();
+    }
     let result = new Map();
     uniqueTagsInDiagram.forEach((tagName) => {
         let elems = allTags.filter((name) => {

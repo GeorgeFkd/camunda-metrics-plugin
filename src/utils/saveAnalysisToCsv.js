@@ -10,8 +10,17 @@
 // import {s} from "fs"
 //dont include whole libraries it increases compile time
 // import { write } from "xlsx";
+//diagram.destroy one similar event
+
+// const fs = require("fs");
+// yparxei to provlhma tis apothikeushs arxeiwn locally
+// for security reasons, den tha to epitrepoun syntoma
+// mporw na ylopoihsw kati gia na ta kanei save online
+// kati tha yparxei sigoura kai genika einai plugin apo mono tou
+
 export default function saveToCsv(data, outputFileName, ext) {
     //proper layout for the generated excel
+    // writeFileSync("hello-world.txt", "This is my first file written");
     //Name of file = Name of the diagram | Headers = Typos
     //For Node ESM we need to do it this way
     // const buffer = write(data, { type: "buffer", bookType: "xlsx" });

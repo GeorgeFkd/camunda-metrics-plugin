@@ -36,13 +36,13 @@ module.exports = {
     //   port:3010,
     //   watchContentBase:true
     // },
-    //devtool: "cheap-module-source-map",
+    devtool: "source-map",
     plugins: [
         new CamundaModelerWebpackPlugin(),
         // { filename: "style.css" }
         //new MiniCssExtractPlugin({ filename: "style.css" }),
     ],
-    externals: {
-        fs: "commonjs fs",
-    },
+    // externals: {
+    //     fs: "commonjs fs",
+    // },
 };

@@ -10,16 +10,22 @@ function StatsTable({elementsToKeep,data,removeElement}) {
                             className="element-component"
                         >
                             {/* edw sto mellon tha mporouse na mpei icon */}
-                            <span className="element-name">{bpmnEl}</span>
+                            <div className="element-display">
+
+                            <span className="element-name">{bpmnEl}:</span>
                             <span className="element-count">
-                                {data.get(bpmnEl)}
-                            </span>
+                                {/* an kati den yparxei kan na to vgazei 0 */}
+                                {data.get(bpmnEl) ? data.get(bpmnEl): 0}
+                                </span>
+                            </div>
+                            {/* TODO na valw icon edw */}
                             <button
-                                className="remove-element"
+                                className="remove-element-button"
                                 onClick={() => removeElement(bpmnEl)}
                             >
                                 X
                             </button>
+                            {/* it works <span className="bpmn-icon-gateway-or"></span> */}
                         </div>
                     );
                 })}

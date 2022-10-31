@@ -1,4 +1,4 @@
-export default function ExampleBpmnJsExtension(eventBus) {
+export default function ExampleBpmnJsExtension(eventBus, viewer) {
     eventBus.on("saveXML.start", function (context) {
         console.log(context.definitions.diagrams);
     });

@@ -1,0 +1,25 @@
+
+.full-width{
+    width:100%;
+    height:250px;
+    z-index: 105;
+    border:black solid 2px;
+}
+
+.toggle-hide-show{
+    display: none;
+}
+
+.elements-table{
+    margin-top:1rem;
+    margin-left:1rem;
+    margin-right:1rem;
+    border-spacing:1rem;
+}
+
+.elements-table,.elements-table th,.elements-table tr,.elements-table td{
+   border:solid 2px brown;
+   border-collapse: separate; 
+}
+
+
