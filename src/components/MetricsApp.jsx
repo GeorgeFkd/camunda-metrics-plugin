@@ -1,34 +1,21 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import { XMLDataContext } from "../contexts/XMLDataContext.js";
 import StatsTable from "./StatsTable.jsx";
 import MetricsTable from "./MetricsTable.jsx";
-import { numberOfActivitiesMetric, numberOfEvents } from "../utils/metrics";
 import WidgetForRemovedElements from "./WidgetForRemovedELems.jsx";
 export default function MetricsApp({ data }) {
-    //data will come in as a map mb later as object
     const bpmnElementsToKeep = [
         "task",
         "subProcess",
         "startEvent",
-        "intermediateThrowEvent",
-        "callActivity",
+        "exclusiveGateway",
+        "intermediateEvent",
     ];
     // i should only get the update function no state in high level
-
     const bpmnElemsCountData = data;
-    // const bpmnElemsCountData = new Map();
-    console.log("for context", bpmnElemsCountData);
-    // React.useEffect(()=>{
-    //     // doesnt see this as a function
-    //     updateXmlData("BZZZZZ")
-    // })
-    console.log("pspspsppspspsp");
+    console.info("Inside Metrics App: ", bpmnElemsCountData);
     const [elementsToKeep, setElementsToKeep] =
         React.useState(bpmnElementsToKeep);
     const [elementsRemoved, setElementsRemoved] = React.useState([]);
-    // console.log("data i work with", bpmnElemsCountData);
-    // numberOfActivitiesMetric(bpmnElemsCountData);
-    // numberOfEvents(bpmnElemsCountData);
 
     function removeElement(elemNameToRemove) {
         setElementsRemoved((prev) => [...prev, elemNameToRemove]);

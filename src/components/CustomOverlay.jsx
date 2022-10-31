@@ -1,21 +1,15 @@
-import React from 'react'
-import * as ReactDOM from "react-dom"
+import React from "react";
 import { Overlay } from "camunda-modeler-plugin-helpers/components";
 function CustomOverlay(props) {
-  return (
-    <Overlay >
-       <Overlay.Title>
-         Custom Modal
-       </Overlay.Title>
-       <Overlay.Body>
-         Hello world!
-       </Overlay.Body>
-       <Overlay.Footer>
-        <button type="button">
-          Close        </button>
-       </Overlay.Footer>
+    return (
+        <Overlay>
+            <Overlay.Title>Custom Modal</Overlay.Title>
+            <Overlay.Body>Hello world!</Overlay.Body>
+            <Overlay.Footer>
+                <button type="button">Close </button>
+            </Overlay.Footer>
         </Overlay>
-  )
+    );
 }
 
 //? Available events
@@ -48,5 +42,4 @@ function CustomOverlay(props) {
 //   'zeebe:getGatewayVersion',
 //   'zeebe:run'
 
-
-export default CustomOverlay
+export default CustomOverlay;

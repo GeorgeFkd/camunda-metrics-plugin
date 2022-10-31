@@ -34,7 +34,12 @@ function BpmnTagsCountOccurences(uniqueTagsInDiagram, allTags) {
         let elems = allTags.filter((name) => {
             return name === tagName;
         });
-        result.set(tagName, elems.length);
+        //here i can get any edge cases
+        if (tagName === "subProcess") {
+            result.set(tagName, elems.length / 2);
+        } else {
+            result.set(tagName, elems.length);
+        }
     });
     return result;
 }

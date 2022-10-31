@@ -1,3 +1,6 @@
 i need a way to map xml elements to icons
 this can not only help in displaying the elements
 but also to map xml elements to actual elements
+
+performance expectations if possible:
+how can i make the app more predictable for you

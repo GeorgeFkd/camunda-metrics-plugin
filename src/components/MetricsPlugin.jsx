@@ -3,19 +3,15 @@ import React from "camunda-modeler-plugin-helpers/react";
 import { render } from "react-dom";
 import "../style.css";
 import { Fill } from "camunda-modeler-plugin-helpers/components";
-// import { DataProvider } from "../contexts/XMLDataContext.jsx";
 import { analyzeXMLString } from "../utils/analyzeXMLString";
-import { XMLDataContext } from "../contexts/XMLDataContext.js";
-import "../style.css";
-//needs the .jsx for some reason
 
+//needs the .jsx for some reason
 import MetricsApp from "./MetricsApp.jsx";
 
 const CLICKED_BTN_WITH_WINDOW_CLOSED = "NOT_OPEN_WINDOW";
 const CLICKED_BTN_WITH_WINDOW_OPEN = "OPEN_WINDOW";
 const DATA_FETCHED = "FETCHED_DATA";
 export default function MetricsPlugin(props) {
-    //me to subscribe mporw na parw prosvash se events tou eventBus
     const { config, subscribe, triggerAction } = props;
     const [state, dispatch] = React.useReducer(reducer, {
         open: false,
@@ -24,9 +20,8 @@ export default function MetricsPlugin(props) {
     });
 
     function reducer(state, action) {
-        //ama den einai anoixto to parathiro(dld twra anoigei)
-        //to anoigoume(open->true) kai vazoume ta dedomena sto state
-        //ama einai anoixto einai provlhma na to kanoume diarkws update?
+        //state.open apo to button clicked anoigokleinei to app
+        //data fetched einai sta events pou prokaloun allagh sta dedomena
         console.log(action.type);
         switch (action.type) {
             case CLICKED_BTN_WITH_WINDOW_CLOSED: {
@@ -49,43 +44,33 @@ export default function MetricsPlugin(props) {
         throw Error("Unknown action " + action.type);
     }
 
-    console.log("we going in");
     React.useEffect(() => {
-        // console.log(props.config.backend.getPlatform());
-        // console.log(triggerAction);
-        // subscribe("app.activeTabChanged", (arg) => {
-        // gotta change the underlying xml here
+        //pairnw thn bara katw katw,vazw ena element prin apo authn
+        //kai ekei mesa kanw meta render ton pinaka me auta pou thelw(cant do sth cleaner yet)
         const statusBar = document.getElementsByTagName("footer")[0];
         const rootDiv = document.createElement("div");
         rootDiv.id = "table-root";
         rootDiv.className = "toggle-hide-show";
         statusBar.parentNode.insertBefore(rootDiv, statusBar);
+        function fetchData(xml) {
+            dispatch({ type: DATA_FETCHED, payload: analyzeXMLString(xml) });
+        }
         subscribe("bpmn.modeler.created", (arg) => {
-            //THIS WORKS
-            console.log("arg");
-            const xml = arg.tab.file.contents;
-            const analysis = analyzeXMLString(xml);
-            dispatch({ type: DATA_FETCHED, payload: analysis });
+            fetchData(arg.tab.file.contents);
         });
         subscribe("app.activeTabChanged", ({ activeTab }) => {
-            //this also works genika ligo prosoxh me ta listeners
-            const xml = activeTab.file.contents;
-            const analysis = analyzeXMLString(xml);
-            dispatch({ type: DATA_FETCHED, payload: analysis });
+            fetchData(activeTab.file.contents);
         });
-
-        //pairnw thn bara katw katw,vazw ena element prin apo authn
-        //kai ekei mesa kanw meta render ton pinaka me auta pou thelw
+        subscribe("tab.saved", ({ tab }) => {
+            fetchData(tab.file.contents);
+        });
     }, []);
 
     function toggleTable(button) {
-        //this is a mess and must be fixed somehow
         const container = document.getElementById("table-root");
         //auto anoigokleinei to ui
         container.classList.toggle("toggle-hide-show");
         button.classList.toggle("show-metricsPlugin-button-active");
-        //ousiastika otan einai kleisto kai pataw gia na to anoiksw kanw save,
-        //gia na parw access sto tab pou exei kai to xml file
 
         if (!state.open) {
             dispatch({ type: CLICKED_BTN_WITH_WINDOW_CLOSED });
@@ -96,8 +81,8 @@ export default function MetricsPlugin(props) {
     }
 
     // shows a click me button at the bottom part of the app
+    console.log("why u running");
     return (
-        // <XMLDataContext.Provider value={{ analyze: state.analysisData }}>
         <React.Fragment>
             {/* yparxei kai to slot toolbar */}
             <Fill slot="status-bar__app" group="1_autosave" priority={100}>
@@ -108,6 +93,7 @@ export default function MetricsPlugin(props) {
                     Metrics
                 </button>
             </Fill>
+
             {state.open
                 ? render(
                       <MetricsApp data={state.analysisData} />,
@@ -115,7 +101,6 @@ export default function MetricsPlugin(props) {
                   )
                 : null}
         </React.Fragment>
-        // </XMLDataContext.Provider>
     );
 }
 

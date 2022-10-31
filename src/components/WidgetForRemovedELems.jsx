@@ -1,22 +1,15 @@
-import React from "camunda-modeler-plugin-helpers/react"
-
+import React from "camunda-modeler-plugin-helpers/react";
 
 export default function WidgetForRemovedElements({
     removedElements,
     setDisplayedElems,
     setRemovedElems,
 }) {
-    //gets the removed Elements
-    //clicking the widget should display a tiny board
-    // with checkboxes of the elements removed and an ok element to bring them back
-    //this also needs an icon
-    //otan pataw ok na to kleinei gia na mhn exw themata kai pio aneto
     const [open, setOpen] = React.useState(true);
     const [checkedElems, setCheckedElems] = React.useState([]);
 
     function toggleCheckBox(elNameToAddRemoveInCheckedList, event) {
         const isChecked = event.target.checked;
-        console.log(isChecked);
         if (isChecked) {
             //add it to the checkedElemsList
             setCheckedElems((prev) => [
@@ -37,10 +30,10 @@ export default function WidgetForRemovedElements({
         setRemovedElems((prev) =>
             prev.filter((curr) => !checkedElems.includes(curr))
         );
+        // uncheck elements
+        //? bug with one tick left after clicking OK
         setCheckedElems([]);
-        setOpen((prev) => false);
-        console.log("currently", open);
-        // uncheck e
+        setOpen(false);
     }
 
     return (
@@ -55,7 +48,7 @@ export default function WidgetForRemovedElements({
                     });
                 }}
             >
-                Removed Elements
+                {open ? "Hide " : "Show "}Removed Elements
             </button>
             <div
                 className={`addremoved-menu ${
