@@ -68,6 +68,24 @@ export function numberOfStartEvents(data) {
 
 export function numberOfGateways(data) {
     //metrima ta elements pou einai ths morfhs _____Gateway
+    const allGateways = Array.from(data.keys()).filter((bpmnElement) => {
+        return bpmnElement.endsWith("Gateway");
+    });
+    console.log(allGateways);
+    const result = allGateways.reduce((total, curr) => {
+        return (total += data.get(curr));
+    }, 0);
+    return result;
+}
+export function numberOfGatewayTypes(data) {
+    console.log(data);
+    const allTypesOfGateways = new Set(
+        Array.from(data.keys()).filter((bpmnElement) => {
+            return bpmnElement.endsWith("Gateway");
+        })
+    );
+    console.log(allTypesOfGateways.size);
+    return allTypesOfGateways.size;
 }
 
 export function numberOfSplits(data) {

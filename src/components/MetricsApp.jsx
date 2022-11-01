@@ -5,10 +5,10 @@ import WidgetForRemovedElements from "./WidgetForRemovedELems.jsx";
 export default function MetricsApp({ data }) {
     const bpmnElementsToKeep = [
         "task",
-        "subProcess",
+        "inclusiveGateway",
         "startEvent",
         "exclusiveGateway",
-        "intermediateEvent",
+        "complexGateway",
     ];
     // i should only get the update function no state in high level
     const bpmnElemsCountData = data;

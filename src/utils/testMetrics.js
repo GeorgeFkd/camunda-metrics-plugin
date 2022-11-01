@@ -1,5 +1,6 @@
 import * as BpmnMetrics from "./metrics";
-
+import { xmlString as xmlStr } from "./bpmn-sample";
+import { analyzeXMLString } from "./analyzeXMLString";
 //BpmnMetrics.numberOfActivitiesMetric
 
 function testNumberOfActivitiesMetric(data) {}
@@ -20,6 +21,29 @@ function testNumberOfStartEvents(data) {}
 function testNumberOfGateways(data) {}
 
 //mporei kai na mhn xreiazetai to export
-export function runTests(data) {}
+// console.log(xmlStr);
+export default function runTests() {
+    const data = analyzeXMLString(xmlStr);
+    console.log(
+        "Number of activities metric passes: ",
+        BpmnMetrics.numberOfActivitiesMetric(data) === 20
+    );
+    console.log(
+        "Number of end events passes: ",
+        BpmnMetrics.numberOfEndEvents(data) === 1
+    );
+    console.log(
+        "Number of start events passes: ",
+        BpmnMetrics.numberOfStartEvents(data) === 1
+    );
+    console.log(
+        "Number of types of gateways passes: ",
+        BpmnMetrics.numberOfGatewayTypes(data) === 3
+    );
+    console.log(
+        "Number of Gateways passes: ",
+        BpmnMetrics.numberOfGateways(data) === 6
+    );
+}
 
 // runTests(data)

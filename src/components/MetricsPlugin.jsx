@@ -124,8 +124,6 @@ export default function MetricsPlugin(props) {
 }
 
 //XREIAZOMAI OLA TA PITHANA ELEMENTS(APO BPMN.IO TA PAIRNW)
-//KAI META VAZW TON XRHSTH NA KANEI TRACK AUTA POY THELEI[vrhka ta events btw]
+//KAI META VAZW TON XRHSTH NA KANEI TRACK AUTA POY THELEI[vrhka ta events]
 
-//THE FUCKING BPMN.IO IS WHERE THE ANSWERS ARE FOUND
-
-//layout idea: olo aristera na einai ta megethi sthn mesh h typoi kai sthn akrh oti widgets xreiazontai
+//BPMN.IO IS WHERE THE ANSWERS ARE FOUND
