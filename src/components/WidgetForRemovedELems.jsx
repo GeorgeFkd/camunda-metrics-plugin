@@ -8,18 +8,18 @@ export default function WidgetForRemovedElements({
     const [open, setOpen] = React.useState(true);
     const [checkedElems, setCheckedElems] = React.useState([]);
 
-    function toggleCheckBox(elNameToAddRemoveInCheckedList, event) {
+    function toggleCheckBox(metricToAddRemoveInCheckedList, event) {
         const isChecked = event.target.checked;
         if (isChecked) {
             //add it to the checkedElemsList
             setCheckedElems((prev) => [
                 ...prev,
-                elNameToAddRemoveInCheckedList,
+                metricToAddRemoveInCheckedList,
             ]);
         } else {
             //remove it from the checkedElemsList
             setCheckedElems((prev) =>
-                prev.filter((curr) => curr !== elNameToAddRemoveInCheckedList)
+                prev.filter((curr) => curr !== metricToAddRemoveInCheckedList)
             );
         }
     }
@@ -48,7 +48,7 @@ export default function WidgetForRemovedElements({
                     });
                 }}
             >
-                {open ? "Hide " : "Show "}Removed Elements
+                {open ? "Hide " : "Show "}More Metrics
             </button>
             <div
                 className={`addremoved-menu ${
@@ -56,14 +56,14 @@ export default function WidgetForRemovedElements({
                 } `}
             >
                 {/* this might become its own component sometime */}
-                {removedElements.map((elName) => {
+                {removedElements.map((metric) => {
                     return (
                         <div className="element-component">
-                            <span className="element-name">{elName}</span>
+                            <span className="element-name">{metric.name}</span>
                             <input
                                 type="checkbox"
                                 className="element-checkbox"
-                                onChange={(evt) => toggleCheckBox(elName, evt)}
+                                onChange={(evt) => toggleCheckBox(metric, evt)}
                             />
                         </div>
                     );

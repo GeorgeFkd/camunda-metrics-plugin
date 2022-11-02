@@ -2,26 +2,42 @@ import React from "camunda-modeler-plugin-helpers/react";
 import StatsTable from "./StatsTable.jsx";
 import MetricsTable from "./MetricsTable.jsx";
 import WidgetForRemovedElements from "./WidgetForRemovedELems.jsx";
+import {
+    numberOfEndEvents,
+    numberOfEvents,
+    numberOfStartEvents,
+} from "../utils/metrics";
 export default function MetricsApp({ data }) {
+    //will probably need all of those
     const bpmnElementsToKeep = [
         "task",
-        "inclusiveGateway",
         "startEvent",
+        "endEvent",
         "exclusiveGateway",
         "complexGateway",
+        "inclusiveGateway",
+        "incoming",
+        "outgoing",
     ];
     // i should only get the update function no state in high level
     const bpmnElemsCountData = data;
     console.info("Inside Metrics App: ", bpmnElemsCountData);
-    const [elementsToKeep, setElementsToKeep] =
-        React.useState(bpmnElementsToKeep);
-    const [elementsRemoved, setElementsRemoved] = React.useState([]);
+    const TNEE = numberOfEndEvents(data);
+    const TNSE = numberOfStartEvents(data);
+    const TNE = numberOfEvents(data);
+    const [metrics, setMetrics] = React.useState([
+        { name: "TNE", metric: TNE },
+        { name: "TNSE", metric: TNSE },
+    ]);
 
-    function removeElement(elemNameToRemove) {
-        setElementsRemoved((prev) => [...prev, elemNameToRemove]);
-        setElementsToKeep(
-            elementsToKeep.filter((el) => el !== elemNameToRemove)
-        );
+    // semantically einai pio poly hidden para removed
+    const [removedMetrics, setRemovedMetrics] = React.useState([
+        { name: "TNEE", metric: TNEE },
+    ]);
+    function removeMetric(metricToRemove) {
+        console.log(metricToRemove, removedMetrics, metrics, "vzoom");
+        setRemovedMetrics((prev) => [...prev, metricToRemove]);
+        setMetrics(metrics.filter((el) => el.name !== metricToRemove.name));
     }
 
     return (
@@ -30,17 +46,22 @@ export default function MetricsApp({ data }) {
                 <React.Fragment>
                     <StatsTable
                         data={bpmnElemsCountData}
-                        removeElement={removeElement}
-                        elementsToKeep={elementsToKeep}
+                        elementsToKeep={bpmnElementsToKeep}
                     />
 
-                    <MetricsTable data={data} />
+                    <MetricsTable
+                        data={data}
+                        metrics={metrics}
+                        setMetrics={setMetrics}
+                        removeMetric={removeMetric}
+                        setRemovedMetrics={setRemovedMetrics}
+                    />
 
                     <div className="tools-container">
                         <WidgetForRemovedElements
-                            removedElements={elementsRemoved}
-                            setDisplayedElems={setElementsToKeep}
-                            setRemovedElems={setElementsRemoved}
+                            removedElements={removedMetrics}
+                            setDisplayedElems={setMetrics}
+                            setRemovedElems={setRemovedMetrics}
                         />
                     </div>
                 </React.Fragment>

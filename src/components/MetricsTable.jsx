@@ -5,30 +5,41 @@ import {
     numberOfStartEvents,
 } from "../utils/metrics";
 
-function MetricsTable({ data }) {
-    const TNEE = numberOfEndEvents(data);
-    const TNSE = numberOfStartEvents(data);
-    const TNE = numberOfEvents(data);
-    // const all_gateways = numberOfGateways(data);
-    //map.size === 0 mas dinei an einai empty h oxi
+function MetricsTable({
+    data,
+    metrics,
+    setMetrics,
+    setRemovedMetrics,
+    removeMetric,
+}) {
+    //TODO auto me tis cathgories pou mou eipane
+    //epishs oi metrikes katatassontai kai se kathgories loipon
+
     return (
         <div className="metrics-container">
-            <div className="metrics-table-title">Bpmn Metrics</div>
+            <div className="metrics-table-title">BPMN Metrics</div>
             <div className="metrics-table">
                 {/* mapping this with import * as BpmnMetrics(if it is an iterable) */}
-                <MetricLabel metricName="TNEE" metricResult={TNEE} />
-                <MetricLabel metricName="TNSE" metricResult={TNSE} />
-                <MetricLabel metricName="TNE" metricResult={TNE} />
+                {metrics.map((elem) => {
+                    console.log(elem);
+                    return (
+                        <MetricLabel
+                            metric={elem}
+                            removeMetric={removeMetric}
+                        />
+                    );
+                })}
             </div>
         </div>
     );
 }
 
-function MetricLabel({ metricName, metricResult }) {
+function MetricLabel({ metric, removeMetric }) {
     return (
         <div className="metric-element">
-            <span className="metric-element-name">{metricName}:</span>
-            <span className="metric-element-result">{metricResult}</span>
+            <span className="metric-element-name">{metric.name}:</span>
+            <span className="metric-element-result">{metric.metric}</span>
+            <button onClick={() => removeMetric(metric)}>X</button>
         </div>
     );
 }

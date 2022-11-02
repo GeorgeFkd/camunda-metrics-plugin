@@ -12,6 +12,25 @@
     /* font-size:1.2rem; */
 }
 
+
+/* not supported in firefox or in edge prior version 79 */
+/* ::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-track{
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb{
+    background:lightgrey;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background: #eeeeee;
+} */
+
+
 .show-metricsPlugin-button{
     font-size:inherit;
     color:inherit;
@@ -53,9 +72,19 @@
 
 
 /* probably to metrics-container tha einai megalytero soon */
-.elements-table-container{
+.stats-table-container{
     flex:1;
-    border-right:solid 2px var(--metricsplugin-container-border)
+    border-right:solid 2px var(--metricsplugin-container-border);
+    overflow:auto;
+}
+
+.stats-table-title-container{
+    margin-bottom:0.5rem;
+}
+
+.stats-table-title{
+    font-size:1.8rem;
+    font-weight: 900;
 }
 
 /* prosoxh edw */

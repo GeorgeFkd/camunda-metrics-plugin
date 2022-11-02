@@ -1,12 +1,13 @@
 import React from "react";
 import testRunner from "../utils/testMetrics";
-function StatsTable({ elementsToKeep, data, removeElement }) {
+function StatsTable({ elementsToKeep, data }) {
     React.useEffect(() => {
         testRunner();
     }, []);
 
     return (
-        <div className="elements-table-container">
+        <div className="stats-table-container">
+            <StatsTableTitle title="Structural Elements Count" />
             {elementsToKeep.map((bpmnEl, idx) => {
                 return (
                     <div
@@ -22,16 +23,24 @@ function StatsTable({ elementsToKeep, data, removeElement }) {
                             </span>
                         </div>
                         {/* TODO na valw icon edw */}
-                        <button
+                        {/* <button
                             className="remove-element-button"
                             onClick={() => removeElement(bpmnEl)}
                         >
                             X
-                        </button>
+                        </button> */}
                         {/* it works <span className="bpmn-icon-gateway-or"></span> */}
                     </div>
                 );
             })}
+        </div>
+    );
+}
+
+function StatsTableTitle({ title }) {
+    return (
+        <div className="stats-table-title-container">
+            <span className="stats-table-title">{title}</span>
         </div>
     );
 }
