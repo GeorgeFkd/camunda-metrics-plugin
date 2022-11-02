@@ -10,6 +10,11 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
         filename: "client.js",
     },
+    plugins: [
+        // { filename: "style.css" }
+        new MiniCssExtractPlugin(),
+        new CamundaModelerWebpackPlugin(),
+    ],
     module: {
         rules: [
             {
@@ -20,12 +25,13 @@ module.exports = {
                 },
             },
             {
-                test: /\.css$/,
+                test: /\.(s[ac]|c)ss$/,
                 //["style-loader","css-loader"],"postcss-loader"
                 use: [
-                    //MiniCssExtractPlugin.loader,
-                    "style-loader",
+                    MiniCssExtractPlugin.loader,
+                    // "style-loader",
                     "css-loader",
+                    "sass-loader",
 
                     // "postcss-loader",
                 ],
@@ -37,11 +43,7 @@ module.exports = {
     //   watchContentBase:true
     // },
     devtool: "source-map",
-    plugins: [
-        new CamundaModelerWebpackPlugin(),
-        // { filename: "style.css" }
-        //new MiniCssExtractPlugin({ filename: "style.css" }),
-    ],
+
     // externals: {
     //     fs: "commonjs fs",
     // },

@@ -56,14 +56,21 @@ export default function WidgetForRemovedElements({
                 } `}
             >
                 {/* this might become its own component sometime */}
-                {removedElements.map((metric) => {
+                {removedElements.map((metric, index) => {
                     return (
-                        <div className="element-component">
-                            <span className="element-name">{metric.name}</span>
+                        <div className="addremoved-widget-element-component">
+                            <span className="addremoved-widget-element-name">
+                                {metric.name}
+                            </span>
                             <input
                                 type="checkbox"
-                                className="element-checkbox"
+                                className="addremoved-element-checkbox"
+                                id={`addremoved-element-checkbox-${index}`}
                                 onChange={(evt) => toggleCheckBox(metric, evt)}
+                            />
+                            <label
+                                for={`addremoved-element-checkbox-${index}`}
+                                class="addremoved-element-checkbox-label"
                             />
                         </div>
                     );

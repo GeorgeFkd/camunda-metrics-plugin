@@ -95,3 +95,6 @@ export function numberOfSplits(data) {
 export function numberOfJoins(data) {
     //? also how is this counted
 }
+
+//link events are considered intermediate throw events with
+//a definition inside

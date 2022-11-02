@@ -33,7 +33,7 @@ function MetricsTable({
         </div>
     );
 }
-
+// here there will be a warning
 function MetricLabel({ metric, removeMetric }) {
     return (
         <div className="metric-element">

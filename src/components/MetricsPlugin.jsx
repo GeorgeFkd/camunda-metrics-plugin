@@ -1,7 +1,7 @@
 import React from "camunda-modeler-plugin-helpers/react";
 
 import { render } from "react-dom";
-import "../style.css";
+import "../style.scss";
 import { Fill } from "camunda-modeler-plugin-helpers/components";
 import { analyzeXMLString } from "../utils/analyzeXMLString";
 
