@@ -26,13 +26,13 @@ export default function MetricsApp({ data }) {
     const TNSE = numberOfStartEvents(data);
     const TNE = numberOfEvents(data);
     const [metrics, setMetrics] = React.useState([
-        { name: "TNE", metric: TNE },
-        { name: "TNSE", metric: TNSE },
+        { name: "TNE", result: TNE },
+        { name: "TNSE", result: TNSE },
     ]);
 
     // semantically einai pio poly hidden para removed
     const [removedMetrics, setRemovedMetrics] = React.useState([
-        { name: "TNEE", metric: TNEE },
+        { name: "TNEE", result: TNEE },
     ]);
     function removeMetric(metricToRemove) {
         console.log(metricToRemove, removedMetrics, metrics, "vzoom");
