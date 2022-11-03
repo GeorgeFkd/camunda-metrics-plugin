@@ -1,10 +1,10 @@
 import React from "react";
 import testRunner from "../utils/testMetrics";
 function StatsTable({ elementsToKeep, data }) {
-    React.useEffect(() => {
-        testRunner();
-    }, []);
-
+    // React.useEffect(() => {
+    //     testRunner();
+    // }, []);
+    //*now that i dont have the remove functionality i can move in here the elementsToKeep
     return (
         <div className="stats-table-container">
             <StatsTableTitle title="Structural Elements Count" />

@@ -4,7 +4,7 @@ import {
     numberOfEvents,
     numberOfStartEvents,
 } from "../utils/metrics";
-import categories from "../assets/categories";
+import categories, { addMetric } from "../assets/categories";
 function MetricsTable({
     data,
     metrics,
@@ -16,7 +16,11 @@ function MetricsTable({
     //epishs oi metrikes katatassontai kai se kathgories loipon
 
     //i have to prepare my data
-
+    React.useEffect(() => {
+        //it works
+        addMetric(["modifiability", "correctness"], "Mpartsoump");
+        addMetric(["modifiability", "efficiency"], "PAPAPAPPAPAP");
+    }, []);
     return (
         <div className="metrics-container">
             <div className="metrics-table-title">BPMN Metrics</div>

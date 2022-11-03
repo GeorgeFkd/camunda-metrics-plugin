@@ -19,7 +19,6 @@ export default function MetricsApp({ data }) {
         "incoming",
         "outgoing",
     ];
-    // i should only get the update function no state in high level
     const bpmnElemsCountData = data;
     console.info("Inside Metrics App: ", bpmnElemsCountData);
     const TNEE = numberOfEndEvents(data);
@@ -40,6 +39,11 @@ export default function MetricsApp({ data }) {
         setMetrics(metrics.filter((el) => el.name !== metricToRemove.name));
     }
 
+    function calculateAllMetrics() {}
+
+    React.useEffect(() => {
+        console.log("fetching metrics data");
+    }, []);
     return (
         <div className="app-container">
             {data ? (
