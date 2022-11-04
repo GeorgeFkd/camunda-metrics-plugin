@@ -5,6 +5,7 @@ import {
     numberOfStartEvents,
 } from "../utils/metrics";
 import categories, { addMetric } from "../assets/categories";
+import useCategories from "../hooks/useCategories.jsx";
 function MetricsTable({
     data,
     metrics,
@@ -14,23 +15,41 @@ function MetricsTable({
 }) {
     //TODO auto me tis cathgories pou mou eipane
     //epishs oi metrikes katatassontai kai se kathgories loipon
-
+    const [categoriesState, setCategories, removeTheMetric, removeTheCategory] =
+        useCategories();
     //i have to prepare my data
     React.useEffect(() => {
-        //it works
-        addMetric(["modifiability", "correctness"], "Mpartsoump");
-        addMetric(["modifiability", "efficiency"], "PAPAPAPPAPAP");
+        // addMetric(["modifiability", "correctness"], "Mpartsoump");
+        addMetric(["modifiability", "efficiency"], {
+            name: "PAPAPAPPAPAP",
+            result: 5,
+        });
+        //works
+        removeTheCategory(["modifiability", "efficiency"], "efficiency");
+        // removeTheMetric(["modifiability", "correctness"], {
+        //     name: "TNSE",
+        //     result: 2,
+        // });
+        console.log("categories", categoriesState);
     }, []);
+
+    // React.useEffect(() => {
+    //     console.log("psssst");
+    //     setCategories[categoriesState];
+    // }, [categoriesState]);
+    // const pathToElem = [];
     return (
         <div className="metrics-container">
             <div className="metrics-table-title">BPMN Metrics</div>
             <div className="metrics-table">
-                {categories.map((cat) => {
+                {categoriesState.map((cat) => {
                     return (
                         <CategoryTree
                             category={cat}
                             depth={0}
                             breadth={categories.length}
+                            pathInTree={[]}
+                            removeMetricsFn={removeTheMetric}
                         />
                     );
                 })}
@@ -48,24 +67,43 @@ function MetricLabel({ metric, removeMetric }) {
         </div>
     );
 }
-function CategoryTree({ category, depth, breadth }) {
+
+//?explain the pathInTree thing
+//kathe kathgoria prosthetei ena onoma sto olo path to opoio paramenei
+//kai gia tous epomenous(gi auto pathInTree.push)
+//enw kathe MetricWrapper ousiastika de tha emfanistei kapou allou
+//opote dhmiourgei apla ena kainourio copy poy prosthetei ton eauto
+//tou [...pathInTree,category.name]
+
+//tha mou xreiastei gia otan prospathisw na afairesw kai na prosthesw metrikes
+
+function CategoryTree({
+    category,
+    depth,
+    breadth,
+    pathInTree,
+    removeMetricsFn,
+}) {
     const keys = Object.keys(category);
 
-    console.log("depth is", depth);
-    console.log("category is", category.name);
-    console.log("keys are", keys);
-    console.log("breadth is", breadth);
-    if (keys.includes("metrics")) {
-        return (
+    let ToRender;
+    const isCategoryWithMetrics = keys.includes("metrics");
+    if (isCategoryWithMetrics) {
+        const pathForMetric = [...pathInTree, category.name];
+        console.log(pathForMetric, "for metrics");
+        ToRender = (
             <MetricsWrapper
                 categoryTitle={category.name}
                 depth={depth}
                 breadth={breadth}
+                pathInTree={pathForMetric}
             >
                 {category.metrics.map((metric) => (
                     <MetricLabel
                         metric={metric}
-                        removeMetric={() => console.log(metric)}
+                        removeMetric={() =>
+                            removeMetricsFn(pathForMetric, metric)
+                        }
                     />
                 ))}
             </MetricsWrapper>
@@ -76,26 +114,38 @@ function CategoryTree({ category, depth, breadth }) {
         //an exei kathgories prepei na ta valw se sthlh
         let subCategoryKeys = Object.keys(category.categories);
         let isColumn = subCategoryKeys.includes("categories");
-
-        return (
+        pathInTree.push(category.name);
+        ToRender = (
             <CategoriesWrapper
                 categoryTitle={category.name}
                 flexDirection={isColumn}
                 breadth={breadth}
+                pathInTree={pathInTree}
             >
                 {category.categories.map((cat) => (
                     <CategoryTree
                         category={cat}
                         depth={depth + 1}
                         breadth={category.categories.length}
+                        pathInTree={pathInTree}
+                        removeMetricsFn={removeMetricsFn}
                     />
                 ))}
             </CategoriesWrapper>
         );
     }
+    return ToRender;
 }
 //TODO ola na katalhgoun sto idio shmeio
-function MetricsWrapper({ children, categoryTitle, depth, breadth }) {
+function MetricsWrapper({
+    children,
+    categoryTitle,
+    depth,
+    breadth,
+    pathInTree,
+}) {
+    //i now have the path for every metric and category
+    console.log(categoryTitle, pathInTree, "le path");
     return (
         <div
             className="metrics-wrapper"

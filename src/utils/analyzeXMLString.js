@@ -7,6 +7,15 @@ import { DOMParser } from "xmldom";
 
 //TODO convert xml element names to human readable names -> with an object
 
+//console.log(xpath.select("//*[local-name()='exclusiveGateway']", xmlDoc));
+let gateways = xpath.select("//*[local-name()='exclusiveGateway']", xmlDoc);
+//! console.log(gateways);
+//! gateways.forEach((gate) =>
+//!     console.log(
+//!         xpath.select("count(self::node()/*[local-name()='outgoing'])", gate)
+//!    )
+//! );
+
 const parser = new DOMParser();
 export function analyzeXMLString(xmlStr) {
     if (!xmlStr) {

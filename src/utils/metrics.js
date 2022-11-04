@@ -4,6 +4,8 @@
 //genika paizei na mporousa apla na vrw enan tropo na einai mia synarthsh pou ths pernas ena function sto opoio
 //na vasizetai to calculation
 
+const debug = false;
+
 export function numberOfActivitiesMetric(data) {
     //activites einai pragmata pou ginontai
     //subclasses einai ta tasks ta processes kai ta subprocesses
@@ -12,7 +14,7 @@ export function numberOfActivitiesMetric(data) {
     //sgr context provider gia ta data
     //ok pairnoume ta data
     if (!data) throw Error("No data given to calculate metric");
-    console.info("In NoA with data:", data);
+    debug && console.info("In NoA with data:", data);
     //const array = ['callActivity' etc.] kapoia einai activities
     //alla den einai tasks strictly definitionally
     const allTypesOfTasks = Array.from(data.keys()).filter((bpmnElement) => {
@@ -33,7 +35,7 @@ export function numberOfActivitiesMetric(data) {
 export function numberOfEvents(data) {
     if (!data) throw Error("No data given to calculate metric");
 
-    console.info("In TNE with data", data);
+    debug && console.info("In TNE with data", data);
     const allTypesOfEvents = Array.from(data.keys()).filter((bpmnElement) => {
         return bpmnElement.toLowerCase().endsWith("event");
     });
@@ -49,7 +51,7 @@ export function numberOfEvents(data) {
 export function numberOfEndEvents(data) {
     if (!data) throw Error("No data given to calculate metric");
 
-    console.info("In TNEE with data: ", data);
+    debug && console.info("In TNEE with data: ", data);
     return data.get("endEvent");
     //prosoxh otan exoun types ta end events einai endEvent
     //tag pou exei mesa ena definition
@@ -60,7 +62,7 @@ export function numberOfEndEvents(data) {
 export function numberOfStartEvents(data) {
     if (!data) throw Error("No data given to calculate metric");
 
-    console.info("In TNSE with data: ", data);
+    debug && console.info("In TNSE with data: ", data);
     return data.get("startEvent");
 
     //apla to startEvent element metrhma
@@ -78,7 +80,7 @@ export function numberOfGateways(data) {
     return result;
 }
 export function numberOfGatewayTypes(data) {
-    console.log(data);
+    debug && console.log(data);
     const allTypesOfGateways = new Set(
         Array.from(data.keys()).filter((bpmnElement) => {
             return bpmnElement.endsWith("Gateway");

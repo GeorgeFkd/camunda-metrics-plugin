@@ -1,3 +1,6 @@
+//THIS WILL BREAK IF A CATEGORY HAS METRICS
+//THAT BELONG IN A SUBCATEGORY
+//AND THE CATEGORY ITSELF
 const categories = [
     {
         name: "modifiability",
@@ -13,24 +16,15 @@ const categories = [
                 name: "efficiency",
                 metrics: [
                     { name: "Mpa", result: 23 },
-                    { name: "Mphs", result: 12 },
-                    { name: "Mphs", result: 12 },
-                    { name: "Mphs", result: 12 },
-                    { name: "Mphs", result: 12 },
-                    { name: "Mphs", result: 12 },
-                    { name: "Mphs", result: 12 },
+                    { name: "Mphs1", result: 12 },
+                    { name: "Mphs2", result: 12 },
+                    { name: "Mphs3", result: 12 },
+                    { name: "Mphs4", result: 12 },
+                    { name: "Mphs5", result: 12 },
+                    { name: "Mphs6", result: 12 },
                 ],
             },
         ],
-        // metrics: [
-        //     { name: "Mpa", result: 23 },
-        //     { name: "Mphs", result: 12 },
-        //     { name: "Mphs", result: 12 },
-        //     { name: "Mphs", result: 12 },
-        //     { name: "Mphs", result: 12 },
-        //     { name: "Mphs", result: 12 },
-        //     { name: "Mphs", result: 12 },
-        // ],
     },
     {
         name: "extensibility",
@@ -44,16 +38,39 @@ const categories = [
     },
 ];
 
+export function removeTheMetric(categArr, metric) {
+    const levels = categArr.length;
+    let currentLevel = 0;
+    const loop = (categoriesArr, categName, metric) => {
+        //console.log(categoriesArr, categName, "Array and category name");
+        //console.log(currentLevel, levels, "depth");
+        const nextCategory = categoriesArr.filter(
+            (categ) => categ.name === categName
+        );
+        if (nextCategory.length == 0) {
+            throw Error(
+                "possibly nested category was not found check argument positions"
+            );
+        }
+        // console.log(nextCategory);
+        if (currentLevel === levels - 1) {
+            //i reached the last element
+            console.log(nextCategory[0].metrics);
+            nextCategory[0].metrics = nextCategory[0].metrics.filter(
+                (m) => m.name !== metric.name
+            );
+            return;
+        } else {
+            currentLevel += 1;
+            loop(nextCategory[0].categories, categArr[currentLevel], metric);
+        }
+    };
+    loop(categories, categArr[0], metric);
+    console.log(categories, "NEW papi NEW ME ");
+}
+
 export function addMetric(categArr, metric) {
     const levels = categArr.length;
-    // categArr.forEach((cat,index)=>{
-    //     // find the object in the categories big object
-    //     //that has the name cat
-    //     // if cat last element of array add it in the metrics of that category
-    //     const obj = categories.filter(categ=>categ.name === cat);
-    //     console.log(obj);
-    //     //do the same thing for object
-    // })
     let currentLevel = 0;
     const loop = (categoriesArr, categName, metric) => {
         console.log(categoriesArr, categName, "Array and category name");
@@ -77,7 +94,7 @@ export function addMetric(categArr, metric) {
         }
     };
     loop(categories, categArr[0], metric);
-    console.log(categories, "NEW FUNCTION NEW ME ");
+    //console.log(categories, "NEW FUNCTION NEW ME ");
 }
 
 export default categories;
