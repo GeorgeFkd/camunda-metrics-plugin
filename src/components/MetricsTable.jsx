@@ -15,29 +15,32 @@ function MetricsTable({
 }) {
     //TODO auto me tis cathgories pou mou eipane
     //epishs oi metrikes katatassontai kai se kathgories loipon
-    const [categoriesState, setCategories, removeTheMetric, removeTheCategory] =
-        useCategories();
+    const [
+        categoriesState,
+        setCategories,
+        removeTheMetric,
+        removeTheCategory,
+        addCategory,
+    ] = useCategories();
     //i have to prepare my data
+    //? explaining adding and removing Metrics/Categories
+    //* to add/remove a metric we need the whole path to the metric
+    //* to add/remove a category we need the path to the category above
+    //* the category we want to remove(thats why for categories we dont need to add in path)
     React.useEffect(() => {
         // addMetric(["modifiability", "correctness"], "Mpartsoump");
         addMetric(["modifiability", "efficiency"], {
             name: "PAPAPAPPAPAP",
             result: 5,
         });
-        //works
-        removeTheCategory(["modifiability", "efficiency"], "efficiency");
-        // removeTheMetric(["modifiability", "correctness"], {
-        //     name: "TNSE",
-        //     result: 2,
-        // });
+        //what works(add and remove metrics do + addCategory + removeCategory)
+        addCategory({ name: "effectiveness", metrics: [] }, ["modifiability"]);
+        //removeTheCategory(["modifiability"], "efficiency");
+        //removeTheCategory([], "extensibility");
+
         console.log("categories", categoriesState);
     }, []);
 
-    // React.useEffect(() => {
-    //     console.log("psssst");
-    //     setCategories[categoriesState];
-    // }, [categoriesState]);
-    // const pathToElem = [];
     return (
         <div className="metrics-container">
             <div className="metrics-table-title">BPMN Metrics</div>
@@ -50,6 +53,7 @@ function MetricsTable({
                             breadth={categories.length}
                             pathInTree={[]}
                             removeMetricsFn={removeTheMetric}
+                            removeCategoryFn={removeTheCategory}
                         />
                     );
                 })}
@@ -83,6 +87,7 @@ function CategoryTree({
     breadth,
     pathInTree,
     removeMetricsFn,
+    removeCategoryFn,
 }) {
     const keys = Object.keys(category);
 
@@ -97,6 +102,7 @@ function CategoryTree({
                 depth={depth}
                 breadth={breadth}
                 pathInTree={pathForMetric}
+                removeCategoryFn={removeCategoryFn}
             >
                 {category.metrics.map((metric) => (
                     <MetricLabel
@@ -113,6 +119,7 @@ function CategoryTree({
         //an exei metrikes shmainei oti tha prepei na ta valw sthn seira
         //an exei kathgories prepei na ta valw se sthlh
         let subCategoryKeys = Object.keys(category.categories);
+        //does this category's subcategories have subcategories
         let isColumn = subCategoryKeys.includes("categories");
         pathInTree.push(category.name);
         ToRender = (
@@ -121,6 +128,7 @@ function CategoryTree({
                 flexDirection={isColumn}
                 breadth={breadth}
                 pathInTree={pathInTree}
+                removeCategoryFn={removeCategoryFn}
             >
                 {category.categories.map((cat) => (
                     <CategoryTree
@@ -129,6 +137,7 @@ function CategoryTree({
                         breadth={category.categories.length}
                         pathInTree={pathInTree}
                         removeMetricsFn={removeMetricsFn}
+                        removeCategoryFn={removeCategoryFn}
                     />
                 ))}
             </CategoriesWrapper>
@@ -143,9 +152,11 @@ function MetricsWrapper({
     depth,
     breadth,
     pathInTree,
+    removeCategoryFn,
 }) {
     //i now have the path for every metric and category
-    console.log(categoryTitle, pathInTree, "le path");
+    // console.log(categoryTitle, pathInTree, "le path");
+    const actualPath = pathInTree.slice(0, -1);
     return (
         <div
             className="metrics-wrapper"
@@ -154,7 +165,23 @@ function MetricsWrapper({
                 width: `calc(100%/${breadth})`,
             }}
         >
-            <div className="metrics-wrapper-title">{categoryTitle}</div>
+            <div className="metrics-wrapper-title">
+                <span className="metrics-wrapper-title-name">
+                    {categoryTitle}
+                </span>
+                <button
+                    onClick={
+                        () => removeCategoryFn(actualPath, categoryTitle)
+                        // console.log(
+                        //     "Args for remove category:",
+                        //     actualPath,
+                        //     categoryTitle
+                        // )
+                    }
+                >
+                    X
+                </button>
+            </div>
             {/* this guys height should be set according to depth */}
             <div
                 className="metrics-wrapper-children"
@@ -167,13 +194,32 @@ function MetricsWrapper({
 }
 
 //? THELW NA VALW STO KENTRO THN KATHGORIA
-function CategoriesWrapper({ children, categoryTitle, isColumn, breadth }) {
+function CategoriesWrapper({
+    children,
+    categoryTitle,
+    isColumn,
+    breadth,
+    pathInTree,
+    removeCategoryFn,
+}) {
+    const actualPath = pathInTree.slice(0, -1);
+
     return (
         <div
             className="categories-wrapper"
             style={{ width: `calc(100%/${breadth}` }}
         >
-            <div className="categories-wrapper-title">{categoryTitle}</div>
+            <div className="categories-wrapper-title">
+                <span className="categories-wrapper-title-name">
+                    {categoryTitle}
+                </span>
+                <button
+                    onClick={() => removeCategoryFn(actualPath, categoryTitle)}
+                >
+                    X
+                </button>
+            </div>
+
             <div
                 className="categories-wrapper-children"
                 style={{

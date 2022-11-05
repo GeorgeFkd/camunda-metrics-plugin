@@ -3,7 +3,7 @@ import React from "camunda-modeler-plugin-helpers/react";
 import { render } from "react-dom";
 import "../style.scss";
 import { Fill } from "camunda-modeler-plugin-helpers/components";
-import { analyzeXMLString } from "../utils/analyzeXMLString";
+import { analyzeXMLString, CFC_OF_DIAGRAM } from "../utils/analyzeXMLString";
 
 //needs the .jsx for some reason
 import MetricsApp from "./MetricsApp.jsx";
@@ -38,9 +38,11 @@ export default function MetricsPlugin(props) {
                 };
             }
             case DATA_FETCHED: {
+                CFC_OF_DIAGRAM(action.payload);
                 return {
                     ...state,
-                    analysisData: action.payload,
+                    analysisData: analyzeXMLString(action.payload),
+                    xmlData: action.payload,
                 };
             }
         }
@@ -56,7 +58,7 @@ export default function MetricsPlugin(props) {
         rootDiv.className = "toggle-hide-show";
         statusBar.parentNode.insertBefore(rootDiv, statusBar);
         function fetchData(xml) {
-            dispatch({ type: DATA_FETCHED, payload: analyzeXMLString(xml) });
+            dispatch({ type: DATA_FETCHED, payload: xml });
         }
         subscribe("bpmn.modeler.created", (arg) => {
             console.info("event modeler created", arg);
@@ -115,7 +117,10 @@ export default function MetricsPlugin(props) {
 
             {state.open
                 ? render(
-                      <MetricsApp data={state.analysisData} />,
+                      <MetricsApp
+                          data={state.analysisData}
+                          xmlFile={state.xmlData}
+                      />,
                       document.getElementById("table-root")
                   )
                 : null}

@@ -1,6 +1,10 @@
 //THIS WILL BREAK IF A CATEGORY HAS METRICS
 //THAT BELONG IN A SUBCATEGORY
 //AND THE CATEGORY ITSELF
+
+//another idea hard coding it like
+//level1:[cat1,cat2] level2[[cat22,cat33],[]] level3
+//so cat1 has cat22 and cat33 but cat2 has no subcategories
 const categories = [
     {
         name: "modifiability",

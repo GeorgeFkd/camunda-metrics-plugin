@@ -2,12 +2,8 @@ import React from "camunda-modeler-plugin-helpers/react";
 import StatsTable from "./StatsTable.jsx";
 import MetricsTable from "./MetricsTable.jsx";
 import WidgetForRemovedElements from "./WidgetForRemovedELems.jsx";
-import {
-    numberOfEndEvents,
-    numberOfEvents,
-    numberOfStartEvents,
-} from "../utils/metrics";
-export default function MetricsApp({ data }) {
+
+export default function MetricsApp({ data, xmlData }) {
     //will probably need all of those
     const bpmnElementsToKeep = [
         "task",
@@ -19,22 +15,17 @@ export default function MetricsApp({ data }) {
         "incoming",
         "outgoing",
     ];
-    const bpmnElemsCountData = data;
-    console.info("Inside Metrics App: ", bpmnElemsCountData);
-    const TNEE = numberOfEndEvents(data);
-    const TNSE = numberOfStartEvents(data);
-    const TNE = numberOfEvents(data);
+    console.info("Inside Metrics App: ", data);
     const [metrics, setMetrics] = React.useState([
-        { name: "TNE", result: TNE },
-        { name: "TNSE", result: TNSE },
+        { name: "TNE", result: 12 },
+        { name: "TNSE", result: 13 },
     ]);
 
     // semantically einai pio poly hidden para removed
     const [removedMetrics, setRemovedMetrics] = React.useState([
-        { name: "TNEE", result: TNEE },
+        { name: "TNEE", result: 5 },
     ]);
     function removeMetric(metricToRemove) {
-        console.log(metricToRemove, removedMetrics, metrics, "vzoom");
         setRemovedMetrics((prev) => [...prev, metricToRemove]);
         setMetrics(metrics.filter((el) => el.name !== metricToRemove.name));
     }
@@ -42,19 +33,18 @@ export default function MetricsApp({ data }) {
     function calculateAllMetrics() {}
 
     React.useEffect(() => {
-        console.log("fetching metrics data");
+        console.log("calculating metrics data");
     }, []);
     return (
         <div className="app-container">
             {data ? (
                 <React.Fragment>
                     <StatsTable
-                        data={bpmnElemsCountData}
+                        data={data}
                         elementsToKeep={bpmnElementsToKeep}
                     />
 
                     <MetricsTable
-                        data={data}
                         metrics={metrics}
                         setMetrics={setMetrics}
                         removeMetric={removeMetric}

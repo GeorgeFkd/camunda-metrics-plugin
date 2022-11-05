@@ -1,57 +1,99 @@
+import { registerCloudDmnJSPlugin } from "camunda-modeler-plugin-helpers";
 import React from "camunda-modeler-plugin-helpers/react";
 import initialcategories from "../assets/categories";
 export default function useCategories() {
     const [categories, setCategories] = React.useState(initialcategories);
     // console.log("categories hook", categories);
+    //i will probably need a removedCategories and setRemovedCategories
     //removeMetric(["modifiability", "correctness"], { name: "TNSE", result: 2 });
-    function removeCategory(categoryArr, categoryName) {
+    function removeCategory(categoryPath, categoryName) {
         //i could only use the categoryArr and get the last element as the category name
         //we always need a new reference for the state we cant do it in place
+        console.info(
+            "Removing category: ",
+            categoryName,
+            "in path: ",
+            categoryPath
+        );
         const previousState = Object.create(categories);
-        const levels = categoryArr.length;
+        const levelsNeeded = categoryPath.length;
+        let current = previousState;
         let currentLevel = 0;
-        const loop = (allCategories, categName) => {
-            const nextCategory = allCategories.filter(
-                (categ) => categ.name === categName
-            );
-            console.log("NEXT: ", nextCategory);
-            // if (nextCategory.length == 0) {
-            //     //not in this level we gotta go deeper
-            //     // allCategories.forEach((cat) => {
-            //     //     cat.categories && loop(cat.categories, categName);
-            //     // });
-            //     // const subCategories = allCategories.filter(
-            //     //     (categ) => categ.categories
-            //     // );
-            //     // console.log(subCategories);
-            //     // for (let i = 0; i < subCategories.length; i++) {
-            //     //     loop(subCategories[i].categories, categName);
-            //     // }
+        if (categoryPath.length === 0) {
+            setCategories((categs) => {
+                return categs.filter((cat) => cat.name !== categoryName);
+            });
+            return;
+        }
+        while (true) {
+            //to remove a subcategory i need to be at the category above it and filter
+            //the categories property
 
-            // } else {
-            //     //means we found it so remove it
-            //     console.log("We found it in this lvl");
-            //     allCategories = allCategories.filter(
-            //         (categ) => categ.name !== categName
-            //     );
-            //     console.log(allCategories);
-            //     return;
-            // }
-        };
+            current = current.filter((cat) => {
+                return cat.name === categoryPath[currentLevel];
+            });
+            if (currentLevel === levelsNeeded - 1) {
+                console.log("reached ok level", current[0].categories);
+                current[0].categories = current[0].categories.filter(
+                    (cat) => cat.name !== categoryName
+                );
+                console.log("mutated current->", current);
+                break;
+            }
 
-        loop(previousState, categoryName);
-        console.log(previousState, "removed category");
+            console.log("RN and filtered", current);
+            if (current.length === 0)
+                throw Error("Category path does not exist ");
+            if (!current[0].categories) {
+                //mb nothing went wrong and the current category just doesnt have metrics
+                //for now i assum sth went wrong
+                throw Error("Something went wrong");
+            }
+            current = current[0].categories;
+            currentLevel++;
+        }
+        console.log("AFTER REMOVING CATEGORY SETTING STATE TO");
+        console.log(previousState);
         setCategories(previousState);
     }
 
-    function addCategory() {}
+    function addCategory(category, path) {
+        //need new object to update state
+        if (!path) throw Error("Path for category was not supplied");
+        console.info("Adding category ", category, "in path", path);
+        const previousState = Object.create(categories);
+        let current = previousState;
+        let currentLvl = 0;
+        while (true) {
+            //get category from path
+
+            if (currentLvl === path.length) {
+                //means we reached our destination
+                //console.log(current);
+                current.push(category);
+                console.log(current, "we made it");
+                break;
+            }
+            current = current.filter((cat) => {
+                return cat.name === path[currentLvl];
+            });
+            console.log("RN: filtered", current);
+            if (current.length === 0)
+                throw Error("Category path does not exist ");
+            if (!current[0].categories) {
+                throw Error("Something went wrong");
+            }
+            current = current[0].categories;
+            currentLvl++;
+        }
+        setCategories(previousState);
+    }
+
     function removeTheMetric(categArr, metric) {
         const previousState = Object.create(categories);
         const levels = categArr.length;
         let currentLevel = 0;
         const loop = (categoriesArr, categName, metric) => {
-            //console.log(categoriesArr, categName, "Array and category name");
-            //console.log(currentLevel, levels, "depth");
             const nextCategory = categoriesArr.filter(
                 (categ) => categ.name === categName
             );
@@ -60,10 +102,11 @@ export default function useCategories() {
                     "possibly nested category was not found check argument positions"
                 );
             }
-            // console.log(nextCategory);
+
             if (currentLevel === levels - 1) {
                 //i reached the last element
                 console.log(nextCategory[0].metrics);
+                //i remove the metric here
                 nextCategory[0].metrics = nextCategory[0].metrics.filter(
                     (m) => m.name !== metric.name
                 );
@@ -88,5 +131,11 @@ export default function useCategories() {
         console.log("you guys state is updated", categories);
     }, [categories]);
 
-    return [categories, setCategories, removeTheMetric, removeCategory];
+    return [
+        categories,
+        setCategories,
+        removeTheMetric,
+        removeCategory,
+        addCategory,
+    ];
 }
