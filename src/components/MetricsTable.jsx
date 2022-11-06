@@ -5,37 +5,37 @@ import {
     numberOfStartEvents,
 } from "../utils/metrics";
 import categories, { addMetric } from "../assets/categories";
-import useCategories from "../hooks/useCategories.jsx";
-function MetricsTable({
-    data,
-    metrics,
-    setMetrics,
-    setRemovedMetrics,
-    removeMetric,
-}) {
+import { CategoriesHookContext } from "../contexts/CategoriesContext.jsx";
+
+function MetricsTable({}) {
     //TODO auto me tis cathgories pou mou eipane
     //epishs oi metrikes katatassontai kai se kathgories loipon
     const [
         categoriesState,
-        setCategories,
         removeTheMetric,
         removeTheCategory,
         addCategory,
-    ] = useCategories();
+        removedElements,
+    ] = React.useContext(CategoriesHookContext);
     //i have to prepare my data
     //? explaining adding and removing Metrics/Categories
     //* to add/remove a metric we need the whole path to the metric
     //* to add/remove a category we need the path to the category above
     //* the category we want to remove(thats why for categories we dont need to add in path)
     React.useEffect(() => {
-        // addMetric(["modifiability", "correctness"], "Mpartsoump");
-        addMetric(["modifiability", "efficiency"], {
-            name: "PAPAPAPPAPAP",
-            result: 5,
-        });
+        console.log("currently removed ", removedElements);
+    }, [removedElements]);
+    React.useEffect(() => {
+        // addMetric(["modifiability", "correctness"], {
+        //     name: "PAPAPAPPAPAP",
+        //     result: 5,
+        // });
+        // addMetric(["modifiability", "efficiency"], {
+        //     name: "PAPAPAPPAPAP",
+        //     result: 5,
+        // });
         //what works(add and remove metrics do + addCategory + removeCategory)
-        addCategory({ name: "effectiveness", metrics: [] }, ["modifiability"]);
-        //removeTheCategory(["modifiability"], "efficiency");
+        //addCategory(["modifiability"],{ name: "effectiveness", metrics: [] });
         //removeTheCategory([], "extensibility");
 
         console.log("categories", categoriesState);
@@ -83,7 +83,6 @@ function MetricLabel({ metric, removeMetric }) {
 
 function CategoryTree({
     category,
-    depth,
     breadth,
     pathInTree,
     removeMetricsFn,
@@ -92,27 +91,19 @@ function CategoryTree({
     const keys = Object.keys(category);
 
     let ToRender;
+    //this condition determines whether the last in the recursion or not
     const isCategoryWithMetrics = keys.includes("metrics");
     if (isCategoryWithMetrics) {
         const pathForMetric = [...pathInTree, category.name];
         console.log(pathForMetric, "for metrics");
         ToRender = (
-            <MetricsWrapper
-                categoryTitle={category.name}
-                depth={depth}
+            <MetricsContainer
+                category={category}
                 breadth={breadth}
                 pathInTree={pathForMetric}
                 removeCategoryFn={removeCategoryFn}
-            >
-                {category.metrics.map((metric) => (
-                    <MetricLabel
-                        metric={metric}
-                        removeMetric={() =>
-                            removeMetricsFn(pathForMetric, metric)
-                        }
-                    />
-                ))}
-            </MetricsWrapper>
+                removeMetricsFn={removeMetricsFn}
+            />
         );
     } else if (keys.includes("categories")) {
         //koitazw an to epomeno level categories exei categories h metrics
@@ -123,40 +114,31 @@ function CategoryTree({
         let isColumn = subCategoryKeys.includes("categories");
         pathInTree.push(category.name);
         ToRender = (
-            <CategoriesWrapper
-                categoryTitle={category.name}
+            <CategoriesContainer
+                category={category}
                 flexDirection={isColumn}
                 breadth={breadth}
                 pathInTree={pathInTree}
                 removeCategoryFn={removeCategoryFn}
-            >
-                {category.categories.map((cat) => (
-                    <CategoryTree
-                        category={cat}
-                        depth={depth + 1}
-                        breadth={category.categories.length}
-                        pathInTree={pathInTree}
-                        removeMetricsFn={removeMetricsFn}
-                        removeCategoryFn={removeCategoryFn}
-                    />
-                ))}
-            </CategoriesWrapper>
+                removeMetricsFn={removeMetricsFn}
+            />
         );
     }
     return ToRender;
 }
 //TODO ola na katalhgoun sto idio shmeio
-function MetricsWrapper({
-    children,
-    categoryTitle,
-    depth,
+function MetricsContainer({
+    category,
     breadth,
     pathInTree,
     removeCategoryFn,
+    removeMetricsFn,
 }) {
+    // doesnt show the overflow properly if in subcategory
     //i now have the path for every metric and category
     // console.log(categoryTitle, pathInTree, "le path");
     const actualPath = pathInTree.slice(0, -1);
+    const depth = pathInTree.length;
     return (
         <div
             className="metrics-wrapper"
@@ -167,40 +149,37 @@ function MetricsWrapper({
         >
             <div className="metrics-wrapper-title">
                 <span className="metrics-wrapper-title-name">
-                    {categoryTitle}
+                    {category.name}
                 </span>
-                <button
-                    onClick={
-                        () => removeCategoryFn(actualPath, categoryTitle)
-                        // console.log(
-                        //     "Args for remove category:",
-                        //     actualPath,
-                        //     categoryTitle
-                        // )
-                    }
-                >
+                <button onClick={() => removeCategoryFn(actualPath, category)}>
                     X
                 </button>
             </div>
             {/* this guys height should be set according to depth */}
+            {/* will add depth back in when it is needed to do so(also pathintree.length) */}
             <div
                 className="metrics-wrapper-children"
                 //kai me calc
             >
-                {children}
+                {category.metrics.map((metric) => (
+                    <MetricLabel
+                        metric={metric}
+                        removeMetric={() => removeMetricsFn(pathInTree, metric)}
+                    />
+                ))}
             </div>
         </div>
     );
 }
 
 //? THELW NA VALW STO KENTRO THN KATHGORIA
-function CategoriesWrapper({
-    children,
-    categoryTitle,
+function CategoriesContainer({
+    category,
     isColumn,
     breadth,
     pathInTree,
     removeCategoryFn,
+    removeMetricsFn,
 }) {
     const actualPath = pathInTree.slice(0, -1);
 
@@ -211,11 +190,9 @@ function CategoriesWrapper({
         >
             <div className="categories-wrapper-title">
                 <span className="categories-wrapper-title-name">
-                    {categoryTitle}
+                    {category.name}
                 </span>
-                <button
-                    onClick={() => removeCategoryFn(actualPath, categoryTitle)}
-                >
+                <button onClick={() => removeCategoryFn(actualPath, category)}>
                     X
                 </button>
             </div>
@@ -226,7 +203,15 @@ function CategoriesWrapper({
                     flexDirection: isColumn ? "column" : "row",
                 }}
             >
-                {children}
+                {category.categories.map((cat) => (
+                    <CategoryTree
+                        category={cat}
+                        breadth={category.categories.length}
+                        pathInTree={pathInTree}
+                        removeMetricsFn={removeMetricsFn}
+                        removeCategoryFn={removeCategoryFn}
+                    />
+                ))}
             </div>
         </div>
     );

@@ -1,17 +1,17 @@
-import { registerCloudDmnJSPlugin } from "camunda-modeler-plugin-helpers";
 import React from "camunda-modeler-plugin-helpers/react";
 import initialcategories from "../assets/categories";
 export default function useCategories() {
     const [categories, setCategories] = React.useState(initialcategories);
     // console.log("categories hook", categories);
-    //i will probably need a removedCategories and setRemovedCategories
+    //this will both have removed metrics and categories
+    const [removed, setRemoved] = React.useState([]);
     //removeMetric(["modifiability", "correctness"], { name: "TNSE", result: 2 });
-    function removeCategory(categoryPath, categoryName) {
+    function removeCategory(categoryPath, category) {
         //i could only use the categoryArr and get the last element as the category name
         //we always need a new reference for the state we cant do it in place
         console.info(
             "Removing category: ",
-            categoryName,
+            category.name,
             "in path: ",
             categoryPath
         );
@@ -21,8 +21,15 @@ export default function useCategories() {
         let currentLevel = 0;
         if (categoryPath.length === 0) {
             setCategories((categs) => {
-                return categs.filter((cat) => cat.name !== categoryName);
+                return categs.filter((cat) => cat.name !== category.name);
             });
+            setRemoved((prev) => {
+                return [
+                    ...prev,
+                    { element: category, categoryPath, type: "category" },
+                ];
+            });
+            //?these could be used for the widget removal
             return;
         }
         while (true) {
@@ -35,7 +42,7 @@ export default function useCategories() {
             if (currentLevel === levelsNeeded - 1) {
                 console.log("reached ok level", current[0].categories);
                 current[0].categories = current[0].categories.filter(
-                    (cat) => cat.name !== categoryName
+                    (cat) => cat.name !== category.name
                 );
                 console.log("mutated current->", current);
                 break;
@@ -55,27 +62,40 @@ export default function useCategories() {
         console.log("AFTER REMOVING CATEGORY SETTING STATE TO");
         console.log(previousState);
         setCategories(previousState);
+        setRemoved((prev) => {
+            return [
+                ...prev,
+                { element: category, categoryPath, type: "category" },
+            ];
+        });
     }
 
-    function addCategory(category, path) {
+    //* used in the addremove-widget to bring back categories
+    function addCategory(categoryPath, category) {
         //need new object to update state
-        if (!path) throw Error("Path for category was not supplied");
-        console.info("Adding category ", category, "in path", path);
+        if (!categoryPath) throw Error("Path for category was not supplied");
+        console.info("Adding category ", category, "in path", categoryPath);
         const previousState = Object.create(categories);
         let current = previousState;
         let currentLvl = 0;
         while (true) {
             //get category from path
 
-            if (currentLvl === path.length) {
+            if (currentLvl === categoryPath.length) {
                 //means we reached our destination
                 //console.log(current);
+                //remove category from categories
                 current.push(category);
+                setRemoved((prev) => {
+                    return prev.filter(
+                        (elem) => elem.element.name !== category.name
+                    );
+                });
                 console.log(current, "we made it");
                 break;
             }
             current = current.filter((cat) => {
-                return cat.name === path[currentLvl];
+                return cat.name === categoryPath[currentLvl];
             });
             console.log("RN: filtered", current);
             if (current.length === 0)
@@ -86,9 +106,10 @@ export default function useCategories() {
             current = current[0].categories;
             currentLvl++;
         }
+
         setCategories(previousState);
     }
-
+    //! someday rewrite it without recursion
     function removeTheMetric(categArr, metric) {
         const previousState = Object.create(categories);
         const levels = categArr.length;
@@ -110,6 +131,10 @@ export default function useCategories() {
                 nextCategory[0].metrics = nextCategory[0].metrics.filter(
                     (m) => m.name !== metric.name
                 );
+                setRemoved((prev) => [
+                    ...prev,
+                    { element: metric, categoryPath: categArr, type: "metric" },
+                ]);
                 return;
             } else {
                 currentLevel += 1;
@@ -127,15 +152,58 @@ export default function useCategories() {
         setCategories(previousState);
         //console.log("STATE AFTER UPDATE", categories);
     }
+
+    function addMetric(categArr, metric) {
+        const previousState = Object.create(categories);
+        const levels = categArr.length;
+        let currentLevel = 0;
+        const loop = (categoriesArr, categName, metric) => {
+            const nextCategory = categoriesArr.filter(
+                (categ) => categ.name === categName
+            );
+            if (nextCategory.length == 0) {
+                throw Error(
+                    "possibly nested category was not found check argument positions"
+                );
+            }
+
+            if (currentLevel === levels - 1) {
+                //i reached the last element
+                console.log(nextCategory[0].metrics);
+                //i add the metric here
+                nextCategory[0].metrics.push(metric);
+                setRemoved((prev) => {
+                    return prev.filter(
+                        (elems) => elems.element.name !== metric.name
+                    );
+                });
+                return;
+            } else {
+                currentLevel += 1;
+                loop(
+                    nextCategory[0].categories,
+                    categArr[currentLevel],
+                    metric
+                );
+            }
+        };
+
+        loop(previousState, categArr[0], metric);
+        // console.log("STATE AFTER: ", previousState);
+
+        setCategories(previousState);
+    }
+
     React.useEffect(() => {
         console.log("you guys state is updated", categories);
     }, [categories]);
 
     return [
         categories,
-        setCategories,
         removeTheMetric,
         removeCategory,
         addCategory,
+        removed,
+        addMetric,
     ];
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import useCategories from "../hooks/useCategories.jsx";
 import testRunner from "../utils/testMetrics";
 function StatsTable({ elementsToKeep, data }) {
     // React.useEffect(() => {

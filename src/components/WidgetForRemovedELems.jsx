@@ -1,39 +1,54 @@
 import React from "camunda-modeler-plugin-helpers/react";
+import useCategories from "../hooks/useCategories.jsx";
+import { CategoriesHookContext } from "../contexts/CategoriesContext.jsx";
 
-export default function WidgetForRemovedElements({
-    removedElements,
-    setDisplayedElems,
-    setRemovedElems,
-}) {
+export default function WidgetForRemovedElements() {
+    const [
+        categoriesState,
+        removeTheMetric,
+        removeTheCategory,
+        addCategory,
+        removedElements,
+        addMetric,
+    ] = React.useContext(CategoriesHookContext);
+
     const [open, setOpen] = React.useState(true);
     const [checkedElems, setCheckedElems] = React.useState([]);
+    //it doesnt subscribe to the state yes ofc it doesnt cos it is different states
+    //custom hooks are for reusing logic not data
 
-    function toggleCheckBox(metricToAddRemoveInCheckedList, event) {
+    function toggleCheckBox(elementToAddRemoveInCheckedList, event) {
         const isChecked = event.target.checked;
         if (isChecked) {
             //add it to the checkedElemsList
             setCheckedElems((prev) => [
                 ...prev,
-                metricToAddRemoveInCheckedList,
+                elementToAddRemoveInCheckedList,
             ]);
         } else {
             //remove it from the checkedElemsList
             setCheckedElems((prev) =>
-                prev.filter((curr) => curr !== metricToAddRemoveInCheckedList)
+                prev.filter((curr) => curr !== elementToAddRemoveInCheckedList)
             );
         }
     }
 
     function addBackRemovedCheckedElements() {
-        // setElems
-        setDisplayedElems((prev) => [...prev, ...checkedElems]);
-        setRemovedElems((prev) =>
-            prev.filter((curr) => !checkedElems.includes(curr))
-        );
+        console.log("All these will leave");
+        console.log(checkedElems);
+        checkedElems.map((elem) => {
+            if (elem.type === "metric") {
+                addMetric(elem.categoryPath, elem.element);
+                return;
+            }
+            if (elem.type === "category") {
+                addCategory(elem.categoryPath, elem.element);
+                return;
+            }
+        });
         // uncheck elements
         //? bug with one tick left after clicking OK
         setCheckedElems([]);
-        setOpen(false);
     }
 
     return (
@@ -48,7 +63,7 @@ export default function WidgetForRemovedElements({
                     });
                 }}
             >
-                {open ? "Hide " : "Show "}More Metrics
+                {open ? "Hide " : "Show "}Removed Metrics/Categories
             </button>
             <div
                 className={`addremoved-menu ${
@@ -56,17 +71,17 @@ export default function WidgetForRemovedElements({
                 } `}
             >
                 {/* this might become its own component sometime */}
-                {removedElements.map((metric, index) => {
+                {removedElements.map((element, index) => {
                     return (
                         <div className="addremoved-widget-element-component">
                             <span className="addremoved-widget-element-name">
-                                {metric.name}
+                                {element.element.name}
                             </span>
                             <input
                                 type="checkbox"
                                 className="addremoved-element-checkbox"
                                 id={`addremoved-element-checkbox-${index}`}
-                                onChange={(evt) => toggleCheckBox(metric, evt)}
+                                onChange={(evt) => toggleCheckBox(element, evt)}
                             />
                             <label
                                 for={`addremoved-element-checkbox-${index}`}
