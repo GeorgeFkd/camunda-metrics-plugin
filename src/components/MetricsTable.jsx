@@ -151,7 +151,10 @@ function MetricsContainer({
                 <span className="metrics-wrapper-title-name">
                     {category.name}
                 </span>
-                <button onClick={() => removeCategoryFn(actualPath, category)}>
+                <button
+                    className="metrics-wrapper-title-remove"
+                    onClick={() => removeCategoryFn(actualPath, category)}
+                >
                     X
                 </button>
             </div>

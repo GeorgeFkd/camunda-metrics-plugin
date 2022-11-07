@@ -1,7 +1,7 @@
 $metrics-plugin-open-plugin-button-color: #aaaaaa;
 $metrics-plugin-open-plugin-button-hovered-color: #999999;
-$remove-showed-element-button-color: #dddddd;
-$remove-showed-element-button-hovered-color: #bbbbbb;
+$remove-showed-element-button-color: hsl(225, 10%, 85%);
+$remove-showed-element-button-hovered-color: hsl(225, 10%, 75%);
 $metricsplugin-container-border: lightgrey;
 $metricsplugin-open-retrieve-removed-elements-button-color: #dddddd;
 $metricsplugin-open-retrieve-removed-elements-button-hovered-color: var(
@@ -9,9 +9,9 @@ $metricsplugin-open-retrieve-removed-elements-button-hovered-color: var(
 );
 //var was log-resizer-border-color
 //na ginontai pio skoura h pio light?
-$metricsplugin-retrieve-removed-elements-button-color: hsl(225, 10%, 75%);
+$metricsplugin-retrieve-removed-elements-button-color: hsl(225, 10%, 85%);
 //prettier-ignore
-$metricsplugin-retrieve-removed-elements-button-hovered-color: hsl(225,10%,85%);
+$metricsplugin-retrieve-removed-elements-button-hovered-color: hsl(225,10%,75%);
 $metrics-plugin-font-size: 1.2rem;
 //;
 /* note sass as npm package is slower */
@@ -154,9 +154,16 @@ $metrics-plugin-font-size: 1.2rem;
     width: 100%;
     column-gap: 0.5rem;
     border-bottom: rgb(178, 182, 176) 2px solid;
-    margin: 0 auto;
+
+    // text-align: center;
 }
 
+.metrics-wrapper-title-name {
+    margin: 0 auto;
+}
+.metrics-wrapper-title-remove {
+    margin-right: auto;
+}
 .metrics-wrapper-children {
     display: flex;
     flex-direction: column;
