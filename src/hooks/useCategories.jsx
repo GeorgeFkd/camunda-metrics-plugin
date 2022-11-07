@@ -1,13 +1,51 @@
 import React from "camunda-modeler-plugin-helpers/react";
 import initialcategories from "../assets/categories";
-export default function useCategories() {
+export default function useCategories(calculatedMetrics) {
     const [categories, setCategories] = React.useState(initialcategories);
+
+    React.useEffect(() => {
+        console.log("IN CATEGORIES HOOK");
+        // here i gotta set some state
+        calculateTheMetrics(calculatedMetrics);
+    }, [calculatedMetrics]);
     // console.log("categories hook", categories);
     //this will both have removed metrics and categories
     const [removed, setRemoved] = React.useState([]);
     //removeMetric(["modifiability", "correctness"], { name: "TNSE", result: 2 });
 
-    function calculateTheMetrics() {}
+    function calculateTheMetrics(calculatedMetricsMap) {
+        if (!calculatedMetrics) {
+            throw Error("No metrics for me ubu");
+        }
+        //for each level i loop the current categories
+        //for those that have metrics i replace the objects
+        //for those that don't i go in the categories property and continue the same logic
+        const previousState = categories;
+        function iterateCategories(current) {
+            let objectsWithMetrics = current.filter((elem) =>
+                elem.hasOwnProperty("metrics")
+            );
+            let objectsWithSubcategories = current.filter((elem) =>
+                elem.hasOwnProperty("categories")
+            );
+            console.log(objectsWithMetrics, "we metricing");
+            if (objectsWithMetrics.length === 0)
+                throw Error("Something babababa");
+            for (let currentCateg of objectsWithMetrics) {
+                currentCateg.metrics = currentCateg.metrics.map((metric) => {
+                    metric.result = calculatedMetricsMap.get(metric.name);
+                    return metric;
+                });
+            }
+            if (objectsWithSubcategories.length > 0) {
+                objectsWithSubcategories.map((objWithCategs) => {
+                    iterateCategories(objWithCategs.categories);
+                });
+            }
+        }
+        iterateCategories(previousState);
+        setCategories(previousState);
+    }
     function removeCategory(categoryPath, category) {
         //i could only use the categoryArr and get the last element as the category name
         //we always need a new reference for the state we cant do it in place

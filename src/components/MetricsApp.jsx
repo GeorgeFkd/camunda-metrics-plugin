@@ -4,10 +4,8 @@ import MetricsTable from "./MetricsTable.jsx";
 import WidgetForRemovedElements from "./WidgetForRemovedELems.jsx";
 import { CategoriesHookContext } from "../contexts/CategoriesContext.jsx";
 import useCategories from "../hooks/useCategories.jsx";
-export default function MetricsApp({ data, xmlData }) {
-    //will probably need all of those
-
-    const globalCategoriesHook = useCategories();
+export default function MetricsApp({ data, xmlData, calculatedMetrics }) {
+    const globalCategoriesHook = useCategories(calculatedMetrics);
     const bpmnElementsToKeep = [
         "task",
         "startEvent",
@@ -17,15 +15,15 @@ export default function MetricsApp({ data, xmlData }) {
         "inclusiveGateway",
         "incoming",
         "outgoing",
+        "parallelGateway",
     ];
-    console.info("Inside Metrics App: ", data);
+    // console.info("Inside Metrics App: ", data);
 
-    //!watch out triggering rerenders when xml is saved must recalculate the metrics
     function calculateAllMetrics() {}
 
     React.useEffect(() => {
-        console.log("calculating metrics data");
-    }, []);
+        console.log("CALCULATED THE METRICS GRAB EM", calculatedMetrics);
+    }, [calculatedMetrics]);
     return (
         <div className="app-container">
             {data ? (

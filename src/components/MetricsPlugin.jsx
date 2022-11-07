@@ -3,7 +3,7 @@ import React from "camunda-modeler-plugin-helpers/react";
 import { render } from "react-dom";
 import "../style.scss";
 import { Fill } from "camunda-modeler-plugin-helpers/components";
-import CalculateAllMetrics, {
+import calculateAllMetrics, {
     analyzeXMLString,
     CFC_OF_DIAGRAM,
 } from "../utils/analyzeXMLString";
@@ -51,7 +51,7 @@ export default function MetricsPlugin(props) {
                     ...state,
                     analysisData: analyzeXMLString(action.payload),
                     xmlData: action.payload,
-                    metrics: CalculateAllMetrics(action.payload),
+                    metrics: calculateAllMetrics(action.payload),
                 };
             }
         }
@@ -129,6 +129,7 @@ export default function MetricsPlugin(props) {
                       <MetricsApp
                           data={state.analysisData}
                           xmlFile={state.xmlData}
+                          calculatedMetrics={state.metrics}
                       />,
                       document.getElementById("table-root")
                   )

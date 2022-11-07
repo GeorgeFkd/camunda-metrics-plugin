@@ -22,16 +22,4 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
-//!         xpath.select("count(self::node()/*[local-name()='outgoing'])", gate)
-
-//!     console.log(
-
-//!    )
-
-//! );
-
-//! console.log(gateways);
-
-//! gateways.forEach((gate) =>
-
 //! someday rewrite it without recursion

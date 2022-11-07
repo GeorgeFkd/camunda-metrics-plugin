@@ -4,7 +4,7 @@ import {
     numberOfEvents,
     numberOfStartEvents,
 } from "../utils/metrics";
-import categories, { addMetric } from "../assets/categories";
+import { addMetric } from "../assets/categories";
 import { CategoriesHookContext } from "../contexts/CategoriesContext.jsx";
 
 function MetricsTable({}) {
@@ -38,8 +38,8 @@ function MetricsTable({}) {
         //addCategory(["modifiability"],{ name: "effectiveness", metrics: [] });
         //removeTheCategory([], "extensibility");
 
-        console.log("categories", categoriesState);
-    }, []);
+        console.log("CATEGORY STATE IN METRICS TABLE UPDATED", categoriesState);
+    }, [categoriesState]);
 
     return (
         <div className="metrics-container">
@@ -50,7 +50,7 @@ function MetricsTable({}) {
                         <CategoryTree
                             category={cat}
                             depth={0}
-                            breadth={categories.length}
+                            breadth={categoriesState.length}
                             pathInTree={[]}
                             removeMetricsFn={removeTheMetric}
                             removeCategoryFn={removeTheCategory}
