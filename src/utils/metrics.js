@@ -6,6 +6,7 @@
 
 const debug = false;
 
+//data:Map<string,number>
 export function numberOfActivitiesMetric(data) {
     //activites einai pragmata pou ginontai
     //subclasses einai ta tasks ta processes kai ta subprocesses
@@ -97,20 +98,6 @@ export function numberOfSplits(data) {
 export function numberOfJoins(data) {
     //? also how is this counted
 }
-
-// export default funcs = [
-//     //* isws na xreiastw args(data for the function) gnk
-//     {
-//         name: "NoA",
-//         calculate: numberOfActivitiesMetric,
-//         category: ["modifiability", "correctness"],
-//     },
-//     {
-//         name: "ToG",
-//         calculate: numberOfGatewayTypes,
-//         category: ["modifiability", "efficiency"],
-//     },
-// ];
 
 //link events are considered intermediate throw events with
 //a definition inside

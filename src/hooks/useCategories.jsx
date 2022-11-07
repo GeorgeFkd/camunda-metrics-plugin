@@ -6,6 +6,8 @@ export default function useCategories() {
     //this will both have removed metrics and categories
     const [removed, setRemoved] = React.useState([]);
     //removeMetric(["modifiability", "correctness"], { name: "TNSE", result: 2 });
+
+    function calculateTheMetrics() {}
     function removeCategory(categoryPath, category) {
         //i could only use the categoryArr and get the last element as the category name
         //we always need a new reference for the state we cant do it in place

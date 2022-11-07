@@ -46,7 +46,7 @@ export default function WidgetForRemovedElements() {
                 return;
             }
         });
-        // uncheck elements
+        // uncheck elements(ui wise i dont even need it cos it doesnt even show)
         //? bug with one tick left after clicking OK
         setCheckedElems([]);
     }
@@ -71,6 +71,7 @@ export default function WidgetForRemovedElements() {
                 } `}
             >
                 {/* this might become its own component sometime */}
+                {/* i could slice it in categories and metrics */}
                 {removedElements.map((element, index) => {
                     return (
                         <div className="addremoved-widget-element-component">

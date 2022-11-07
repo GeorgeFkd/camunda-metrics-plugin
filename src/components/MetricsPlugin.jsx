@@ -3,7 +3,10 @@ import React from "camunda-modeler-plugin-helpers/react";
 import { render } from "react-dom";
 import "../style.scss";
 import { Fill } from "camunda-modeler-plugin-helpers/components";
-import { analyzeXMLString, CFC_OF_DIAGRAM } from "../utils/analyzeXMLString";
+import CalculateAllMetrics, {
+    analyzeXMLString,
+    CFC_OF_DIAGRAM,
+} from "../utils/analyzeXMLString";
 
 //needs the .jsx for some reason
 import MetricsApp from "./MetricsApp.jsx";
@@ -22,6 +25,10 @@ export default function MetricsPlugin(props) {
         xmlData: "",
     });
 
+    React.useEffect(() => {
+        console.log("CURRENTLY CALCULATED METRICS", state.metrics);
+    }, [state.metrics]);
+
     function reducer(state, action) {
         //state.open apo to button clicked anoigokleinei to app
         //data fetched einai sta events pou prokaloun allagh sta dedomena
@@ -38,11 +45,13 @@ export default function MetricsPlugin(props) {
                 };
             }
             case DATA_FETCHED: {
-                CFC_OF_DIAGRAM(action.payload);
+                //
+
                 return {
                     ...state,
                     analysisData: analyzeXMLString(action.payload),
                     xmlData: action.payload,
+                    metrics: CalculateAllMetrics(action.payload),
                 };
             }
         }

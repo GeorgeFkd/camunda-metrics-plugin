@@ -17,6 +17,7 @@ import { DOMParser } from "xmldom";
 //! );
 
 const parser = new DOMParser();
+
 export function analyzeXMLString(xmlStr) {
     if (!xmlStr) {
         return new Map();
@@ -86,6 +87,7 @@ export function CFC_OF_DIAGRAM(xmlStr) {
         return total + 1;
     }, 0);
     console.log(CFC_OF_OR);
+    return CFC_OF_OR + CFC_OF_AND + CFC_OF_XOR;
 }
 
 function BpmnTagsCountOccurences(uniqueTagsInDiagram, allTags) {
@@ -105,4 +107,313 @@ function BpmnTagsCountOccurences(uniqueTagsInDiagram, allTags) {
         }
     });
     return result;
+}
+
+export function AGD_OF_Diagram(diagramXml) {
+    //* is common refactor to method
+    const xmlDoc = parser.parseFromString(diagramXml);
+    //get gate types from diagram
+    const xmlElementsCount = analyzeXMLString(diagramXml);
+    const allTypesOfGateways = new Set(
+        Array.from(xmlElementsCount.keys()).filter((bpmnElement) => {
+            return bpmnElement.endsWith("Gateway");
+        })
+    );
+
+    const arrayOfGatewayTypes = Array.from(allTypesOfGateways);
+
+    //this needs a check
+    const sumOfIncomingOutgoingOfGateways = arrayOfGatewayTypes.reduce(
+        (total, current) => {
+            const evaluator = xpath.parse(
+                `//*[local-name()='${current}']/*[local-name()='incoming' or local-name()='outgoing']`
+            );
+
+            const xpathRes = evaluator.select({
+                node: xmlDoc,
+            });
+            return (total += xpathRes.length);
+        },
+        0
+    );
+    const sum =
+        sumOfIncomingOutgoingOfGateways /
+        arrayOfGatewayTypes.reduce((total, current) => {
+            const evaluator = xpath.parse(`//*[local-name()='${current}']`);
+            const xpathRes = evaluator.select({
+                node: xmlDoc,
+            });
+            return xpathRes.length;
+        }, 0);
+
+    return sum;
+}
+
+export function MGD_OF_Diagram(diagramXml) {
+    //it doesnt have the ends-with() method
+    // first->/*[ends-with(local-name(),'Gateway')]
+    // then-> count(self::node()/*[local-name()='outgoing' or local-name()='incoming']) valid af
+    //  //*[local-name()='inclusiveGateway']
+    //  /*[local-name()='outgoing' or local-name()='incoming']
+    const xmlDoc = parser.parseFromString(diagramXml);
+    const xmlElementsCount = analyzeXMLString(diagramXml);
+    //* paizei to new Set() na mhn xreiazetai
+    const allTypesOfGateways = new Set(
+        Array.from(xmlElementsCount.keys()).filter((bpmnElement) => {
+            return bpmnElement.endsWith("Gateway");
+        })
+    );
+
+    const allTypesOfGatewaysArray = Array.from(allTypesOfGateways);
+    console.log(allTypesOfGatewaysArray, "all gates here");
+    const allGatewayNodes = allTypesOfGatewaysArray
+        .map((typeOfGateway) => {
+            const evaluator = xpath.parse(
+                `//*[local-name()='${typeOfGateway}']`
+            );
+            return evaluator.select({
+                node: xmlDoc,
+            });
+        })
+        .flat(1);
+    console.log(allGatewayNodes.length); //we good
+    //now for each gateway count their children and reduce it to the max element
+    const evaluator = xpath.parse(
+        "./*[local-name()='outgoing' or local-name()='incoming']"
+    );
+    const initialValue = evaluator.select({
+        node: allGatewayNodes[0],
+    }).length;
+    console.log(initialValue);
+    const result = allGatewayNodes.reduce(function (prev, current) {
+        const evaluator = xpath.parse(
+            "./*[local-name()='outgoing' or local-name()='incoming']"
+        );
+        const amountOfChildrenOfCurrent = evaluator.select({
+            node: current,
+        }).length;
+        return Math.max(prev, amountOfChildrenOfCurrent);
+    }, initialValue);
+
+    return result;
+}
+
+export function NSFA_OF_Diagram(diagramXml) {
+    const xmlDoc = parser.parseFromString(diagramXml);
+    //if sourceRef and targetRef start with 'Activity______' they pass the check
+    const evaluator = xpath.parse(
+        "//*[local-name()='sequenceFlow'][@sourceRef[starts-with(.,'Activity')] and ./@targetRef[starts-with(.,'Activity')]]"
+    );
+    const xpathRes = evaluator.select({
+        node: xmlDoc,
+    });
+
+    return xpathRes.length;
+}
+
+export function NoA_OF_Diagram(diagramXml) {
+    const data = analyzeXMLString(diagramXml);
+    const allTypesOfTasks = Array.from(data.keys()).filter((bpmnElement) => {
+        return bpmnElement.toLowerCase().includes("task");
+    });
+    console.log(allTypesOfTasks);
+    //ta subprocesses metrane sa task h oxi? gt ena mpainei panw kai ena otan to kaneis expand
+    //epishs ta callActivity einai diaforetika
+    //prepei na ta kanw include
+    const result = allTypesOfTasks.reduce((total, value) => {
+        return (total += data.get(value));
+    }, 0);
+    return result;
+}
+
+export function NoAJS_OF_Diagram(diagramXml) {
+    const NoA = NoA_OF_Diagram(diagramXml);
+    const xmlElementsCount = analyzeXMLString(diagramXml);
+    const typesOfGateways = Array.from(xmlElementsCount.keys()).filter(
+        (bpmnElement) => {
+            return bpmnElement.endsWith("Gateway");
+        }
+    );
+    const sumOfAllGateways = typesOfGateways.reduce((total, current) => {
+        return (total += xmlElementsCount.get(current));
+    }, 0);
+    console.log(NoA, sumOfAllGateways);
+
+    return NoA + sumOfAllGateways;
+}
+export function CLA_OF_Diagram(diagramXml) {
+    const nsfa = NSFA_OF_Diagram(diagramXml);
+    if (nsfa === 0) return -1;
+    return NoA_OF_Diagram(diagramXml) / nsfa;
+}
+export function NSFG_OF_Diagram(diagramXml) {
+    const xmlDoc = parser.parseFromString(diagramXml);
+    //get gate types from diagram
+    const xmlElementsCount = analyzeXMLString(diagramXml);
+    const allTypesOfGateways = new Set(
+        Array.from(xmlElementsCount.keys()).filter((bpmnElement) => {
+            return bpmnElement.endsWith("Gateway");
+        })
+    );
+
+    const arrayOfGatewayTypes = Array.from(allTypesOfGateways);
+
+    const sumOfIncomingOutgoingOfGateways = arrayOfGatewayTypes.reduce(
+        (total, current) => {
+            const evaluator = xpath.parse(
+                `//*[local-name()='${current}']/*[local-name()='incoming' or local-name()='outgoing']`
+            );
+
+            const xpathRes = evaluator.select({
+                node: xmlDoc,
+            });
+            return xpathRes.length;
+        },
+        0
+    );
+    return sumOfIncomingOutgoingOfGateways;
+}
+
+export function GH_OF_Diagram(diagramXml) {
+    //Math.log(x) / Math.log(otherBase)
+    const xmlDoc = parser.parseFromString(diagramXml);
+    const numberOfGatewaysInDiagram = TNG_OF_Diagram(diagramXml);
+    const xmlElementsCount = analyzeXMLString(diagramXml);
+    const allTypesOfGateways = Array.from(xmlElementsCount.keys()).filter(
+        (bpmnElement) => {
+            return bpmnElement.endsWith("Gateway");
+        }
+    );
+    //const allTypesOfGatewaysArray = Array.from(allTypesOfGateways);
+    console.log(allTypesOfGateways);
+    //for each type i divide his frequency to the total number
+    //TODO implement the actual equation
+    const res = allTypesOfGateways.map((gatewayType) => {
+        const evaluator = xpath.parse(`//*[local-name()='${gatewayType}']`);
+        const xpathRes = evaluator.select({ node: xmlDoc });
+        const numberOfGatewaysOfCurrentType = xpathRes.length;
+        const result =
+            numberOfGatewaysOfCurrentType / numberOfGatewaysInDiagram;
+        return { gatewayType, result };
+    });
+    console.log(res);
+    return res;
+}
+export function GH_OF_Gate(diagramXml, gatewayType) {
+    const allGatesGH = GH_OF_Diagram(diagramXml);
+    const specificGateGH = allGatesGH.filter((elem) => {
+        return elem.gatewayType === gatewayType;
+    });
+    if (specificGateGH.length === 0) {
+        return { gatewayType, result: 0 };
+    }
+
+    return specificGateGH[0];
+}
+
+export function TNG_OF_Diagram(diagramXml) {
+    const xmlDoc = parser.parseFromString(diagramXml);
+    const xmlElementsCount = analyzeXMLString(diagramXml);
+    const result = Array.from(xmlElementsCount.keys()).reduce(
+        (total, currentbpmnElement) => {
+            if (currentbpmnElement.endsWith("Gateway")) {
+                total += xmlElementsCount.get(currentbpmnElement);
+            }
+            return total;
+        },
+        0
+    );
+
+    return result;
+}
+
+export function TS_OF_Diagram(diagramXml) {
+    //i have to get all or , and gates and then count their outgoing children-1
+    const xmlDoc = parser.parseFromString(diagramXml);
+    const and_or_gateways = ["inclusiveGateway", "parallelGateway"];
+    const sum = and_or_gateways.reduce((total, current) => {
+        const evaluator = xpath.parse(`//*[local-name()='${current}']`);
+        ///*[local-name()='outgoing']
+        const xpathRes = evaluator.select({
+            node: xmlDoc,
+        });
+        let sumForThisTypeOfGateway = 0;
+        for (let elem of xpathRes) {
+            const currentEval = xpath.select(
+                "count(self::node()/*[local-name()='outgoing'])",
+                elem
+            );
+            sumForThisTypeOfGateway += Number(currentEval) - 1;
+        }
+        return (total += sumForThisTypeOfGateway);
+    }, 0);
+    return sum;
+}
+export function GM_OF_Diagram(xmlStr) {
+    return -1;
+}
+
+export default function calculateAllMetrics(xmlStr) {
+    // const data = analyzeXMLString(xmlStr); for less calculations later
+    let arrayWithAllComputedMetrics = [];
+    arrayWithAllComputedMetrics.push({
+        name: "AGD",
+        result: AGD_OF_Diagram(xmlStr),
+    });
+
+    arrayWithAllComputedMetrics.push({
+        name: "MGD",
+        result: MGD_OF_Diagram(xmlStr),
+    });
+
+    arrayWithAllComputedMetrics.push({
+        name: "NSFA",
+        result: NSFA_OF_Diagram(xmlStr),
+    });
+
+    arrayWithAllComputedMetrics.push({
+        name: "NOA",
+        result: NoA_OF_Diagram(xmlStr),
+    });
+
+    arrayWithAllComputedMetrics.push({
+        name: "NOAJS",
+        result: NoAJS_OF_Diagram(xmlStr),
+    });
+
+    arrayWithAllComputedMetrics.push({
+        name: "NSFG",
+        result: NSFG_OF_Diagram(xmlStr),
+    });
+    arrayWithAllComputedMetrics.push({
+        name: "CLA",
+        result: CLA_OF_Diagram(xmlStr),
+    });
+    arrayWithAllComputedMetrics.push({
+        name: "GH_XOR",
+        result: GH_OF_Gate(xmlStr, "exclusiveGateway"),
+    });
+    arrayWithAllComputedMetrics.push({
+        name: "GH_OR",
+        result: GH_OF_Gate(xmlStr, "inclusiveGateway"),
+    });
+    arrayWithAllComputedMetrics.push({
+        name: "GH_AND",
+        result: GH_OF_Gate(xmlStr, "parallelGateway"),
+    });
+    arrayWithAllComputedMetrics.push({
+        name: "GH",
+        result: GH_OF_Diagram(xmlStr),
+    });
+    arrayWithAllComputedMetrics.push({
+        name: "TS",
+        result: TS_OF_Diagram(xmlStr),
+    });
+    arrayWithAllComputedMetrics.push({
+        name: "GM",
+        result: GM_OF_Diagram(xmlStr),
+    });
+
+    console.log("HERE CMON");
+    return arrayWithAllComputedMetrics;
 }

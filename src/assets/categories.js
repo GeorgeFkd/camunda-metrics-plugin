@@ -7,98 +7,49 @@
 //so cat1 has cat22 and cat33 but cat2 has no subcategories
 const categories = [
     {
-        name: "modifiability",
+        name: "PLASTICITY",
         categories: [
             {
-                name: "correctness",
+                name: "RESEQ",
                 metrics: [
-                    { name: "TNEE", result: 3 },
-                    { name: "TNSE", result: 2 },
+                    { name: "CLA", result: 3 },
+                    { name: "CFC", result: 2 },
+                    { name: "NOA", result: 2 },
+                    { name: "NSFA", result: 2 },
                 ],
             },
             {
-                name: "efficiency",
+                name: "PAR",
                 metrics: [
-                    { name: "Mpa", result: 23 },
-                    { name: "Mphs1", result: 12 },
-                    { name: "Mphs2", result: 12 },
-                    { name: "Mphs3", result: 12 },
-                    { name: "Mphs4", result: 12 },
-                    { name: "Mphs5", result: 12 },
-                    { name: "Mphs6", result: 12 },
+                    { name: "NOAJS", result: 23 },
+                    { name: "TS", result: 12 },
+                    { name: "CFC", result: 12 },
+                    { name: "NSFA", result: 12 },
+                    { name: "NSFG", result: 12 },
+                    { name: "CLA", result: 12 },
+                    { name: "TNG", result: 12 },
                 ],
             },
         ],
     },
     {
-        name: "extensibility",
+        name: "MODIFIABILITY",
         metrics: [
-            { name: "TNEE", result: 3 },
-            { name: "TNSE", result: 2 },
-            { name: "NoA", result: 12 },
-            { name: "NoA", result: 12 },
-            { name: "NoA", result: 12 },
+            { name: "AGD", result: 3 },
+            { name: "MGD", result: 2 },
+            { name: "GM", result: 12 },
+            { name: "GH", result: 12 },
+        ],
+    },
+    {
+        name: "CORRECTNESS",
+        metrics: [
+            { name: "AGD", result: 3 },
+            { name: "MGD", result: 2 },
+            { name: "GM", result: 12 },
+            { name: "GH", result: 12 },
         ],
     },
 ];
-
-export function removeTheMetric(categArr, metric) {
-    const levels = categArr.length;
-    let currentLevel = 0;
-    const loop = (categoriesArr, categName, metric) => {
-        //console.log(categoriesArr, categName, "Array and category name");
-        //console.log(currentLevel, levels, "depth");
-        const nextCategory = categoriesArr.filter(
-            (categ) => categ.name === categName
-        );
-        if (nextCategory.length == 0) {
-            throw Error(
-                "possibly nested category was not found check argument positions"
-            );
-        }
-        // console.log(nextCategory);
-        if (currentLevel === levels - 1) {
-            //i reached the last element
-            console.log(nextCategory[0].metrics);
-            nextCategory[0].metrics = nextCategory[0].metrics.filter(
-                (m) => m.name !== metric.name
-            );
-            return;
-        } else {
-            currentLevel += 1;
-            loop(nextCategory[0].categories, categArr[currentLevel], metric);
-        }
-    };
-    loop(categories, categArr[0], metric);
-    console.log(categories, "NEW papi NEW ME ");
-}
-
-export function addMetric(categArr, metric) {
-    const levels = categArr.length;
-    let currentLevel = 0;
-    const loop = (categoriesArr, categName, metric) => {
-        console.log(categoriesArr, categName, "Array and category name");
-        console.log(currentLevel, levels, "depth");
-        const nextCategory = categoriesArr.filter(
-            (categ) => categ.name === categName
-        );
-        if (nextCategory.length == 0) {
-            throw Error(
-                "possibly nested category was not found check argument positions"
-            );
-        }
-        console.log(nextCategory);
-        if (currentLevel === levels - 1) {
-            //i reached the last element
-            nextCategory[0].metrics.push(metric);
-            return;
-        } else {
-            currentLevel += 1;
-            loop(nextCategory[0].categories, categArr[currentLevel], metric);
-        }
-    };
-    loop(categories, categArr[0], metric);
-    //console.log(categories, "NEW FUNCTION NEW ME ");
-}
 
 export default categories;
