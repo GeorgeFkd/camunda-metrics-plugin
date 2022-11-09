@@ -7,7 +7,7 @@ import calculateAllMetrics, {
     analyzeXMLString,
     CFC_OF_DIAGRAM,
 } from "../utils/analyzeXMLString";
-
+import CalculateAllMetricsOptimized from "../utils/CalculateAllMetricsCombined";
 //needs the .jsx for some reason
 import MetricsApp from "./MetricsApp.jsx";
 
@@ -45,13 +45,23 @@ export default function MetricsPlugin(props) {
                 };
             }
             case DATA_FETCHED: {
-                //
+                //8-10 times faster with the new way
+                //probably the repeated parsing is the problem,
+                //the separate methods will not be deleted
+                // console.time("XML analysis unoptimized");
+                // const calculatedMetrics = calculateAllMetrics(action.payload);
+                // console.timeEnd("XML analysis unoptimized");
 
+                console.time("XML analysis optimized");
+                const calculatedMetricsCombined = CalculateAllMetricsOptimized(
+                    action.payload
+                );
+                console.timeEnd("XML analysis optimized");
                 return {
                     ...state,
                     analysisData: analyzeXMLString(action.payload),
                     xmlData: action.payload,
-                    metrics: calculateAllMetrics(action.payload),
+                    metrics: calculatedMetricsCombined,
                 };
             }
         }

@@ -17,6 +17,11 @@ export default function WidgetForRemovedElements() {
     //it doesnt subscribe to the state yes ofc it doesnt cos it is different states
     //custom hooks are for reusing logic not data
 
+    React.useEffect(() => {
+        console.log(checkedElems, "THESE ARE CHECKED");
+    }, [checkedElems]);
+
+    console.log(removedElements);
     function toggleCheckBox(elementToAddRemoveInCheckedList, event) {
         const isChecked = event.target.checked;
         if (isChecked) {
@@ -28,24 +33,48 @@ export default function WidgetForRemovedElements() {
         } else {
             //remove it from the checkedElemsList
             setCheckedElems((prev) =>
-                prev.filter((curr) => curr !== elementToAddRemoveInCheckedList)
+                prev.filter(
+                    (curr) =>
+                        curr.element.name !==
+                        elementToAddRemoveInCheckedList.element.name
+                )
             );
         }
     }
 
     function addBackRemovedCheckedElements() {
-        console.log("All these will leave");
-        console.log(checkedElems);
-        checkedElems.map((elem) => {
-            if (elem.type === "metric") {
-                addMetric(elem.categoryPath, elem.element);
-                return;
-            }
-            if (elem.type === "category") {
-                addCategory(elem.categoryPath, elem.element);
-                return;
-            }
-        });
+        //! i have to first add the categories by shortest path
+        //! and then the metrics so i dont have errors
+        console.log("before", checkedElems);
+        checkedElems
+            .sort((a, b) => {
+                if (a.type === b.type) {
+                    console.log("same type");
+                    return a.categoryPath.length - b.categoryPath.length;
+                }
+                if (a.type === "category") {
+                    console.log("a category b metric");
+                    return 1;
+                }
+                console.log("a metric b metric");
+                return -1;
+                // if(a.type ==="category"){
+                //     if(b.type==="category"){
+                //         return a.categoryPath.length - b.categoryPath.length;
+                //     }
+                // }
+            })
+            .map((elem) => {
+                console.log(elem);
+                if (elem.type === "metric") {
+                    addMetric(elem.categoryPath, elem.element);
+                    return;
+                }
+                if (elem.type === "category") {
+                    addCategory(elem.categoryPath, elem.element);
+                    return;
+                }
+            });
         // uncheck elements(ui wise i dont even need it cos it doesnt even show)
         //? bug with one tick left after clicking OK
         setCheckedElems([]);
@@ -70,27 +99,37 @@ export default function WidgetForRemovedElements() {
                     !open ? "toggle-hide-show" : ""
                 } `}
             >
-                {/* this might become its own component sometime */}
-                {/* i could slice it in categories and metrics */}
-                {removedElements.map((element, index) => {
-                    return (
-                        <div className="addremoved-widget-element-component">
-                            <span className="addremoved-widget-element-name">
-                                {element.element.name}
-                            </span>
-                            <input
-                                type="checkbox"
-                                className="addremoved-element-checkbox"
-                                id={`addremoved-element-checkbox-${index}`}
-                                onChange={(evt) => toggleCheckBox(element, evt)}
+                <h4 className="addremoved-widget-subtitle">Categories:</h4>
+                {removedElements
+                    .filter((elem) => elem.type === "category")
+                    .map((element, index) => {
+                        return (
+                            <RemovedElement
+                                element={element}
+                                toggle={toggleCheckBox}
+                                index={index}
                             />
-                            <label
-                                for={`addremoved-element-checkbox-${index}`}
-                                class="addremoved-element-checkbox-label"
+                        );
+                    })}
+                <div
+                    style={{
+                        height: "2px",
+                        backgroundColor: "black",
+                        width: "100%",
+                    }}
+                ></div>
+                <h4 className="addremoved-widget-subtitle">Metrics:</h4>
+                {removedElements
+                    .filter((elem) => elem.type === "metric")
+                    .map((element, index) => {
+                        return (
+                            <RemovedElement
+                                element={element}
+                                toggle={toggleCheckBox}
+                                index={index}
                             />
-                        </div>
-                    );
-                })}
+                        );
+                    })}
                 <button
                     className="addremoved-okbutton"
                     onClick={() => addBackRemovedCheckedElements()}
@@ -98,6 +137,26 @@ export default function WidgetForRemovedElements() {
                     OK
                 </button>
             </div>
+        </div>
+    );
+}
+
+function RemovedElement({ element, toggle, index }) {
+    return (
+        <div className="addremoved-widget-element-component">
+            <span className="addremoved-widget-element-name">
+                {element.element.name}
+            </span>
+            <input
+                type="checkbox"
+                className="addremoved-element-checkbox"
+                id={`addremoved-element-checkbox-${index}`}
+                onChange={(evt) => toggle(element, evt)}
+            />
+            <label
+                for={`addremoved-element-checkbox-${index}`}
+                class="addremoved-element-checkbox-label"
+            />
         </div>
     );
 }

@@ -148,7 +148,7 @@ $metrics-plugin-font-size: 1.2rem;
 .metrics-wrapper {
     display: flex;
     flex-direction: column;
-    border-right: rgb(178, 182, 176) 2px solid;
+    border-right: black 1px solid;
     //overflow: auto;
     font-size: 1.25rem;
 }
@@ -156,7 +156,7 @@ $metrics-plugin-font-size: 1.2rem;
     display: flex;
     width: 100%;
     column-gap: 0.5rem;
-    border-bottom: rgb(178, 182, 176) 2px solid;
+    border-bottom: black 2px solid;
 
     // text-align: center;
 }
@@ -192,6 +192,9 @@ $metrics-plugin-font-size: 1.2rem;
 .tools-container {
     flex: 0.75;
     padding-left: 1rem;
+    .addremoved-widget-subtitle {
+        font-size: $metrics-plugin-font-size;
+    }
     .addremoved-widget-button {
         padding: 8px;
         position: relative;

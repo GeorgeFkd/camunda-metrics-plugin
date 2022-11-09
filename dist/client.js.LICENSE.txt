@@ -13,7 +13,7 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
-/** @license React v16.8.6
+/** @license React v16.8.0
  * react-dom.production.min.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -22,4 +22,20 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
+//! CFC
+
+//! GM
+
+//! GM we add his outgoing
+
+//! and then the metrics so i dont have errors
+
+//! i have to first add the categories by shortest path
+
 //! someday rewrite it without recursion
+
+//!so we subtract his incoming for GM
+
+//!this node is a merge node
+
+//!this node is a split node

@@ -64,10 +64,8 @@ function MetricsTable({}) {
 // here there will be a warning
 function MetricLabel({ metric, removeMetric, evaluateIn }) {
     console.log("evaluate in", evaluateIn);
-    let evaluation = "NO";
-    if (evaluateIn !== "correctness" && evaluateIn !== "modifiability") {
-        evaluation = evaluateMetric(metric.name, evaluateIn, metric.result);
-    }
+    let evaluation = evaluateMetric(metric.name, evaluateIn, metric.result);
+
     return (
         <div className="metric-element">
             <span className="metric-element-name">{metric.name}:</span>
@@ -196,7 +194,8 @@ function CategoriesContainer({
     return (
         <div
             className="categories-wrapper"
-            style={{ width: `calc(100%/${breadth}` }}
+            //this means it has subcategories and could use some more width
+            style={{ width: `calc(100%/${breadth} + 75px)` }}
         >
             <div className="categories-wrapper-title">
                 <span className="categories-wrapper-title-name">

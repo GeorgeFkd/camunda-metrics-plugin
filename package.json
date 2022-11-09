@@ -6,7 +6,8 @@
   "scripts": {
     "all": "run-s build",
     "build": "webpack --config webpack.config.js",
-    "dev": "webpack -w"
+    "dev": "webpack -w",
+    "stats": "webpack --json build-stats.json"
   },
   "repository": {
     "type": "git",
@@ -20,11 +21,10 @@
   },
   "homepage": "https://github.com/GeorgeFkd/camunda-metrics-plugin#readme",
   "dependencies": {
-    "@babel/eslint-parser": "^7.19.1",
     "camunda-modeler-plugin-helpers": "^5.1.0",
-    "react-dom": "^16.8.6",
     "xmldom": "^0.6.0",
-    "xpath": "^0.0.32"
+    "xpath": "^0.0.32",
+    "react-dom":"^16.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
@@ -48,6 +48,7 @@
     "style-loader": "^3.3.1",
     "tailwindcss": "^3.2.1",
     "webpack": "^5.74.0",
+    "webpack-bundle-analyzer": "^4.7.0",
     "webpack-cli": "^4.10.0",
     "xlsx": "^0.18.5"
   }

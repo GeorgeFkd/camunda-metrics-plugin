@@ -101,7 +101,7 @@ export default function useCategories(calculatedMetrics) {
         }
         console.log("AFTER REMOVING CATEGORY SETTING STATE TO");
         console.log(previousState);
-        setCategories(previousState);
+        setCategories((prev) => previousState);
         setRemoved((prev) => {
             return [
                 ...prev,
@@ -115,7 +115,9 @@ export default function useCategories(calculatedMetrics) {
         //need new object to update state
         if (!categoryPath) throw Error("Path for category was not supplied");
         console.info("Adding category ", category, "in path", categoryPath);
+
         const previousState = Object.create(categories);
+        console.info("State currently is", previousState);
         let current = previousState;
         let currentLvl = 0;
         while (true) {
@@ -147,7 +149,7 @@ export default function useCategories(calculatedMetrics) {
             currentLvl++;
         }
 
-        setCategories(previousState);
+        setCategories((prev) => previousState);
     }
     //! someday rewrite it without recursion
     function removeTheMetric(categArr, metric) {
@@ -189,7 +191,7 @@ export default function useCategories(calculatedMetrics) {
         loop(previousState, categArr[0], metric);
         // console.log("STATE AFTER: ", previousState);
 
-        setCategories(previousState);
+        setCategories((prev) => previousState);
         //console.log("STATE AFTER UPDATE", categories);
     }
 

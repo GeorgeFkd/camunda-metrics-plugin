@@ -1,4 +1,5 @@
-import xpath from "xpath";
+// import xpath from "xpath";
+import { parse, select } from "xpath";
 import { DOMParser } from "xmldom";
 import {
     AGD_OF_Diagram,
@@ -28,7 +29,8 @@ export function analyzeXMLString(xmlStr) {
         return new Map();
     }
     const xmlDoc = parser.parseFromString(xmlStr);
-    let allEls = xpath.select("//*", xmlDoc);
+    // let allEls = xpath.select("//*", xmlDoc);
+    let allEls = select("//*", xmlDoc);
 
     let elNames = allEls.map((el) => el.localName);
 

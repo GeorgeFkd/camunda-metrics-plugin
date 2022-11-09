@@ -1,7 +1,8 @@
 import xpath from "xpath";
+// import { parse, select } from "xpath";
 import { DOMParser } from "xmldom";
 import { analyzeXMLString } from "./analyzeXMLString";
-import { BPMN } from "../assets/constants";
+import { BPMN_ELEMENTS } from "../assets/constants";
 
 const parser = new DOMParser();
 export function CFC_OF_DIAGRAM(xmlStr) {
@@ -25,10 +26,10 @@ export function CFC_OF_DIAGRAM(xmlStr) {
     };
 
     //splits are just
-    const xorSplitNodes = findSplitsOfGate(xmlDoc, BPMN.XOR);
-    const orSplitNodes = findSplitsOfGate(xmlDoc, BPMN.OR);
+    const xorSplitNodes = findSplitsOfGate(xmlDoc, BPMN_ELEMENTS.XOR);
+    const orSplitNodes = findSplitsOfGate(xmlDoc, BPMN_ELEMENTS.OR);
     const complexSplitNodes = findSplitsOfGate(xmlDoc, complexTagName);
-    const andSplitNodes = findSplitsOfGate(xmlDoc, BPMN.AND);
+    const andSplitNodes = findSplitsOfGate(xmlDoc, BPMN_ELEMENTS.AND);
     const eventBasedSplitNodes = findSplitsOfGate(xmlDoc, eventBasedTagName);
     const getBranchesOfGateNode = (node) => {
         return xpath.select(

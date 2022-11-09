@@ -1,8 +1,9 @@
 const path = require("path");
-
+const BundleAnalyzerPlugin =
+    require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CamundaModelerWebpackPlugin = require("camunda-modeler-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
+//env var
 module.exports = {
     target: "node",
     mode: "production",
@@ -12,6 +13,7 @@ module.exports = {
     },
     plugins: [
         // { filename: "style.css" }
+        new BundleAnalyzerPlugin(),
         new MiniCssExtractPlugin(),
         new CamundaModelerWebpackPlugin(),
     ],
