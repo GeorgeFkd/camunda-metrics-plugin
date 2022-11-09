@@ -1,6 +1,7 @@
 import xpath from "xpath";
 import { DOMParser } from "xmldom";
 import { analyzeXMLString } from "./analyzeXMLString";
+import { BPMN } from "../assets/constants";
 
 const parser = new DOMParser();
 export function CFC_OF_DIAGRAM(xmlStr) {
@@ -9,9 +10,9 @@ export function CFC_OF_DIAGRAM(xmlStr) {
     }
 
     const xmlDoc = parser.parseFromString(xmlStr);
-    let xorTagName = "exclusiveGateway";
-    let orTagName = "inclusiveGateway";
-    let andTagName = "parallelGateway";
+    //let xorTagName = "exclusiveGateway";
+    //let orTagName = "inclusiveGateway";
+    //let andTagName = "parallelGateway";
     let eventBasedTagName = "eventBasedGateway";
     let complexTagName = "complexGateway";
 
@@ -24,10 +25,10 @@ export function CFC_OF_DIAGRAM(xmlStr) {
     };
 
     //splits are just
-    const xorSplitNodes = findSplitsOfGate(xmlDoc, xorTagName);
-    const orSplitNodes = findSplitsOfGate(xmlDoc, orTagName);
+    const xorSplitNodes = findSplitsOfGate(xmlDoc, BPMN.XOR);
+    const orSplitNodes = findSplitsOfGate(xmlDoc, BPMN.OR);
     const complexSplitNodes = findSplitsOfGate(xmlDoc, complexTagName);
-    const andSplitNodes = findSplitsOfGate(xmlDoc, andTagName);
+    const andSplitNodes = findSplitsOfGate(xmlDoc, BPMN.AND);
     const eventBasedSplitNodes = findSplitsOfGate(xmlDoc, eventBasedTagName);
     const getBranchesOfGateNode = (node) => {
         return xpath.select(
@@ -221,12 +222,16 @@ export function GH_OF_Diagram(diagramXml) {
         const evaluator = xpath.parse(`//*[local-name()='${gatewayType}']`);
         const xpathRes = evaluator.select({ node: xmlDoc });
         const numberOfGatewaysOfCurrentType = xpathRes.length;
-        const result =
-            numberOfGatewaysOfCurrentType / numberOfGatewaysInDiagram;
+        const p_i = numberOfGatewaysOfCurrentType / numberOfGatewaysInDiagram;
+        const result = -1 * (Math.log(p_i) / Math.log(3)) * p_i;
         return { gatewayType, result };
     });
-    console.log(res);
-    return res;
+    const total = res.reduce((total, current) => {
+        console.log(current.result);
+        return (total += current.result);
+    }, 0);
+    console.log(total, "GHHHH LESGOOO");
+    return total;
 }
 export function GH_OF_Gate(diagramXml, gatewayType) {
     const allGatesGH = GH_OF_Diagram(diagramXml);
@@ -257,7 +262,7 @@ export function TNG_OF_Diagram(diagramXml) {
 export function TS_OF_Diagram(diagramXml) {
     //i have to get all or , and gates and then count their outgoing children-1
     const xmlDoc = parser.parseFromString(diagramXml);
-    const and_or_gateways = ["inclusiveGateway", "parallelGateway"];
+    const and_or_gateways = [BPMN.OR, BPMN.XOR];
     const sum = and_or_gateways.reduce((total, current) => {
         const evaluator = xpath.parse(`//*[local-name()='${current}']`);
         ///*[local-name()='outgoing']

@@ -6,7 +6,7 @@ import {
 } from "../utils/metrics";
 import { addMetric } from "../assets/categories";
 import { CategoriesHookContext } from "../contexts/CategoriesContext.jsx";
-
+import evaluateMetric from "../utils/evaluateMetrics";
 function MetricsTable({}) {
     //TODO auto me tis cathgories pou mou eipane
     //epishs oi metrikes katatassontai kai se kathgories loipon
@@ -62,12 +62,18 @@ function MetricsTable({}) {
     );
 }
 // here there will be a warning
-function MetricLabel({ metric, removeMetric }) {
+function MetricLabel({ metric, removeMetric, evaluateIn }) {
+    console.log("evaluate in", evaluateIn);
+    let evaluation = "NO";
+    if (evaluateIn !== "correctness" && evaluateIn !== "modifiability") {
+        evaluation = evaluateMetric(metric.name, evaluateIn, metric.result);
+    }
     return (
         <div className="metric-element">
             <span className="metric-element-name">{metric.name}:</span>
             <span className="metric-element-result">{metric.result}</span>
             <button onClick={() => removeMetric(metric)}>X</button>
+            <span className="metric-element-evaluation">{evaluation}</span>
         </div>
     );
 }
@@ -168,6 +174,7 @@ function MetricsContainer({
                     <MetricLabel
                         metric={metric}
                         removeMetric={() => removeMetricsFn(pathInTree, metric)}
+                        evaluateIn={pathInTree[pathInTree.length - 1]}
                     />
                 ))}
             </div>

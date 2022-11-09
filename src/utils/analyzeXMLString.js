@@ -5,7 +5,6 @@ import {
     CFC_OF_DIAGRAM,
     CLA_OF_Diagram,
     GH_OF_Diagram,
-    GH_OF_Gate,
     GM_OF_Diagram,
     MGD_OF_Diagram,
     NoAJS_OF_Diagram,
@@ -60,7 +59,6 @@ function BpmnTagsCountOccurences(uniqueTagsInDiagram, allTags) {
 }
 
 export default function calculateAllMetrics(xmlStr) {
-    // const data = analyzeXMLString(xmlStr); for less calculations later
     let computedMetricsMap = new Map();
     computedMetricsMap.set("AGD", AGD_OF_Diagram(xmlStr).toFixed(2));
     computedMetricsMap.set("MGD", MGD_OF_Diagram(xmlStr));
@@ -69,10 +67,7 @@ export default function calculateAllMetrics(xmlStr) {
     computedMetricsMap.set("NOAJS", NoAJS_OF_Diagram(xmlStr));
     computedMetricsMap.set("NSFG", NSFG_OF_Diagram(xmlStr));
     computedMetricsMap.set("CLA", CLA_OF_Diagram(xmlStr).toFixed(2));
-    //computedMetricsMap.set("GH_XOR", GH_OF_Gate(xmlStr, "exclusiveGateway"));
-    //computedMetricsMap.set("GH_OR", GH_OF_Gate(xmlStr, "inclusiveGateway"));
-    //computedMetricsMap.set("GH_AND", AGD_OF_Diagram(xmlStr));
-    //computedMetricsMap.set("GH", GH_OF_Diagram(xmlStr));
+    computedMetricsMap.set("GH", GH_OF_Diagram(xmlStr).toFixed(2));
     computedMetricsMap.set("TS", TS_OF_Diagram(xmlStr));
     computedMetricsMap.set("GM", GM_OF_Diagram(xmlStr));
     computedMetricsMap.set("CFC", CFC_OF_DIAGRAM(xmlStr));

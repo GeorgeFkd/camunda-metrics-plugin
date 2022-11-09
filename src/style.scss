@@ -68,7 +68,7 @@ $metrics-plugin-font-size: 1.2rem;
 
 /* probably to metrics-container tha einai megalytero soon */
 .stats-table-container {
-    flex: 1;
+    flex: 0.75;
     border-right: solid 2px $metricsplugin-container-border;
     overflow: auto;
     .stats-table-title-container {
@@ -139,6 +139,9 @@ $metrics-plugin-font-size: 1.2rem;
         .metric-element > * {
             margin-right: 0.5rem;
         }
+        .metric-element-evaluation {
+            font-size: 0.85rem;
+        }
     }
 }
 
@@ -187,7 +190,7 @@ $metrics-plugin-font-size: 1.2rem;
 }
 
 .tools-container {
-    flex: 1;
+    flex: 0.75;
     padding-left: 1rem;
     .addremoved-widget-button {
         padding: 8px;
