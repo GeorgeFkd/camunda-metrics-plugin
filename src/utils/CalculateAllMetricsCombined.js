@@ -142,6 +142,11 @@ export default function CalculateAllMetricsOptimized(diagramXml) {
     // const evaluatorNSFA = xpath.parse(
     //     "//*[local-name()='sequenceFlow'][@sourceRef[starts-with(.,'Activity')] and ./@targetRef[starts-with(.,'Activity')]]"
     // );
+    const evaluatorAllSFs = parse("//*[local-name()='sequenceFlow']");
+    const xpathResAllSFs = evaluatorAllSFs.select({
+        node: xmlDoc,
+    });
+    const allSFsCount = xpathResAllSFs.length;
     const evaluatorNSFA = parse(
         "//*[local-name()='sequenceFlow'][@sourceRef[starts-with(.,'Activity')] and ./@targetRef[starts-with(.,'Activity')]]"
     );
@@ -169,6 +174,11 @@ export default function CalculateAllMetricsOptimized(diagramXml) {
         mapWithComputedMetrics.set("CLA", CLA.toFixed(2));
     } else {
         mapWithComputedMetrics.set("CLA", -1);
+    }
+    if (allSFsCount) {
+        mapWithComputedMetrics.set("SEQ", (allSFsCount / NSFA).toFixed(2));
+    } else {
+        mapWithComputedMetrics.set("SEQ", -1);
     }
 
     return mapWithComputedMetrics;

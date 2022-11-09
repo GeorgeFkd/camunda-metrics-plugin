@@ -280,6 +280,13 @@ function evaluateGH(GH, categoryName) {
     if (categoryName.toLowerCase() === "correctness")
         return evaluateGH_Correctness(GH);
 }
+
+//* To add evaluation of metric
+//! 1-> create evaluate____ <- your metric fn
+//! 2-> in that function depending on the category return the appropriate evalution()
+//! 2.5-> if the category is new and has different evaluation labels create an object for the constants
+//! 3-> add below its name and the evaluate_______ fn
+
 const mapMetricNameToFunc = new Map();
 mapMetricNameToFunc.set("AGD", evaluateAGD);
 mapMetricNameToFunc.set("MGD", evaluateMGD);

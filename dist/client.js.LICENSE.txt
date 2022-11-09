@@ -22,6 +22,14 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
+//! 1-> create evaluate____ <- your metric fn
+
+//! 2-> in that function depending on the category return the appropriate evalution()
+
+//! 2.5-> if the category is new and has different evaluation labels create an object for the constants
+
+//! 3-> add below its name and the evaluate_______ fn
+
 //! CFC
 
 //! GM
