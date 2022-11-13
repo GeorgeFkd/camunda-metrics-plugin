@@ -40,7 +40,11 @@ object-assign
 
 //! i have to first add the categories by shortest path
 
-//! someday rewrite it without recursion
+//! needed to get the proper metrics immediately
+
+//!has its biggest value at the worst(false) or best valuation(true)
+
+//!second argument is whether the metric
 
 //!so we subtract his incoming for GM
 

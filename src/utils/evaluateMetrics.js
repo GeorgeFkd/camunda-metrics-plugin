@@ -26,7 +26,7 @@ const EvaluationResultPlasticity = {
 // (number)=>string
 //? i could somehow generalise this WITH A CLASS PROBABLY
 function evaluateTS_Correctness(TS) {
-    if (TS <= 7.5) return EvaluationResultInCorrectness.NOT_OK;
+    if (TS > 7.5) return EvaluationResultInCorrectness.NOT_OK;
     return EvaluationResultInCorrectness.OK;
 }
 
@@ -94,6 +94,13 @@ function evaluateCFC_Modifiability(CFC) {
     return EvaluationResultInModifiability.VERY_EASY;
 }
 
+function evaluateTNG_Modifiability(TNG) {
+    if (TNG > 18) return EvaluationResultInModifiability.VERY_DIFFICULT;
+    if (TNG > 16) return EvaluationResultInModifiability.DIFFICULT;
+    if (TNG > 12) return EvaluationResultInModifiability.MODERATELY_MODIFIABLE;
+    return EvaluationResultInModifiability.EASY;
+}
+
 function evaluateGM_Modifiability(GM) {
     if (GM > 42) return EvaluationResultInModifiability.VERY_DIFFICULT;
     if (GM > 24) return EvaluationResultInModifiability.DIFFICULT;
@@ -157,13 +164,6 @@ function evaluateTS_Par(TS) {
     if (TS > 3) return EvaluationResultPlasticity.MODERATELY_EFFICIENT;
     if (TS > 1) return EvaluationResultPlasticity.RATHER_EFFICIENT;
     return EvaluationResultPlasticity.VERY_EFFICIENT;
-}
-
-function evaluateTNG_Modifiability(TNG) {
-    if (TNG > 18) return EvaluationResultInModifiability.VERY_DIFFICULT;
-    if (TNG > 16) return EvaluationResultInModifiability.DIFFICULT;
-    if (TNG > 12) return EvaluationResultInModifiability.MODERATELY_MODIFIABLE;
-    return EvaluationResultInModifiability.EASY;
 }
 
 function evaluateCLA_Reseq(CLA) {
@@ -273,6 +273,8 @@ function evaluateTS(TS, categoryName) {
 function evaluateCFC(CFC, categoryName) {
     if (categoryName.toLowerCase() === "par") return evaluateCFC_Par(CFC);
     if (categoryName.toLowerCase() === "reseq") return evaluateCFC_Reseq(CFC);
+    if (categoryName.toLowerCase() === "modifiability")
+        return evaluateCFC_Modifiability(CFC);
 }
 function evaluateGH(GH, categoryName) {
     if (categoryName.toLowerCase() === "modifiability")

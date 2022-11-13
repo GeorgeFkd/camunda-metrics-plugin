@@ -4,40 +4,21 @@ import {
     numberOfEvents,
     numberOfStartEvents,
 } from "../utils/metrics";
-import { addMetric } from "../assets/categories";
+import { removeCategory, removeMetric } from "../assets/categories";
+import evaluateMetricWithClass from "../utils/evaluateMetricsClass";
 import { CategoriesHookContext } from "../contexts/CategoriesContext.jsx";
 import evaluateMetric from "../utils/evaluateMetrics";
+
 function MetricsTable({}) {
     //TODO auto me tis cathgories pou mou eipane
     //epishs oi metrikes katatassontai kai se kathgories loipon
-    const [
-        categoriesState,
-        removeTheMetric,
-        removeTheCategory,
-        addCategory,
-        removedElements,
-    ] = React.useContext(CategoriesHookContext);
+    const [categoriesState] = React.useContext(CategoriesHookContext);
     //i have to prepare my data
     //? explaining adding and removing Metrics/Categories
     //* to add/remove a metric we need the whole path to the metric
     //* to add/remove a category we need the path to the category above
     //* the category we want to remove(thats why for categories we dont need to add in path)
     React.useEffect(() => {
-        console.log("currently removed ", removedElements);
-    }, [removedElements]);
-    React.useEffect(() => {
-        // addMetric(["modifiability", "correctness"], {
-        //     name: "PAPAPAPPAPAP",
-        //     result: 5,
-        // });
-        // addMetric(["modifiability", "efficiency"], {
-        //     name: "PAPAPAPPAPAP",
-        //     result: 5,
-        // });
-        //what works(add and remove metrics do + addCategory + removeCategory)
-        //addCategory(["modifiability"],{ name: "effectiveness", metrics: [] });
-        //removeTheCategory([], "extensibility");
-
         console.log("CATEGORY STATE IN METRICS TABLE UPDATED", categoriesState);
     }, [categoriesState]);
 
@@ -52,8 +33,6 @@ function MetricsTable({}) {
                             depth={0}
                             breadth={categoriesState.length}
                             pathInTree={[]}
-                            removeMetricsFn={removeTheMetric}
-                            removeCategoryFn={removeTheCategory}
                         />
                     );
                 })}
@@ -62,19 +41,6 @@ function MetricsTable({}) {
     );
 }
 // here there will be a warning
-function MetricLabel({ metric, removeMetric, evaluateIn }) {
-    console.log("evaluate in", evaluateIn);
-    let evaluation = evaluateMetric(metric.name, evaluateIn, metric.result);
-
-    return (
-        <div className="metric-element">
-            <span className="metric-element-name">{metric.name}:</span>
-            <span className="metric-element-result">{metric.result}</span>
-            <button onClick={() => removeMetric(metric)}>X</button>
-            <span className="metric-element-evaluation">{evaluation}</span>
-        </div>
-    );
-}
 
 //?explain the pathInTree thing
 //kathe kathgoria prosthetei ena onoma sto olo path to opoio paramenei
@@ -85,13 +51,7 @@ function MetricLabel({ metric, removeMetric, evaluateIn }) {
 
 //tha mou xreiastei gia otan prospathisw na afairesw kai na prosthesw metrikes
 
-function CategoryTree({
-    category,
-    breadth,
-    pathInTree,
-    removeMetricsFn,
-    removeCategoryFn,
-}) {
+function CategoryTree({ category, breadth, pathInTree }) {
     const keys = Object.keys(category);
 
     let ToRender;
@@ -105,8 +65,6 @@ function CategoryTree({
                 category={category}
                 breadth={breadth}
                 pathInTree={pathForMetric}
-                removeCategoryFn={removeCategoryFn}
-                removeMetricsFn={removeMetricsFn}
             />
         );
     } else if (keys.includes("categories")) {
@@ -123,26 +81,18 @@ function CategoryTree({
                 flexDirection={isColumn}
                 breadth={breadth}
                 pathInTree={pathInTree}
-                removeCategoryFn={removeCategoryFn}
-                removeMetricsFn={removeMetricsFn}
             />
         );
     }
     return ToRender;
 }
-//TODO ola na katalhgoun sto idio shmeio
-function MetricsContainer({
-    category,
-    breadth,
-    pathInTree,
-    removeCategoryFn,
-    removeMetricsFn,
-}) {
-    // doesnt show the overflow properly if in subcategory
-    //i now have the path for every metric and category
-    // console.log(categoryTitle, pathInTree, "le path");
+function MetricsContainer({ category, breadth, pathInTree }) {
     const actualPath = pathInTree.slice(0, -1);
     const depth = pathInTree.length;
+    const [categories, setCategoriesState, , setRemoved] = React.useContext(
+        CategoriesHookContext
+    );
+    console.log("path in tree", pathInTree);
     return (
         <div
             className="metrics-wrapper"
@@ -157,40 +107,83 @@ function MetricsContainer({
                 </span>
                 <button
                     className="metrics-wrapper-title-remove"
-                    onClick={() => removeCategoryFn(actualPath, category)}
+                    onClick={() => {
+                        setRemoved((prev) => {
+                            console.log(prev, "is previous removed");
+                            return [
+                                ...prev,
+                                {
+                                    element: category,
+                                    categoryPath: pathInTree,
+                                    type: "category",
+                                },
+                            ];
+                        });
+                        setCategoriesState((prev) => {
+                            return removeCategory(prev, actualPath, category);
+                        });
+                    }}
                 >
                     X
                 </button>
             </div>
-            {/* this guys height should be set according to depth */}
-            {/* will add depth back in when it is needed to do so(also pathintree.length) */}
-            <div
-                className="metrics-wrapper-children"
-                //kai me calc
-            >
+            <div className="metrics-wrapper-children">
                 {category.metrics.map((metric) => (
-                    <MetricLabel
-                        metric={metric}
-                        removeMetric={() => removeMetricsFn(pathInTree, metric)}
-                        evaluateIn={pathInTree[pathInTree.length - 1]}
-                    />
+                    <MetricLabel metric={metric} pathInTree={pathInTree} />
                 ))}
             </div>
         </div>
     );
 }
 
-//? THELW NA VALW STO KENTRO THN KATHGORIA
-function CategoriesContainer({
-    category,
-    isColumn,
-    breadth,
-    pathInTree,
-    removeCategoryFn,
-    removeMetricsFn,
-}) {
-    const actualPath = pathInTree.slice(0, -1);
+function MetricLabel({ metric, pathInTree }) {
+    //let evaluation = evaluateMetric(metric.name, evaluateIn, metric.result);
+    const evaluateIn = pathInTree[pathInTree.length - 1];
+    console.log("evaluate in", evaluateIn);
+    let evaluation = evaluateMetricWithClass(
+        metric.result,
+        metric.name,
+        evaluateIn
+    );
+    const [, setCategoriesState, , setRemoved] = React.useContext(
+        CategoriesHookContext
+    );
+    return (
+        <div className="metric-element">
+            <span className="metric-element-name">{metric.name}:</span>
+            <span className="metric-element-result">{metric.result}</span>
+            <button
+                onClick={() => {
+                    //let prev = categories.filter((el) => el !== null);
+                    //console.log(prev, pathInTree, metric);
+                    setRemoved((prev) => {
+                        return [
+                            ...prev,
+                            {
+                                element: metric,
+                                categoryPath: pathInTree,
+                                type: "metric",
+                            },
+                        ];
+                    });
+                    setCategoriesState((prev) =>
+                        removeMetric(prev, pathInTree, metric)
+                    );
+                }}
+            >
+                X
+            </button>
+            <span className="metric-element-evaluation">{evaluation}</span>
+        </div>
+    );
+}
 
+//? THELW NA VALW STO KENTRO THN KATHGORIA
+function CategoriesContainer({ category, isColumn, breadth, pathInTree }) {
+    const actualPath = pathInTree.slice(0, -1);
+    const [, setCategoriesState, , setRemoved] = React.useContext(
+        CategoriesHookContext
+    );
     return (
         <div
             className="categories-wrapper"
@@ -201,7 +194,26 @@ function CategoriesContainer({
                 <span className="categories-wrapper-title-name">
                     {category.name}
                 </span>
-                <button onClick={() => removeCategoryFn(actualPath, category)}>
+                <button
+                    onClick={() => {
+                        console.log("The path is", actualPath);
+                        setRemoved((prev) => {
+                            console.log(prev, "is previous removed");
+                            return [
+                                ...prev,
+                                {
+                                    element: category,
+                                    categoryPath: actualPath,
+                                    type: "category",
+                                },
+                            ];
+                        });
+
+                        setCategoriesState((prev) => {
+                            return removeCategory(prev, actualPath, category);
+                        });
+                    }}
+                >
                     X
                 </button>
             </div>
@@ -217,8 +229,6 @@ function CategoriesContainer({
                         category={cat}
                         breadth={category.categories.length}
                         pathInTree={pathInTree}
-                        removeMetricsFn={removeMetricsFn}
-                        removeCategoryFn={removeCategoryFn}
                     />
                 ))}
             </div>

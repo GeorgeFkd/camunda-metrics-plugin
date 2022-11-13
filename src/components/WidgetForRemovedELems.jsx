@@ -1,37 +1,21 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import useCategories from "../hooks/useCategories.jsx";
 import { CategoriesHookContext } from "../contexts/CategoriesContext.jsx";
-
+import { addCategory, addMetric } from "../assets/categories";
 export default function WidgetForRemovedElements() {
-    const [
-        categoriesState,
-        removeTheMetric,
-        removeTheCategory,
-        addCategory,
-        removedElements,
-        addMetric,
-    ] = React.useContext(CategoriesHookContext);
-
+    const [, setCategories, removedElements, setRemoved] = React.useContext(
+        CategoriesHookContext
+    );
     const [open, setOpen] = React.useState(true);
     const [checkedElems, setCheckedElems] = React.useState([]);
-    //it doesnt subscribe to the state yes ofc it doesnt cos it is different states
-    //custom hooks are for reusing logic not data
 
-    React.useEffect(() => {
-        console.log(checkedElems, "THESE ARE CHECKED");
-    }, [checkedElems]);
-
-    console.log(removedElements);
     function toggleCheckBox(elementToAddRemoveInCheckedList, event) {
         const isChecked = event.target.checked;
         if (isChecked) {
-            //add it to the checkedElemsList
             setCheckedElems((prev) => [
                 ...prev,
                 elementToAddRemoveInCheckedList,
             ]);
         } else {
-            //remove it from the checkedElemsList
             setCheckedElems((prev) =>
                 prev.filter(
                     (curr) =>
@@ -42,10 +26,19 @@ export default function WidgetForRemovedElements() {
         }
     }
 
+    function uncheckCheckboxesInWidget() {
+        const metricsAndCategoriesBox =
+            document.getElementsByClassName("addremoved-menu")[0];
+        const checkboxes = metricsAndCategoriesBox.querySelector(
+            "input[type='checkbox']"
+        );
+        Array.from(checkboxes).map((checkbox) => (checkbox.checked = false));
+    }
+
     function addBackRemovedCheckedElements() {
         //! i have to first add the categories by shortest path
         //! and then the metrics so i dont have errors
-        console.log("before", checkedElems);
+        uncheckCheckboxesInWidget();
         checkedElems
             .sort((a, b) => {
                 if (a.type === b.type) {
@@ -54,29 +47,30 @@ export default function WidgetForRemovedElements() {
                 }
                 if (a.type === "category") {
                     console.log("a category b metric");
-                    return 1;
+                    return -1;
                 }
                 console.log("a metric b metric");
-                return -1;
-                // if(a.type ==="category"){
-                //     if(b.type==="category"){
-                //         return a.categoryPath.length - b.categoryPath.length;
-                //     }
-                // }
+                return 1;
             })
             .map((elem) => {
-                console.log(elem);
+                setRemoved((prev) => {
+                    return prev.filter((element) => {
+                        console.log(element.element.name);
+                        return element.element.name !== elem.element.name;
+                    });
+                });
                 if (elem.type === "metric") {
-                    addMetric(elem.categoryPath, elem.element);
-                    return;
+                    setCategories((prev) => {
+                        return addMetric(prev, elem.categoryPath, elem.element);
+                    });
                 }
                 if (elem.type === "category") {
-                    addCategory(elem.categoryPath, elem.element);
-                    return;
+                    const actualPath = elem.categoryPath.slice(0, -1);
+                    setCategories((prev) => {
+                        return addCategory(prev, actualPath, elem.element);
+                    });
                 }
             });
-        // uncheck elements(ui wise i dont even need it cos it doesnt even show)
-        //? bug with one tick left after clicking OK
         setCheckedElems([]);
     }
 
@@ -107,7 +101,7 @@ export default function WidgetForRemovedElements() {
                             <RemovedElement
                                 element={element}
                                 toggle={toggleCheckBox}
-                                index={index}
+                                index={index + 4}
                             />
                         );
                     })}
