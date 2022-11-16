@@ -16,10 +16,7 @@ export default function MetricsApp({ data, xmlData, calculatedMetrics }) {
                     <CategoriesHookContext.Provider
                         value={globalCategoriesHook}
                     >
-                        <StatsTable
-                            data={data}
-                            elementsToKeep={bpmnElementsToKeep}
-                        />
+                        <StatsTable data={data} />
 
                         <MetricsTable />
 
