@@ -1,4 +1,6 @@
 //my constants here
+
+import { CATEGORIES } from "../assets/constants";
 //! the constants could include a color
 //! .NOT_OK.text and .NOT_OK.color red green orange
 //! and the spectrum in between
@@ -212,9 +214,9 @@ function evaluateGM(GM, categoryName) {
 function evaluateAGD(AGD, categoryName) {
     const info = "AGD";
     console.log("Eval " + AGD + " " + info + " in " + categoryName);
-    if (categoryName.toLowerCase() === "correctness")
+    if (categoryName === CATEGORIES.CORRECTNESS)
         return evaluateAGD_Correctness(AGD);
-    if (categoryName.toLowerCase() === "modifiability")
+    if (categoryName === CATEGORIES.MODIFIABILITY)
         return evaluateAGD_Modifiability(AGD);
     return "hehe";
 
@@ -224,9 +226,9 @@ function evaluateAGD(AGD, categoryName) {
 function evaluateMGD(MGD, categoryName) {
     const info = "MGD";
     console.log("Eval " + MGD + " " + info + " in " + categoryName);
-    if (categoryName.toLowerCase() === "correctness")
+    if (categoryName === CATEGORIES.CORRECTNESS)
         return evaluateMGD_Correctness(MGD);
-    if (categoryName.toLowerCase() === "modifiability")
+    if (categoryName === CATEGORIES.MODIFIABILITY)
         return evaluateMGD_Modifiability(MGD);
     return "hehe";
 
@@ -236,50 +238,50 @@ function evaluateMGD(MGD, categoryName) {
 function evaluateTNG(TNG, categoryName) {
     const info = "TNG";
     console.log("Eval " + TNG + " " + info + " in " + categoryName);
-    if (categoryName.toLowerCase() === "par") return evaluateTNG_Par(TNG);
-    if (categoryName.toLowerCase() === "modifiability")
+    if (categoryName === CATEGORIES.PAR) return evaluateTNG_Par(TNG);
+    if (categoryName === CATEGORIES.MODIFIABILITY)
         return evaluateTNG_Modifiability(TNG);
     return "hehe";
 }
 function evaluateNoA(NoA, categoryName) {
-    if (categoryName.toLowerCase() === "reseq") return evaluateNoA_Reseq(NoA);
+    if (categoryName === CATEGORIES.RESEQ) return evaluateNoA_Reseq(NoA);
     return "hehe";
 }
 function evaluateNSFA(NSFA, categoryName) {
-    if (categoryName.toLowerCase() === "par") return evaluateNSFA_Par(NSFA);
-    if (categoryName.toLowerCase() === "reseq") return evaluateNSFA_Reseq(NSFA);
+    if (categoryName === CATEGORIES.PAR) return evaluateNSFA_Par(NSFA);
+    if (categoryName === CATEGORIES.RESEQ) return evaluateNSFA_Reseq(NSFA);
 }
 function evaluateNoAJS(NOAJS, categoryName) {
-    if (categoryName.toLowerCase() === "par") return evaluateNoAJS_Par(NOAJS);
+    if (categoryName === CATEGORIES.PAR) return evaluateNoAJS_Par(NOAJS);
 }
 function evaluateCLA(CLA, categoryName) {
     const info = "CLA";
     console.log("Eval " + CLA + " " + info + " in " + categoryName);
-    if (categoryName.toLowerCase() === "par") return evaluateCLA_Par(CLA);
-    if (categoryName.toLowerCase() === "reseq") return evaluateCLA_Reseq(CLA);
+    if (categoryName === CATEGORIES.PAR) return evaluateCLA_Par(CLA);
+    if (categoryName === CATEGORIES.RESEQ) return evaluateCLA_Reseq(CLA);
 }
 function evaluateNSFG(NSFG, categoryName) {
-    if (categoryName.toLowerCase() === "par") return evaluateNSFG_Par(NSFG);
-    if (categoryName.toLowerCase() === "modifiability")
+    if (categoryName === CATEGORIES.PAR) return evaluateNSFG_Par(NSFG);
+    if (categoryName === CATEGORIES.MODIFIABILITY)
         return evaluateNSFG_Modifiability(NSFG);
 }
 function evaluateTS(TS, categoryName) {
     const info = "TS";
     console.log("Eval " + TS + " " + info + " in " + categoryName);
-    if (categoryName.toLowerCase() === "par") return evaluateTS_Par(TS);
-    if (categoryName.toLowerCase() === "correctness")
+    if (categoryName === CATEGORIES.PAR) return evaluateTS_Par(TS);
+    if (categoryName === CATEGORIES.CORRECTNESS)
         return evaluateTS_Correctness(TS);
 }
 function evaluateCFC(CFC, categoryName) {
-    if (categoryName.toLowerCase() === "par") return evaluateCFC_Par(CFC);
-    if (categoryName.toLowerCase() === "reseq") return evaluateCFC_Reseq(CFC);
-    if (categoryName.toLowerCase() === "modifiability")
+    if (categoryName === CATEGORIES.PAR) return evaluateCFC_Par(CFC);
+    if (categoryName === CATEGORIES.RESEQ) return evaluateCFC_Reseq(CFC);
+    if (categoryName === CATEGORIES.MODIFIABILITY)
         return evaluateCFC_Modifiability(CFC);
 }
 function evaluateGH(GH, categoryName) {
-    if (categoryName.toLowerCase() === "modifiability")
+    if (categoryName === CATEGORIES.MODIFIABILITY)
         return evaluateGH_Modifiability(GH);
-    if (categoryName.toLowerCase() === "correctness")
+    if (categoryName === CATEGORIES.CORRECTNESS)
         return evaluateGH_Correctness(GH);
 }
 

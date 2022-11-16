@@ -30,4 +30,12 @@ export const MODIFIABILITY_EVALUATIONS = [
     "very easy to modify",
 ];
 
+export const CATEGORIES = {
+    PLASTICITY: "PLASTICITY",
+    RESEQ: "RESEQ",
+    PAR: "PAR",
+    MODIFIABILITY: "MODIFIABILITY",
+    CORRECTNESS: "CORRECTNESS",
+};
+
 export const CORRECTNESS_EVALUATIONS = ["has errors", "error free"];

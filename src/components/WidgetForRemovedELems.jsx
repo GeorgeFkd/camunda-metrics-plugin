@@ -105,13 +105,9 @@ export default function WidgetForRemovedElements() {
                             />
                         );
                     })}
-                <div
-                    style={{
-                        height: "2px",
-                        backgroundColor: "black",
-                        width: "100%",
-                    }}
-                ></div>
+                {removedElements.some((el) => el.type === "category") ? (
+                    <Line />
+                ) : null}
                 <h4 className="addremoved-widget-subtitle">Metrics:</h4>
                 {removedElements
                     .filter((elem) => elem.type === "metric")
@@ -124,6 +120,9 @@ export default function WidgetForRemovedElements() {
                             />
                         );
                     })}
+                {removedElements.some((el) => el.type === "metric") ? (
+                    <Line />
+                ) : null}
                 <button
                     className="addremoved-okbutton"
                     onClick={() => addBackRemovedCheckedElements()}
@@ -132,6 +131,20 @@ export default function WidgetForRemovedElements() {
                 </button>
             </div>
         </div>
+    );
+}
+
+function Line() {
+    return (
+        <div
+            style={{
+                marginTop: "1rem",
+                height: "2px",
+                borderBottom: "solid 2px black",
+                width: "100%",
+                marginBottom: "0.5rem",
+            }}
+        ></div>
     );
 }
 

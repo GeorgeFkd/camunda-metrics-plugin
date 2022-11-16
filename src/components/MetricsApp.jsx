@@ -4,26 +4,11 @@ import MetricsTable from "./MetricsTable.jsx";
 import WidgetForRemovedElements from "./WidgetForRemovedELems.jsx";
 import { CategoriesHookContext } from "../contexts/CategoriesContext.jsx";
 import useCategories from "../hooks/useCategories.jsx";
+import { bpmnElementsToKeep } from "../assets/default-config.js";
 export default function MetricsApp({ data, xmlData, calculatedMetrics }) {
     const globalCategoriesHook = useCategories(calculatedMetrics);
-    const bpmnElementsToKeep = [
-        "task",
-        "startEvent",
-        "endEvent",
-        "exclusiveGateway",
-        "complexGateway",
-        "inclusiveGateway",
-        "incoming",
-        "outgoing",
-        "parallelGateway",
-    ];
     // console.info("Inside Metrics App: ", data);
 
-    function calculateAllMetrics() {}
-
-    React.useEffect(() => {
-        console.log("CALCULATED THE METRICS GRAB EM", calculatedMetrics);
-    }, [calculatedMetrics]);
     return (
         <div className="app-container">
             {data ? (
@@ -44,7 +29,7 @@ export default function MetricsApp({ data, xmlData, calculatedMetrics }) {
                     </CategoriesHookContext.Provider>
                 </React.Fragment>
             ) : (
-                <div>Sry please wait</div>
+                <div>Loading...</div>
             )}
         </div>
     );

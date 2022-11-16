@@ -5,7 +5,6 @@ import "../style.scss";
 import { Fill } from "camunda-modeler-plugin-helpers/components";
 import calculateAllMetrics, {
     analyzeXMLString,
-    CFC_OF_DIAGRAM,
 } from "../utils/analyzeXMLString";
 import CalculateAllMetricsOptimized from "../utils/CalculateAllMetricsCombined";
 //needs the .jsx for some reason
@@ -15,9 +14,6 @@ const CLICKED_BTN_WITH_WINDOW_CLOSED = "NOT_OPEN_WINDOW";
 const CLICKED_BTN_WITH_WINDOW_OPEN = "OPEN_WINDOW";
 const DATA_FETCHED = "FETCHED_DATA";
 export default function MetricsPlugin(props) {
-    //prosoxh genika me to triggerAction evgaze
-    //kati periergo for some reason
-    //otan phgaina na to kleisw
     const { config, subscribe } = props;
     const [state, dispatch] = React.useReducer(reducer, {
         open: false,
@@ -79,6 +75,7 @@ export default function MetricsPlugin(props) {
         function fetchData(xml) {
             dispatch({ type: DATA_FETCHED, payload: xml });
         }
+
         subscribe("bpmn.modeler.created", (arg) => {
             console.info("event modeler created", arg);
             if (arg.tab.type === "empty") {
@@ -108,13 +105,11 @@ export default function MetricsPlugin(props) {
 
     function toggleTable(button) {
         const container = document.getElementById("table-root");
-        //auto anoigokleinei to ui
         container.classList.toggle("toggle-hide-show");
         button.classList.toggle("show-metricsPlugin-button-active");
 
         if (!state.open) {
             dispatch({ type: CLICKED_BTN_WITH_WINDOW_CLOSED });
-            // dispatch({type:})
         } else {
             dispatch({ type: CLICKED_BTN_WITH_WINDOW_OPEN });
         }

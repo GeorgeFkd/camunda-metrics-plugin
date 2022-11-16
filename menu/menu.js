@@ -1,11 +1,10 @@
 module.exports = function (electronApp, menuState) {
     return [
         {
-            label: "Greet World",
+            label: "Configure Categories",
             accelerator: "j",
             enabled: () => menuState.bpmn && menuState.platform === "platform",
-            action: () =>
-                console.log("A custom menu action was triggered by fcking me"),
+            action: function () {},
         },
     ];
 };

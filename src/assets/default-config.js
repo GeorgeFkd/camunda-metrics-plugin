@@ -1,8 +1,11 @@
-export const defaultBpmnElementsTracked = [
-    "subProcess",
+export const bpmnElementsToKeep = [
+    "task",
     "startEvent",
-    "intermediateThrowEvent",
-    "callActivity",
+    "endEvent",
+    "exclusiveGateway",
+    "complexGateway",
+    "inclusiveGateway",
+    "incoming",
+    "outgoing",
+    "parallelGateway",
 ];
-
-// export const defaultBpmnElementsRemoved

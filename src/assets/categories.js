@@ -1,9 +1,11 @@
+import { CATEGORIES } from "./constants";
+
 const categories = [
     {
-        name: "PLASTICITY",
+        name: CATEGORIES.PLASTICITY,
         categories: [
             {
-                name: "RESEQ",
+                name: CATEGORIES.RESEQ,
                 metrics: [
                     { name: "CLA", result: 3 },
                     { name: "CFC", result: 2 },
@@ -12,7 +14,7 @@ const categories = [
                 ],
             },
             {
-                name: "PAR",
+                name: CATEGORIES.PAR,
                 metrics: [
                     { name: "NOAJS", result: 23 },
                     { name: "TS", result: 12 },
@@ -26,7 +28,7 @@ const categories = [
         ],
     },
     {
-        name: "MODIFIABILITY",
+        name: CATEGORIES.MODIFIABILITY,
         metrics: [
             { name: "AGD", result: 3 },
             { name: "MGD", result: 2 },
@@ -35,7 +37,7 @@ const categories = [
         ],
     },
     {
-        name: "CORRECTNESS",
+        name: CATEGORIES.CORRECTNESS,
         metrics: [
             { name: "AGD", result: 3 },
             { name: "MGD", result: 2 },
@@ -107,10 +109,9 @@ export function removeMetric(categoriesObject, categArr, metric) {
 }
 
 export function addCategory(categoriesObject, categoryPath, category) {
-    //need new object to update state
     if (!categoryPath) throw Error("Path for category was not supplied");
     console.info("Adding category ", category, "in path", categoryPath);
-
+    //need new object to update state
     const previousState = Array.from(categoriesObject);
     console.info("State currently is", previousState);
     let current = previousState;
@@ -120,10 +121,8 @@ export function addCategory(categoriesObject, categoryPath, category) {
 
         if (currentLvl === categoryPath.length) {
             //means we reached our destination
-            //console.log(current);
-            //remove category from categories
+            //add category to categories
             current.push(category);
-
             console.log(current, "we made it");
             break;
         }
@@ -139,12 +138,9 @@ export function addCategory(categoriesObject, categoryPath, category) {
         currentLvl++;
     }
 
-    //setCategories((prev) => previousState);
     return previousState;
 }
 export function removeCategory(categoriesObject, categoryPath, category) {
-    //i could only use the categoryArr and get the last element as the category name
-    //we always need a new reference for the state we cant do it in place
     console.info(
         "Removing category: ",
         category.name,
@@ -193,6 +189,68 @@ export function removeCategory(categoriesObject, categoryPath, category) {
     return previousState;
 }
 
-function initialiseCategories() {}
+function initialiseCategories() {
+    let categoriesArrayToConstruct = [];
+    categoriesArrayToConstruct = addCategory(categoriesArrayToConstruct, [], {
+        name: "PLASTICITY",
+        categories: [],
+    });
+    categoriesArrayToConstruct = addCategory(
+        categoriesArrayToConstruct,
+        ["PLASTICITY"],
+        {
+            name: "RESEQ",
+            metrics: [],
+        }
+    );
+    categoriesArrayToConstruct = addMetric(
+        categoriesArrayToConstruct,
+        ["PLASTICITY", "RESEQ"],
+        {
+            name: "CLA",
+            result: -0,
+        }
+    );
+    categoriesArrayToConstruct = addMetric(
+        categoriesArrayToConstruct,
+        ["PLASTICITY", "RESEQ"],
+        {
+            name: "CFC",
+            result: -0,
+        }
+    );
+    categoriesArrayToConstruct = addMetric(
+        categoriesArrayToConstruct,
+        ["PLASTICITY", "RESEQ"],
+        {
+            name: "NOA",
+            result: -0,
+        }
+    );
+    categoriesArrayToConstruct = addMetric(
+        categoriesArrayToConstruct,
+        ["PLASTICITY", "RESEQ"],
+        {
+            name: "NSFA",
+            result: -0,
+        }
+    );
+    categoriesArrayToConstruct = addCategory(
+        categoriesArrayToConstruct,
+        ["PLASTICITY"],
+        { name: "PAR", metrics: [] }
+    );
+    categoriesArrayToConstruct = addCategory(categoriesArrayToConstruct, [], {
+        name: "MODIFIABILITY",
+        metrics: [],
+    });
+    categoriesArrayToConstruct = addCategory(categoriesArrayToConstruct, [], {
+        name: "CORRECTNESS",
+        metrics: [],
+    });
+    return categoriesArrayToConstruct;
+}
+
+console.log(initialiseCategories(), "ouuuuuus");
 
 export default categories;

@@ -1,9 +1,4 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import {
-    numberOfEndEvents,
-    numberOfEvents,
-    numberOfStartEvents,
-} from "../utils/metrics";
 import { removeCategory, removeMetric } from "../assets/categories";
 import evaluateMetricWithClass from "../utils/evaluateMetricsClass";
 import { CategoriesHookContext } from "../contexts/CategoriesContext.jsx";
@@ -89,7 +84,7 @@ function CategoryTree({ category, breadth, pathInTree }) {
 function MetricsContainer({ category, breadth, pathInTree }) {
     const actualPath = pathInTree.slice(0, -1);
     const depth = pathInTree.length;
-    const [categories, setCategoriesState, , setRemoved] = React.useContext(
+    const [, setCategoriesState, , setRemoved] = React.useContext(
         CategoriesHookContext
     );
     console.log("path in tree", pathInTree);
@@ -97,7 +92,7 @@ function MetricsContainer({ category, breadth, pathInTree }) {
         <div
             className="metrics-wrapper"
             style={{
-                height: `${175 - depth * 16}px`,
+                height: `${200 - depth * 16}px`,
                 width: `calc(100%/${breadth})`,
             }}
         >
@@ -137,9 +132,9 @@ function MetricsContainer({ category, breadth, pathInTree }) {
 }
 
 function MetricLabel({ metric, pathInTree }) {
-    //let evaluation = evaluateMetric(metric.name, evaluateIn, metric.result);
     const evaluateIn = pathInTree[pathInTree.length - 1];
     console.log("evaluate in", evaluateIn);
+    //let evaluation = evaluateMetric(metric.name, evaluateIn, metric.result);
     let evaluation = evaluateMetricWithClass(
         metric.result,
         metric.name,

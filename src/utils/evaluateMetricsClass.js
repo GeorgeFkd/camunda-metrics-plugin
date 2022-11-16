@@ -33,6 +33,25 @@ class CategoryEvaluator {
         }
         this.constraints.push({ ...constraint, metricName });
     }
+    addConstraintsForMetricWithArray(
+        metricName,
+        boundaryValuesArray,
+        evaluationOfBoundaryValuesArray
+    ) {
+        if (
+            boundaryValuesArray.length !==
+            evaluationOfBoundaryValuesArray.length
+        )
+            throw Error(
+                "specified upper limits and evaluation levels length don't match"
+            );
+        for (let i = 0; i < boundaryValuesArray.length; i++) {
+            this.addConstraintForMetric(metricName, {
+                upperLimit: boundaryValuesArray[i],
+                evaluateUpperLimitAsLevel: evaluationOfBoundaryValuesArray[i],
+            });
+        }
+    }
     //? the isReversed = true is for metrics that their evaluations get better as
     //? their result gets higher we might need the value too
     evaluateMetricByName(metricName, result) {
@@ -120,13 +139,27 @@ function initialiseReseqConstraints(reseqEvaluator) {
     reseqEvaluator.addMetricForEvaluation("CFC", true);
     reseqEvaluator.addMetricForEvaluation("NSFA", true);
     //prettier-ignore
-    addConstraintsForMetricsWithArray(reseqEvaluator,"NOA",[1,8,13,18,26],[1,2,3,4,5])
-    //prettier-ignore
-    addConstraintsForMetricsWithArray(reseqEvaluator,"CLA",[4.94,4.23,3.78,3.33,2.62,0],[1,2,3,4,5,6])
-    //prettier-ignore
-    addConstraintsForMetricsWithArray(reseqEvaluator,"CFC",[0,4,7,11,16,Infinity],[1,2,3,4,5,6])
-    //prettier-ignore
-    addConstraintsForMetricsWithArray(reseqEvaluator,"NSFA",[2,3,4,5,6],[1,2,3,4,5])
+    reseqEvaluator.addConstraintsForMetricWithArray(
+        "NOA",
+        [1, 8, 13, 18, 26],
+        [1, 2, 3, 4, 5]
+    );
+    reseqEvaluator.addConstraintsForMetricWithArray(
+        "CLA",
+        [4.94, 4.23, 3.78, 3.33, 2.62, 0],
+        [1, 2, 3, 4, 5, 6]
+    );
+    reseqEvaluator.addConstraintsForMetricWithArray(
+        "CFC",
+        [0, 4, 7, 11, 16, Infinity],
+        [1, 2, 3, 4, 5, 6]
+    );
+    reseqEvaluator.addConstraintsForMetricWithArray(
+        "NSFA",
+        [2, 3, 4, 5, 6],
+        [1, 2, 3, 4, 5]
+    );
+
     return reseqEvaluator;
 }
 
@@ -138,71 +171,73 @@ function initialiseParConstraints(parEvaluator) {
     parEvaluator.addMetricForEvaluation("NSFG", false);
     parEvaluator.addMetricForEvaluation("TNG", false);
     parEvaluator.addMetricForEvaluation("TS", false);
-    //prettier-ignore
-    addConstraintsForMetricsWithArray(parEvaluator,"CLA",[2.58,2.17,1.91,1.65,1.24],[1,2,3,4,5]);
-    //prettier-ignore
-    addConstraintsForMetricsWithArray(parEvaluator,"NOAJS",[74,50,36,21,0],[1,2,3,4,5]);
-    //prettier-ignore
-    addConstraintsForMetricsWithArray(
-        parEvaluator,
+
+    parEvaluator.addConstraintsForMetricWithArray(
+        "CLA",
+        [2.58, 2.17, 1.91, 1.65, 1.24],
+        [1, 2, 3, 4, 5]
+    );
+
+    parEvaluator.addConstraintsForMetricWithArray(
+        "NOAJS",
+        [74, 50, 36, 21, 0],
+        [1, 2, 3, 4, 5]
+    );
+
+    parEvaluator.addConstraintsForMetricWithArray(
         "CFC",
-        [22,15,11,7,0],
+        [22, 15, 11, 7, 0],
         [1, 2, 3, 4, 5]
     );
-    //prettier-ignore
-    addConstraintsForMetricsWithArray(
-        parEvaluator,
+    parEvaluator.addConstraintsForMetricWithArray(
         "NSFA",
-        [2,3,4,5,6],
+        [2, 3, 4, 5, 6],
         [1, 2, 3, 4, 5]
     );
-    //prettier-ignore
-    addConstraintsForMetricsWithArray(
-        parEvaluator,
+
+    parEvaluator.addConstraintsForMetricWithArray(
         "NSFG",
-        [27,17,11,5,0],
+        [27, 17, 11, 5, 0],
         [1, 2, 3, 4, 5]
     );
-    //prettier-ignore
-    addConstraintsForMetricsWithArray(
-        parEvaluator,
+
+    parEvaluator.addConstraintsForMetricWithArray(
         "TNG",
         [17, 11, 7, 3, 0],
         [1, 2, 3, 4, 5]
     );
-    //prettier-ignore
-    addConstraintsForMetricsWithArray(
-        parEvaluator,
+
+    parEvaluator.addConstraintsForMetricWithArray(
         "TS",
-        [10,6,3,1,0],
+        [10, 6, 3, 1, 0],
         [1, 2, 3, 4, 5]
     );
 }
 
 function initialiseModifiabilityConstraints(modifiabilityEvaluator) {
     modifiabilityEvaluator.addMetricForEvaluation("AGD", false);
-    addConstraintsForMetricsWithArray(
+    addConstraintsForMetricWithArray(
         modifiabilityEvaluator,
         "AGD",
         [4.06, 3.88, 3.83, 0],
         [1, 2, 3, 4]
     );
     modifiabilityEvaluator.addMetricForEvaluation("MGD", false);
-    addConstraintsForMetricsWithArray(
+    addConstraintsForMetricWithArray(
         modifiabilityEvaluator,
         "MGD",
         [7, 5, 0],
         [1, 3, 4]
     );
     modifiabilityEvaluator.addMetricForEvaluation("GM", false);
-    addConstraintsForMetricsWithArray(
+    addConstraintsForMetricWithArray(
         modifiabilityEvaluator,
         "GM",
         [42, 24, 12, 1, 0],
         [1, 2, 3, 4, 5]
     );
     modifiabilityEvaluator.addMetricForEvaluation("GH", false);
-    addConstraintsForMetricsWithArray(
+    addConstraintsForMetricWithArray(
         modifiabilityEvaluator,
         "GH",
         [22.8, 13.2, 7.15, 1.09, 0],
@@ -212,21 +247,21 @@ function initialiseModifiabilityConstraints(modifiabilityEvaluator) {
 
 function initialiseCorrectnessConstraints(correctnessEvaluator) {
     correctnessEvaluator.addMetricForEvaluation("AGD", false);
-    addConstraintsForMetricsWithArray(
+    addConstraintsForMetricWithArray(
         correctnessEvaluator,
         "AGD",
         [3.09, 0],
         [1, 2]
     );
     correctnessEvaluator.addMetricForEvaluation("MGD", false);
-    addConstraintsForMetricsWithArray(
+    addConstraintsForMetricWithArray(
         correctnessEvaluator,
         "MGD",
         [3.5, 0],
         [1, 2]
     );
     correctnessEvaluator.addMetricForEvaluation("GM", false);
-    addConstraintsForMetricsWithArray(
+    addConstraintsForMetricWithArray(
         correctnessEvaluator,
         "GM",
         [4.5, 0],
@@ -234,7 +269,7 @@ function initialiseCorrectnessConstraints(correctnessEvaluator) {
     );
 
     correctnessEvaluator.addMetricForEvaluation("GH", false);
-    addConstraintsForMetricsWithArray(
+    addConstraintsForMetricWithArray(
         correctnessEvaluator,
         "GH",
         [0.4, 0],
@@ -242,7 +277,7 @@ function initialiseCorrectnessConstraints(correctnessEvaluator) {
     );
 }
 
-function addConstraintsForMetricsWithArray(
+function addConstraintsForMetricWithArray(
     categoryEvaluator,
     metricName,
     upperLimitsArr,
@@ -278,7 +313,7 @@ export default function evaluateMetric(
         return evaluatorObject.categoryLabel === categoryToEvaluateIn;
     });
     if (categEval.length === 0) {
-        return "ousss";
+        return CATEGORY_EVALUATOR_NOT_FOUND;
     }
     //i gotta see how this will be supplied
     return categEval[0].evaluateMetricByName(metricName, result);
