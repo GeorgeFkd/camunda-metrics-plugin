@@ -41,23 +41,20 @@ export default function MetricsPlugin(props) {
                 };
             }
             case DATA_FETCHED: {
-                //8-10 times faster with the new way
-                //probably the repeated parsing is the problem,
-                //the separate methods will not be deleted
-                // console.time("XML analysis unoptimized");
+                // console.time("XML analysis not combined");
                 // const calculatedMetrics = calculateAllMetrics(action.payload);
-                // console.timeEnd("XML analysis unoptimized");
+                // console.timeEnd("XML analysis not combined");
 
-                //console.time("XML analysis optimized");
-                const calculatedMetricsCombined = calculateAllMetrics(
+                console.time("XML analysis optimized");
+                const calculatedMetrics = CalculateAllMetricsOptimized(
                     action.payload
                 );
-                //console.timeEnd("XML analysis optimized");
+                console.timeEnd("XML analysis optimized");
                 return {
                     ...state,
-                    analysisData: analyzeXMLString(action.payload),
+                    analysisData: calculatedMetrics.get("XML DATA COUNT"),
                     xmlData: action.payload,
-                    metrics: calculatedMetricsCombined,
+                    metrics: calculatedMetrics,
                 };
             }
         }

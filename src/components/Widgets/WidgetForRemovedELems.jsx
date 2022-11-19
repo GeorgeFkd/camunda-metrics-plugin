@@ -1,6 +1,6 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import { CategoriesHookContext } from "../contexts/CategoriesContext.jsx";
-import { addCategory, addMetric } from "../assets/categories";
+import { CategoriesHookContext } from "../../contexts/CategoriesContext.jsx";
+import { addCategory, addMetric } from "../../assets/categories";
 export default function WidgetForRemovedElements() {
     const [, setCategories, removedElements, setRemoved] = React.useContext(
         CategoriesHookContext

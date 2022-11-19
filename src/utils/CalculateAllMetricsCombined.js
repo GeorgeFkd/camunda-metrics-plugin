@@ -1,18 +1,27 @@
 import { parse } from "xpath";
-// import xpath from "xpath"
+import xpath from "xpath";
 import { DOMParser as dom } from "xmldom";
 import { BPMN_ELEMENTS } from "../assets/constants";
+import { analyzeXMLString } from "./analyzeXMLString";
 function removeDuplicates(arr) {
     return arr.filter((item, index) => arr.indexOf(item) === index);
 }
 
-//watch out for GM
+function elementNameIsConsideredActivity(elementName) {
+    //first any exceptions
+    if (typeof elementName !== "string")
+        throw Error("element name supplied is not of type string");
+    let thematches = elementName.match(/.*(T|t)ask$/g);
+    if (thematches === null) return false;
+    return thematches.length > 0;
+}
+
 export default function CalculateAllMetricsOptimized(diagramXml) {
     if (!diagramXml) throw Error("The xml of the diagram was not supplied");
     const domparser = new dom();
     const xmlDoc = domparser.parseFromString(diagramXml);
     let mapWithComputedMetrics = new Map();
-
+    mapWithComputedMetrics.set("XML DATA COUNT", analyzeXMLString(xmlDoc));
     //first i get the gates of the diagram they will be needed in many places
     // const gatewayevaluator = xpath.parse(
     //     "//*[ends-with(local-name(),'Gateway') and local-name()!='Bounds']"
@@ -131,7 +140,7 @@ export default function CalculateAllMetricsOptimized(diagramXml) {
     mapWithComputedMetrics.set("GM", GM);
     mapWithComputedMetrics.set("NSFG", sumForNSFG);
     mapWithComputedMetrics.set("MGD", currentMGD);
-    if (sumForAGD) {
+    if (tng > 0) {
         const AGD = sumForAGD / tng;
         mapWithComputedMetrics.set("AGD", AGD.toFixed(2));
     } else {
@@ -139,22 +148,41 @@ export default function CalculateAllMetricsOptimized(diagramXml) {
     }
     mapWithComputedMetrics.set("TS", TS);
 
-    // const evaluatorNSFA = xpath.parse(
-    //     "//*[local-name()='sequenceFlow'][@sourceRef[starts-with(.,'Activity')] and ./@targetRef[starts-with(.,'Activity')]]"
-    // );
-    const evaluatorAllSFs = parse("//*[local-name()='sequenceFlow']");
-    const xpathResAllSFs = evaluatorAllSFs.select({
-        node: xmlDoc,
-    });
-    const allSFsCount = xpathResAllSFs.length;
-    const evaluatorNSFA = parse(
-        "//*[local-name()='sequenceFlow'][@sourceRef[starts-with(.,'Activity')] and ./@targetRef[starts-with(.,'Activity')]]"
-    );
-    const xpathResNSFA = evaluatorNSFA.select({
-        node: xmlDoc,
-    });
-    const NSFA = xpathResNSFA.length;
+    const allSFs = xpath.select("//*[local-name()='sequenceFlow']", xmlDoc);
+
+    const NSFA = allSFs.reduce((total, current) => {
+        //get its target ref and its sourceRef
+        const [sourceRef, targetRef] = xpath.select(
+            "./@*[matches(local-name(),'(source|target)Ref')]",
+            current
+        );
+        console.log(sourceRef, targetRef);
+        const sourceNodes = xpath.select(
+            `//*[@id='${sourceRef.value}']`,
+            xmlDoc
+        );
+        const targetNodes = xpath.select(
+            `//*[@id='${targetRef.value}']`,
+            xmlDoc
+        );
+        console.log("found here:", sourceNodes, targetNodes);
+        if (sourceNodes.length > 0 && targetNodes.length > 0) {
+            const sourceNode = sourceNodes[0];
+            const targetNode = targetNodes[0];
+            console.log(sourceNode, targetNode);
+            if (
+                elementNameIsConsideredActivity(sourceNode.localName) &&
+                elementNameIsConsideredActivity(targetNode.localName)
+            ) {
+                console.log("we add it ");
+                return (total += 1);
+            }
+        }
+        // console.log(sourceNode, targetNode);
+        return total;
+    }, 0);
     mapWithComputedMetrics.set("NSFA", NSFA);
+
     const evaluatorNOA = parse(
         "//*[contains(local-name(),'task') or contains(local-name(),'Task')]"
     );
@@ -175,8 +203,8 @@ export default function CalculateAllMetricsOptimized(diagramXml) {
     } else {
         mapWithComputedMetrics.set("CLA", -1);
     }
-    if (allSFsCount) {
-        mapWithComputedMetrics.set("SEQ", (allSFsCount / NSFA).toFixed(2));
+    if (allSFs.length > 0) {
+        mapWithComputedMetrics.set("SEQ", (allSFs.length / NSFA).toFixed(2));
     } else {
         mapWithComputedMetrics.set("SEQ", -1);
     }

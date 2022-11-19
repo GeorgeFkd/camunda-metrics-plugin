@@ -1,7 +1,7 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import StatsTable from "./StatsTable.jsx";
-import MetricsTable from "./MetricsTable.jsx";
-import WidgetForRemovedElements from "./WidgetForRemovedELems.jsx";
+import StatsTable from "./StatsTable/StatsTable.jsx";
+import MetricsTable from "./MetricsTable/MetricsTable.jsx";
+import WidgetForRemovedElements from "./Widgets/WidgetForRemovedELems.jsx";
 import { CategoriesHookContext } from "../contexts/CategoriesContext.jsx";
 import useCategories from "../hooks/useCategories.jsx";
 import { bpmnElementsToKeep } from "../assets/default-config.js";

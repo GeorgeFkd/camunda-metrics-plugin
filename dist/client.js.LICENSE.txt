@@ -22,13 +22,11 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
-//! 1-> create evaluate____ <- your metric fn
+//! CFC
 
-//! 2-> in that function depending on the category return the appropriate evalution()
+//! GM
 
-//! 2.5-> if the category is new and has different evaluation labels create an object for the constants
-
-//! 3-> add below its name and the evaluate_______ fn
+//! GM we add his outgoing
 
 //! and then the metrics so i dont have errors
 
@@ -39,3 +37,9 @@ object-assign
 //!has its biggest value at the worst(false) or best valuation(true)
 
 //!second argument is whether the metric
+
+//!so we subtract his incoming for GM
+
+//!this node is a merge node
+
+//!this node is a split node

@@ -24,16 +24,16 @@ import {
 
 const parser = new DOMParser();
 
-export function analyzeXMLString(xmlStr) {
-    if (!xmlStr) {
+export function analyzeXMLString(xmlDoc) {
+    if (!xmlDoc) {
         return new Map();
     }
-    let xmlDoc;
-    try {
-        xmlDoc = parser.parseFromString(xmlStr);
-    } catch (error) {
-        console.error(error);
-    }
+    // let xmlDoc;
+    // try {
+    //     xmlDoc = parser.parseFromString(xmlStr);
+    // } catch (error) {
+    //     console.error(error);
+    // }
 
     let allEls = select("//*", xmlDoc);
 
@@ -66,19 +66,27 @@ function BpmnTagsCountOccurences(uniqueTagsInDiagram, allTags) {
 }
 
 export default function calculateAllMetrics(xmlStr) {
+    //so we dont parse inside every function
+    //!optimisation wise it gets it below 200ms
+    const parsedXmlDocument = parser.parseFromString(xmlStr);
     let computedMetricsMap = new Map();
-    computedMetricsMap.set("AGD", AGD_OF_Diagram(xmlStr).toFixed(2));
-    computedMetricsMap.set("MGD", MGD_OF_Diagram(xmlStr));
-    computedMetricsMap.set("NSFA", NSFA_OF_Diagram(xmlStr));
-    computedMetricsMap.set("NOA", NoA_OF_Diagram(xmlStr));
-    computedMetricsMap.set("NOAJS", NoAJS_OF_Diagram(xmlStr));
-    computedMetricsMap.set("NSFG", NSFG_OF_Diagram(xmlStr));
-    computedMetricsMap.set("CLA", CLA_OF_Diagram(xmlStr).toFixed(2));
-    computedMetricsMap.set("GH", GH_OF_Diagram(xmlStr).toFixed(2));
-    computedMetricsMap.set("TS", TS_OF_Diagram(xmlStr));
-    computedMetricsMap.set("GM", GM_OF_Diagram(xmlStr));
-    computedMetricsMap.set("CFC", CFC_OF_DIAGRAM(xmlStr));
-    computedMetricsMap.set("TNG", TNG_OF_Diagram(xmlStr));
+    //! this stays?
+    computedMetricsMap.set(
+        "XML DATA COUNT",
+        analyzeXMLString(parsedXmlDocument)
+    );
+    computedMetricsMap.set("AGD", AGD_OF_Diagram(parsedXmlDocument).toFixed(2));
+    computedMetricsMap.set("MGD", MGD_OF_Diagram(parsedXmlDocument));
+    computedMetricsMap.set("NSFA", NSFA_OF_Diagram(parsedXmlDocument));
+    computedMetricsMap.set("NOA", NoA_OF_Diagram(parsedXmlDocument));
+    computedMetricsMap.set("NOAJS", NoAJS_OF_Diagram(parsedXmlDocument));
+    computedMetricsMap.set("NSFG", NSFG_OF_Diagram(parsedXmlDocument));
+    computedMetricsMap.set("CLA", CLA_OF_Diagram(parsedXmlDocument).toFixed(2));
+    computedMetricsMap.set("GH", GH_OF_Diagram(parsedXmlDocument).toFixed(2));
+    computedMetricsMap.set("TS", TS_OF_Diagram(parsedXmlDocument));
+    computedMetricsMap.set("GM", GM_OF_Diagram(parsedXmlDocument));
+    computedMetricsMap.set("CFC", CFC_OF_DIAGRAM(parsedXmlDocument));
+    computedMetricsMap.set("TNG", TNG_OF_Diagram(parsedXmlDocument));
     return computedMetricsMap;
 }
 console.log("HERE CMON");
