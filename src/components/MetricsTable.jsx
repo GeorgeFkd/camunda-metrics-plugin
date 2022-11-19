@@ -81,6 +81,15 @@ function CategoryTree({ category, breadth, pathInTree }) {
     }
     return ToRender;
 }
+
+function RemoveElementBtn({ onClickFn }) {
+    return (
+        <button className="metrics-wrapper-title-remove" onClick={onClickFn}>
+            X
+        </button>
+    );
+}
+
 function MetricsContainer({ category, breadth, pathInTree }) {
     const actualPath = pathInTree.slice(0, -1);
     const depth = pathInTree.length;
@@ -88,6 +97,24 @@ function MetricsContainer({ category, breadth, pathInTree }) {
         CategoriesHookContext
     );
     console.log("path in tree", pathInTree);
+
+    function addCategoryToRemovedElements() {
+        setRemoved((prev) => {
+            console.log(prev, "is previous removed");
+            return [
+                ...prev,
+                {
+                    element: category,
+                    categoryPath: pathInTree,
+                    type: "category",
+                },
+            ];
+        });
+        setCategoriesState((prev) => {
+            return removeCategory(prev, actualPath, category);
+        });
+    }
+
     return (
         <div
             className="metrics-wrapper"
@@ -100,27 +127,11 @@ function MetricsContainer({ category, breadth, pathInTree }) {
                 <span className="metrics-wrapper-title-name">
                     {category.name}
                 </span>
-                <button
-                    className="metrics-wrapper-title-remove"
-                    onClick={() => {
-                        setRemoved((prev) => {
-                            console.log(prev, "is previous removed");
-                            return [
-                                ...prev,
-                                {
-                                    element: category,
-                                    categoryPath: pathInTree,
-                                    type: "category",
-                                },
-                            ];
-                        });
-                        setCategoriesState((prev) => {
-                            return removeCategory(prev, actualPath, category);
-                        });
-                    }}
-                >
-                    X
-                </button>
+                <span className="metrics-wrapper-title-remove">
+                    {/* <RemoveElementBtn
+                        onClickFn={addCategoryToRemovedElements}
+                    /> */}
+                </span>
             </div>
             <div className="metrics-wrapper-children">
                 {category.metrics.map((metric) => (
@@ -143,31 +154,28 @@ function MetricLabel({ metric, pathInTree }) {
     const [, setCategoriesState, , setRemoved] = React.useContext(
         CategoriesHookContext
     );
+
+    function addMetricToRemovedElementsFromDisplayedMetrics() {
+        setRemoved((prev) => {
+            return [
+                ...prev,
+                {
+                    element: metric,
+                    categoryPath: pathInTree,
+                    type: "metric",
+                },
+            ];
+        });
+        setCategoriesState((prev) => removeMetric(prev, pathInTree, metric));
+    }
+
     return (
         <div className="metric-element">
             <span className="metric-element-name">{metric.name}:</span>
             <span className="metric-element-result">{metric.result}</span>
-            <button
-                onClick={() => {
-                    //let prev = categories.filter((el) => el !== null);
-                    //console.log(prev, pathInTree, metric);
-                    setRemoved((prev) => {
-                        return [
-                            ...prev,
-                            {
-                                element: metric,
-                                categoryPath: pathInTree,
-                                type: "metric",
-                            },
-                        ];
-                    });
-                    setCategoriesState((prev) =>
-                        removeMetric(prev, pathInTree, metric)
-                    );
-                }}
-            >
-                X
-            </button>
+            {/* <RemoveElementBtn
+                onClickFn={addMetricToRemovedElementsFromDisplayedMetrics}
+            /> */}
             <span className="metric-element-evaluation">{evaluation}</span>
         </div>
     );
@@ -179,38 +187,38 @@ function CategoriesContainer({ category, isColumn, breadth, pathInTree }) {
     const [, setCategoriesState, , setRemoved] = React.useContext(
         CategoriesHookContext
     );
+
+    function addCategoryToRemovedElementsFromDisplayed() {
+        setRemoved((prev) => {
+            console.log(prev, "is previous removed");
+            return [
+                ...prev,
+                {
+                    element: category,
+                    categoryPath: actualPath,
+                    type: "category",
+                },
+            ];
+        });
+
+        setCategoriesState((prev) => {
+            return removeCategory(prev, actualPath, category);
+        });
+    }
+
     return (
         <div
             className="categories-wrapper"
             //this means it has subcategories and could use some more width
-            style={{ width: `calc(100%/${breadth} + 75px)` }}
+            style={{ width: `calc(100%/${breadth} + 100px)` }}
         >
             <div className="categories-wrapper-title">
                 <span className="categories-wrapper-title-name">
                     {category.name}
                 </span>
-                <button
-                    onClick={() => {
-                        console.log("The path is", actualPath);
-                        setRemoved((prev) => {
-                            console.log(prev, "is previous removed");
-                            return [
-                                ...prev,
-                                {
-                                    element: category,
-                                    categoryPath: actualPath,
-                                    type: "category",
-                                },
-                            ];
-                        });
-
-                        setCategoriesState((prev) => {
-                            return removeCategory(prev, actualPath, category);
-                        });
-                    }}
-                >
-                    X
-                </button>
+                {/* <RemoveElementBtn
+                    onClickFn={addCategoryToRemovedElementsFromDisplayed}
+                /> */}
             </div>
 
             <div

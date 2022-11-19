@@ -48,11 +48,11 @@ export default function MetricsPlugin(props) {
                 // const calculatedMetrics = calculateAllMetrics(action.payload);
                 // console.timeEnd("XML analysis unoptimized");
 
-                console.time("XML analysis optimized");
-                const calculatedMetricsCombined = CalculateAllMetricsOptimized(
+                //console.time("XML analysis optimized");
+                const calculatedMetricsCombined = calculateAllMetrics(
                     action.payload
                 );
-                console.timeEnd("XML analysis optimized");
+                //console.timeEnd("XML analysis optimized");
                 return {
                     ...state,
                     analysisData: analyzeXMLString(action.payload),

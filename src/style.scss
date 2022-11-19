@@ -139,18 +139,41 @@ $metrics-plugin-font-size: 1.2rem;
         flex-direction: row;
 
         max-height: 150px;
+        //?Old
+        // .metric-element {
+        //     display: flex;
+        //     align-items: center;
+        //     font-size: 1.35rem;
+        //     padding: 4px;
+        //     flex-wrap: wrap;
+        //     /* background-color: ; */
+        // }
+
+        // .metric-element > * {
+        //     margin-right: 0.5rem;
+        // }
+        // .metric-element-evaluation {
+        //     font-size: 0.85rem;
+        // }
+
+        //?New
         .metric-element {
-            display: flex;
-            align-items: center;
-            font-size: 1.35rem;
-            padding: 4px;
-            /* background-color: ; */
+            border-bottom: solid 1px rgb(212, 212, 212);
+            display: grid;
+            grid-template-columns: 1fr 3fr 32px;
+            grid-template-areas:
+                "metric result ."
+                "evaluation evaluation evaluation";
         }
-        .metric-element > * {
-            margin-right: 0.5rem;
+
+        .metric-element-name {
+            grid-area: metric;
+        }
+        .metric-element-result {
+            grid-area: result;
         }
         .metric-element-evaluation {
-            font-size: 0.85rem;
+            grid-area: evaluation;
         }
     }
 }
@@ -180,6 +203,7 @@ $metrics-plugin-font-size: 1.2rem;
 .metrics-wrapper-children {
     display: flex;
     flex-direction: column;
+    //flex-flow: row wrap;
     overflow-y: auto;
 }
 .categories-wrapper {

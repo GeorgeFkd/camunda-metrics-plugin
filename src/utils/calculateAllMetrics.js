@@ -263,7 +263,7 @@ export function TNG_OF_Diagram(diagramXml) {
 export function TS_OF_Diagram(diagramXml) {
     //i have to get all or , and gates and then count their outgoing children-1
     const xmlDoc = parser.parseFromString(diagramXml);
-    const and_or_gateways = [BPMN.OR, BPMN.XOR];
+    const and_or_gateways = [BPMN_ELEMENTS.OR, BPMN_ELEMENTS.XOR];
     const sum = and_or_gateways.reduce((total, current) => {
         const evaluator = xpath.parse(`//*[local-name()='${current}']`);
         ///*[local-name()='outgoing']

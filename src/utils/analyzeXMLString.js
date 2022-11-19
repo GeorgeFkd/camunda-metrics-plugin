@@ -28,8 +28,13 @@ export function analyzeXMLString(xmlStr) {
     if (!xmlStr) {
         return new Map();
     }
-    const xmlDoc = parser.parseFromString(xmlStr);
-    // let allEls = xpath.select("//*", xmlDoc);
+    let xmlDoc;
+    try {
+        xmlDoc = parser.parseFromString(xmlStr);
+    } catch (error) {
+        console.error(error);
+    }
+
     let allEls = select("//*", xmlDoc);
 
     let elNames = allEls.map((el) => el.localName);
