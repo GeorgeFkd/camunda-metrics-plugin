@@ -7,11 +7,11 @@ export default function MetricLabel({ metric, pathInTree }) {
     const evaluateIn = pathInTree[pathInTree.length - 1];
     console.log("evaluate in", evaluateIn);
     //let evaluation = evaluateMetric(metric.name, evaluateIn, metric.result);
-    let evaluation = evaluateMetricWithClass(
-        metric.result,
-        metric.name,
-        evaluateIn
-    );
+    // let evaluation = evaluateMetricWithClass(
+    //     metric.result,
+    //     metric.name,
+    //     evaluateIn
+    // );
     const [, setCategoriesState, , setRemoved] = React.useContext(
         CategoriesHookContext
     );
@@ -37,7 +37,7 @@ export default function MetricLabel({ metric, pathInTree }) {
             {/* <RemoveElementBtn
                 onClickFn={addMetricToRemovedElementsFromDisplayedMetrics}
             /> */}
-            <span className="metric-element-evaluation">{evaluation}</span>
+            {/* <span className="metric-element-evaluation">{evaluation}</span> */}
         </div>
     );
 }

@@ -1,17 +1,15 @@
 export const bpmnElementsToKeep = [
+    //main
     "task",
-    "startEvent",
-    "endEvent",
-    "exclusiveGateway",
-    "complexGateway",
-    "inclusiveGateway",
-    "sequenceFlow",
-    "parallelGateway",
     "manualTask",
-    //"messageEventDefinition",
+    "sequenceFlow",
+    //gateways
+    "exclusiveGateway",
+    "inclusiveGateway",
+    "parallelGateway",
+    //task types
     "userTask",
     "businessRuleTask",
-    "terminateEventDefinition",
     "serviceTask",
     "scriptTask",
 ];

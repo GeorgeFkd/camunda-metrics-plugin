@@ -34,10 +34,6 @@ object-assign
 
 //! needed to get the proper metrics immediately
 
-//!has its biggest value at the worst(false) or best valuation(true)
-
-//!second argument is whether the metric
-
 //!so we subtract his incoming for GM
 
 //!this node is a merge node

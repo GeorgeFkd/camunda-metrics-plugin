@@ -66,6 +66,11 @@ $metrics-plugin-font-size: 1.2rem;
     justify-content: space-around;
 }
 
+.stats-table-elements-container:nth-child(3n + 0) {
+    background: blue !important;
+    width: 100% !important;
+}
+
 /* probably to metrics-container tha einai megalytero soon */
 .stats-table-container {
     flex: 0.75;
@@ -164,6 +169,8 @@ $metrics-plugin-font-size: 1.2rem;
             grid-template-areas:
                 "metric result ."
                 "evaluation evaluation evaluation";
+            padding-bottom: 0.75rem;
+            padding-left: 0.5rem;
         }
 
         .metric-element-name {
@@ -201,10 +208,12 @@ $metrics-plugin-font-size: 1.2rem;
     margin-right: auto;
 }
 .metrics-wrapper-children {
+    padding-top: 0.75rem;
     display: flex;
     flex-direction: column;
     //flex-flow: row wrap;
     overflow-y: auto;
+    row-gap: 1rem;
 }
 .categories-wrapper {
     display: flex;

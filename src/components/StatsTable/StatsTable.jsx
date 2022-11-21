@@ -22,14 +22,31 @@ function StatsTable({ data }) {
                             "bpmn-icon-" +
                             MAP_BPMN_ELEMENTS_TO_ICON_CLASSES[bpmnEl];
                     }
+                    let ToRender;
+                    if ((idx + 1) % 3 == 0) {
+                        ToRender = (
+                            <React.Fragment>
+                                <StatsTableElement
+                                    key={`stats-table-element-${idx}`}
+                                    classForBpmnIcon={classForBpmnIcon}
+                                    occurencesOfElementInDiagram={data.get(
+                                        bpmnEl
+                                    )}
+                                />
+                                <span style={{ width: "100%" }}></span>
+                            </React.Fragment>
+                        );
+                    } else {
+                        ToRender = (
+                            <StatsTableElement
+                                key={`stats-table-element-${idx}`}
+                                classForBpmnIcon={classForBpmnIcon}
+                                occurencesOfElementInDiagram={data.get(bpmnEl)}
+                            />
+                        );
+                    }
 
-                    return (
-                        <StatsTableElement
-                            key={`stats-table-element-${idx}`}
-                            classForBpmnIcon={classForBpmnIcon}
-                            occurencesOfElementInDiagram={data.get(bpmnEl)}
-                        />
-                    );
+                    return ToRender;
                 })}
             </div>
         </div>
