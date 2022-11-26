@@ -1,8 +1,8 @@
 import React from "react";
-import { bpmnElementsToKeep } from "../../assets/default-config.js";
+import { bpmnElementsToKeep } from "../../assets/default-config";
 import { MAP_BPMN_ELEMENTS_TO_ICON_CLASSES } from "../../assets/constants";
-import StatsTableTitle from "./StatsTableTitle.jsx";
-import StatsTableElement from "./StatsTableElement.jsx";
+import StatsTableTitle from "./StatsTableTitle";
+import StatsTableElement from "./StatsTableElement";
 function StatsTable({ data }) {
     console.log("check the data ", data);
     console.table(data);

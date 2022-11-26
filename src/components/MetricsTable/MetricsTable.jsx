@@ -1,6 +1,6 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import { CategoriesHookContext } from "../../contexts/CategoriesContext.jsx";
-import CategoryTree from "./CategoryTree.jsx";
+import { CategoriesHookContext } from "../../contexts/CategoriesContext";
+import CategoryTree from "./CategoryTree";
 
 function MetricsTable({}) {
     //TODO auto me tis cathgories pou mou eipane

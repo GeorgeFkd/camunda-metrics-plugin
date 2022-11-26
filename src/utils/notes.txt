@@ -4,3 +4,5 @@ but also to map xml elements to actual elements
 
 performance expectations if possible:
 how can i make the app more predictable for you
+
+ti kanoume me gateways poy exoun 1 incoming 1 outgoing?

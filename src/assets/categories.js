@@ -47,6 +47,62 @@ const categories = [
     },
 ];
 
+//!same as all fns before, doesnt work for state setting
+export function addTheCategoryFR(
+    categoriesObjArr,
+    categoryPath,
+    categoryToBeAdded
+) {
+    console.log("we addin category fr now");
+    const copyOfObj = new Array(...categoriesObjArr);
+    let current = new Array(...copyOfObj);
+    if (categoryPath.length === 0) return [...current, categoryToBeAdded];
+    for (let [index, categName] of categoryPath.entries()) {
+        const categoryWithNameOfCurrentInPath = current.find(
+            (categ) => categ.name === categName
+        );
+        if (index === categoryPath.length - 1) {
+            categoryWithNameOfCurrentInPath.categories = [
+                ...categoryWithNameOfCurrentInPath.categories,
+                categoryToBeAdded,
+            ];
+        } else {
+            current = categoryWithNameOfCurrentInPath.categories;
+        }
+    }
+
+    console.log("AFTER LOOP", copyOfObj);
+
+    return new Array(...copyOfObj);
+}
+
+export function addTheCategory(
+    categoriesObjArr,
+    categoryPath,
+    categoryToBeAdded
+) {
+    const copyOfObj = new Array(...categoriesObjArr);
+    let current = new Array(...copyOfObj);
+    if (categoryPath.length === 0) return [...current, categoryToBeAdded];
+    for (let [index, categName] of categoryPath.entries()) {
+        const categoryWithNameOfCurrentInPath = current.find(
+            (categ) => categ.name === categName
+        );
+        if (index === categoryPath.length - 1) {
+            categoryWithNameOfCurrentInPath.categories = [
+                ...categoryWithNameOfCurrentInPath.categories,
+                categoryToBeAdded,
+            ];
+        } else {
+            current = categoryWithNameOfCurrentInPath.categories;
+        }
+    }
+
+    console.log("AFTER LOOP", copyOfObj);
+
+    return new Array(...copyOfObj);
+}
+
 export function addMetric(categoriesObject, categArr, metric) {
     const previousState = Array.from(categoriesObject);
     const levels = categArr.length;
@@ -191,6 +247,21 @@ export function removeCategory(categoriesObject, categoryPath, category) {
 
 function initialiseCategories() {
     let categoriesArrayToConstruct = [];
+    const initialArr = [];
+    const step1 = addTheCategoryFR(initialArr, [], {
+        name: "PLASTICITY",
+        categories: [],
+    });
+
+    console.log("STEP1", step1);
+
+    const step2 = addTheCategoryFR(step1, ["PLASTICITY"], {
+        name: "MPRESEQ",
+        metrics: [],
+    });
+
+    console.log("STEP2", step2);
+
     categoriesArrayToConstruct = addCategory(categoriesArrayToConstruct, [], {
         name: "PLASTICITY",
         categories: [],

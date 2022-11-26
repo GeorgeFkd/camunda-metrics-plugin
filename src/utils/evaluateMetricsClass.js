@@ -60,12 +60,13 @@ class CategoryEvaluator {
             (metric) => metric.name === metricName
         );
         if (theMetrics.length === 0) {
-            throw Error(
-                "Metric " +
-                    metricName +
-                    " was not found in Evaluator " +
-                    this.categoryLabel
-            );
+            // throw Error(
+            //     "Metric " +
+            //         metricName +
+            //         " was not found in Evaluator " +
+            //         this.categoryLabel
+            // );
+            return "Not found in evaluator";
         }
         //?upperlimits must be checked from larger to smallest for this to work
         //?thats why we sort

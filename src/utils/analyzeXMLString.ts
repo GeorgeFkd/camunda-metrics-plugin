@@ -1,5 +1,6 @@
 // import xpath from "xpath";
-import { parse, select } from "xpath";
+
+import { select } from "xpath";
 import { DOMParser } from "xmldom";
 import {
     AGD_OF_Diagram,
@@ -24,7 +25,7 @@ import {
 
 const parser = new DOMParser();
 
-export function analyzeXMLString(xmlDoc) {
+export function analyzeXMLString(xmlDoc: Document) {
     if (!xmlDoc) {
         return new Map();
     }
@@ -36,8 +37,17 @@ export function analyzeXMLString(xmlDoc) {
     // }
 
     let allEls = select("//*", xmlDoc);
-
-    let elNames = allEls.map((el) => el.localName);
+    let allElsToNodes = allEls.map((el) => {
+        return el as Node;
+    });
+    let allElsWithLocalName = allElsToNodes.map((el) => {
+        //yparxei h idiothta sta objects alla den fainetai
+        const localName = el.nodeName.replace(/.+:/, "");
+        return { ...el, localName };
+    });
+    let elNames = allElsWithLocalName.map((el) => {
+        return el.localName;
+    });
 
     let distinctElemsInBpmnDiagram = new Set(elNames);
 
@@ -46,7 +56,10 @@ export function analyzeXMLString(xmlDoc) {
     return result;
 }
 
-function BpmnTagsCountOccurences(uniqueTagsInDiagram, allTags) {
+function BpmnTagsCountOccurences(
+    uniqueTagsInDiagram: Set<string>,
+    allTags: string[]
+): Map<string, number> {
     if (!uniqueTagsInDiagram) {
         return new Map();
     }
@@ -65,17 +78,25 @@ function BpmnTagsCountOccurences(uniqueTagsInDiagram, allTags) {
     return result;
 }
 
-export default function calculateAllMetrics(xmlStr) {
+export default function calculateAllMetrics(
+    xmlStr: string
+): Map<string, number | Map<string, number> | string> {
     //so we dont parse inside every function
     //!optimisation wise it gets it below 200ms
     const parsedXmlDocument = parser.parseFromString(xmlStr);
-    let computedMetricsMap = new Map();
+    let computedMetricsMap = new Map<
+        string,
+        number | Map<string, number> | string
+    >();
     //! this stays?
     computedMetricsMap.set(
         "XML DATA COUNT",
         analyzeXMLString(parsedXmlDocument)
     );
-    computedMetricsMap.set("AGD", AGD_OF_Diagram(parsedXmlDocument).toFixed(2));
+    computedMetricsMap.set(
+        "AGD",
+        (AGD_OF_Diagram(parsedXmlDocument) as number).toFixed(2)
+    );
     computedMetricsMap.set("MGD", MGD_OF_Diagram(parsedXmlDocument));
     computedMetricsMap.set("NSFA", NSFA_OF_Diagram(parsedXmlDocument));
     computedMetricsMap.set("NOA", NoA_OF_Diagram(parsedXmlDocument));

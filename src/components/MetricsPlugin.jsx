@@ -1,5 +1,4 @@
 import React from "camunda-modeler-plugin-helpers/react";
-
 import { render } from "react-dom";
 import "../style.scss";
 import { Fill } from "camunda-modeler-plugin-helpers/components";
@@ -8,7 +7,7 @@ import calculateAllMetrics, {
 } from "../utils/analyzeXMLString";
 import CalculateAllMetricsOptimized from "../utils/CalculateAllMetricsCombined";
 //needs the .jsx for some reason
-import MetricsApp from "./MetricsApp.jsx";
+import MetricsApp from "./MetricsApp";
 
 const CLICKED_BTN_WITH_WINDOW_CLOSED = "NOT_OPEN_WINDOW";
 const CLICKED_BTN_WITH_WINDOW_OPEN = "OPEN_WINDOW";
@@ -41,15 +40,15 @@ export default function MetricsPlugin(props) {
                 };
             }
             case DATA_FETCHED: {
-                // console.time("XML analysis not combined");
-                // const calculatedMetrics = calculateAllMetrics(action.payload);
-                // console.timeEnd("XML analysis not combined");
+                console.time("XML analysis not combined");
+                const calculatedMetrics = calculateAllMetrics(action.payload);
+                console.timeEnd("XML analysis not combined");
 
-                console.time("XML analysis optimized");
-                const calculatedMetrics = CalculateAllMetricsOptimized(
-                    action.payload
-                );
-                console.timeEnd("XML analysis optimized");
+                // console.time("XML analysis optimised");
+                // const calculatedMetrics = CalculateAllMetricsOptimized(
+                //     action.payload
+                // );
+                // console.timeEnd("XML analysis optimised");
                 return {
                     ...state,
                     analysisData: calculatedMetrics.get("XML DATA COUNT"),

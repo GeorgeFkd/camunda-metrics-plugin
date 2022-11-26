@@ -1,7 +1,7 @@
 import React from "camunda-modeler-plugin-helpers/react";
 import { removeCategory } from "../../assets/categories";
-import { CategoriesHookContext } from "../../contexts/CategoriesContext.jsx";
-import CategoryTree from "./CategoryTree.jsx";
+import { CategoriesHookContext } from "../../contexts/CategoriesContext";
+import CategoryTree from "./CategoryTree";
 
 //? THELW NA VALW STO KENTRO THN KATHGORIA
 export default function CategoriesContainer({

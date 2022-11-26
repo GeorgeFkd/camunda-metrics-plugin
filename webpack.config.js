@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 //env var
 module.exports = {
     target: "node",
-    mode: "production",
+    // mode: "production",
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "client.js",
@@ -17,8 +17,17 @@ module.exports = {
         new MiniCssExtractPlugin(),
         new CamundaModelerWebpackPlugin(),
     ],
+    //! so i dont need to say .jsx everywhere
+    resolve: {
+        extensions: ["*", ".js", ".jsx", ".ts", ".tsx"],
+    },
     module: {
         rules: [
+            {
+                test: /\.ts[x]?$/,
+                exclude: /node_modules/,
+                use: ["ts-loader"],
+            },
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
@@ -45,8 +54,4 @@ module.exports = {
     //   watchContentBase:true
     // },
     devtool: "source-map",
-
-    // externals: {
-    //     fs: "commonjs fs",
-    // },
 };

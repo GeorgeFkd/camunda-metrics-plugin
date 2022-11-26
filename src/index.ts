@@ -6,7 +6,7 @@
 require("file-loader?name=[name].[ext]!./index.html");
 
 import { registerClientExtension } from "camunda-modeler-plugin-helpers";
-import MetricsPlugin from "./components/MetricsPlugin.jsx";
+import MetricsPlugin from "./components/MetricsPlugin";
 
 registerClientExtension(MetricsPlugin);
 

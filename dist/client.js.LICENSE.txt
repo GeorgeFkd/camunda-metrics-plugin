@@ -22,20 +22,20 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
-//! CFC
+//! check how more nesting affects program
 
-//! GM
+//! this is a merge node
 
-//! GM we add his outgoing
+//! this is a problematic node(it is but lets not throw errors around)
 
-//! and then the metrics so i dont have errors
+//! this is a split node
 
-//! i have to first add the categories by shortest path
+//! this stays?
 
-//! needed to get the proper metrics immediately
+//! this works
 
-//!so we subtract his incoming for GM
+//!optimisation wise it gets it below 200ms
 
-//!this node is a merge node
+//!same as all fns before, doesnt work for state setting
 
-//!this node is a split node
+//!this might be causing problems
