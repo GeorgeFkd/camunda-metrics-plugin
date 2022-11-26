@@ -1,4 +1,4 @@
-import React from "react";
+import React from "camunda-modeler-plugin-helpers/react";
 import { Overlay } from "camunda-modeler-plugin-helpers/components";
 function CustomOverlay(props) {
     return (

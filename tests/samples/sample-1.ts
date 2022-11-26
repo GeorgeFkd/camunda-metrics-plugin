@@ -1,4 +1,17 @@
-export default `<?xml version="1.0" encoding="UTF-8"?>
+export const expectedAGD = 3;
+export const expectedMGD = 4;
+export const expectedTS = 1;
+export const expectedCFC = 2;
+export const expectedNOAJS = 5;
+export const expectedNOA = 3;
+export const expectedGH = 4;
+export const expectedGM = 2;
+export const expectedCLA = 1;
+export const expectedNSFA = 2;
+export const expectedTNG = 2;
+export const expectedNSFG = 4;
+
+export const xmlStr = `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1tf171l" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.4.2" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
   <bpmn:process id="Process_1qc7ec5" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1" name="START EVENT">
