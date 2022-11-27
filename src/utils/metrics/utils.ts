@@ -13,7 +13,6 @@ export type CalculateMetricFn<Input> = (xmlDoc: Input) => number;
 
 export const getBranchesOfGateNode = (node: Node): number => {
     const xpathRes = xpath.select("./*[local-name()='outgoing']", node);
-    console.log(xpathRes, "branching");
     return xpathRes.length;
 };
 
@@ -108,10 +107,6 @@ export const getGatewaysInDiagram: (arg: Document) => Node[] = (
     ) as Node[];
     return gatewayXPathRes;
 };
-console.log(
-    "TS GETTING GATEWAYS",
-    getGatewaysInDiagram(parser.parseFromString(xmlStr))
-);
 export const removeDuplicates = (arr: string[]) => {
     return arr.filter((item, index) => arr.indexOf(item) === index);
 };

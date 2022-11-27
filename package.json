@@ -8,7 +8,8 @@
     "build": "webpack --config webpack.config.js --mode production",
     "dev": "webpack -w --mode production",
     "stats": "webpack --json build-stats.json",
-    "test": "jest"
+    "test": "jest",
+    "test:watch":"jest --watch"
   },
   "repository": {
     "type": "git",

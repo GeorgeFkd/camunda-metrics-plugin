@@ -19,7 +19,6 @@ const GH: CalculateMetricFn<Document> = (xmlDoc: Document) => {
             result.set(typeOfGateway, 1);
         }
     }, 0);
-    console.log("The Map is:", result);
     let sum = 0;
     for (const value of result.values()) {
         const p_i = value / numberOfGatewaysInDiagram;

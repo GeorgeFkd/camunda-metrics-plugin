@@ -7,7 +7,6 @@ const NOA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     const allTypesOfTasks = Array.from(data.keys()).filter((bpmnElement) => {
         return bpmnElement.toLowerCase().includes("task");
     });
-    console.log(allTypesOfTasks);
     //ta subprocesses metrane sa task h oxi? gt ena mpainei panw kai ena otan to kaneis expand
     //epishs ta callActivity einai diaforetika
     //prepei na ta kanw include

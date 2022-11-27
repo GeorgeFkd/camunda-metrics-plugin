@@ -12,8 +12,16 @@ const GM: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     const and_gateways = gatewaysOfDiagram.filter(
         (node) => node.nodeName.replace(/.+:/, "") === BPMN_ELEMENTS.AND
     );
+    const event_based_gateways = gatewaysOfDiagram.filter(
+        (node) => node.nodeName.replace(/.+:/, "") === BPMN_ELEMENTS.EVENT_BASED
+    );
 
-    const allGatewaysPerType = [xor_gateways, or_gateways, and_gateways];
+    const allGatewaysPerType = [
+        xor_gateways,
+        or_gateways,
+        event_based_gateways,
+        and_gateways,
+    ];
     const result = allGatewaysPerType.reduce((total, gatewaysOftype) => {
         const gmOfType = gatewaysOftype.reduce(
             (totalOfType, gatewayOfCurrentType) => {
@@ -39,7 +47,7 @@ const GM: CalculateMetricFn<Document> = (xmlDoc: Document) => {
             },
             0
         );
-        return total + gmOfType;
+        return total + Math.abs(gmOfType);
     }, 0);
     return result;
 };

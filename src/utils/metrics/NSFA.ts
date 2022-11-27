@@ -10,14 +10,12 @@ const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
         "//*[local-name()='sequenceFlow']",
         xmlDoc
     ) as Node[];
-    console.log("THE SFs", allSFs);
 
     const sum = allSFs.reduce((total, current) => {
         const [sourceRef, targetRef] = xpath.select(
             "./@*[matches(local-name(),'(source|target)Ref')]",
             current
         ) as Node[];
-        console.log(sourceRef, targetRef);
         //these are on the total xmlDoc
         const sourceNodes = xpath.select(
             `//*[@id='${sourceRef.nodeValue}']`,
@@ -31,7 +29,6 @@ const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
 
         const sourceNode = sourceNodes[0];
         const targetNode = targetNodes[0];
-        console.log(sourceNode, targetNode);
         if (
             elementNameIsConsideredActivity(
                 sourceNode.nodeName.replace(/.+:/, "")
@@ -40,7 +37,6 @@ const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
                 targetNode.nodeName.replace(/.+:/, "")
             )
         ) {
-            console.log("we add it ");
             return (total += 1);
         }
         return total;

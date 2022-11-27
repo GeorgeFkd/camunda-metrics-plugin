@@ -1,0 +1,12 @@
+import TNG from "../../src/utils/metrics/TNG";
+//188 has problem with TNG
+import { xmlStr, expectedTNG } from "../samples/sample-213";
+import { DOMParser } from "xmldom";
+describe("should be able to calculate TNG", () => {
+    const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
+    it("should produce TNG(sample-213) = ", () => {
+        const result = parseFloat(TNG(parsedDocument).toFixed(2));
+
+        expect(result).toEqual(expectedTNG);
+    });
+});

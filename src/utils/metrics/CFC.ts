@@ -14,14 +14,11 @@ const CFC: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     );
     const CFC_OF_EVENT_BASED = (eventBasedSplitNodes as Node[]).reduce(
         (total, current) => {
-            console.log("inside", total, getBranchesOfGateNode(current) * 1);
             return (total as number) + getBranchesOfGateNode(current) * 1;
         },
         0
     );
-    console.log("splits", xorSplitNodes, orSplitNodes, andSplitNodes);
     const CFC_OF_XOR = (xorSplitNodes as Node[]).reduce((total, current) => {
-        console.log("inside", total, getBranchesOfGateNode(current) * 1);
         return (total as number) + getBranchesOfGateNode(current) * 1;
     }, 0);
     const CFC_OF_OR = (orSplitNodes as Node[]).reduce((total, current) => {
@@ -34,7 +31,7 @@ const CFC: CalculateMetricFn<Document> = (xmlDoc: Document) => {
         //prettier-ignore
         return (total as number) + 1;
     }, 0);
-    console.log("IN CFC", CFC_OF_XOR, CFC_OF_AND, CFC_OF_OR);
+
     return CFC_OF_XOR + CFC_OF_OR + CFC_OF_AND + CFC_OF_EVENT_BASED;
 };
 
