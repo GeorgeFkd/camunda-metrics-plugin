@@ -1,21 +1,23 @@
 // import xpath from "xpath";
-
-import { select } from "xpath";
+import * as Metrics from "./metrics/all";
+console.log(Metrics, "tng is real");
+//import { select } from "xpath";
+import { countStructuralElements as analyzeXMLString } from "./metrics/utils";
 import { DOMParser } from "xmldom";
-import {
-    AGD_OF_Diagram,
-    CFC_OF_DIAGRAM,
-    CLA_OF_Diagram,
-    GH_OF_Diagram,
-    GM_OF_Diagram,
-    MGD_OF_Diagram,
-    NoAJS_OF_Diagram,
-    NoA_OF_Diagram,
-    NSFA_OF_Diagram,
-    NSFG_OF_Diagram,
-    TNG_OF_Diagram,
-    TS_OF_Diagram,
-} from "./calculateAllMetrics";
+// import {
+//     AGD_OF_Diagram,
+//     CFC_OF_DIAGRAM,
+//     CLA_OF_Diagram,
+//     GH_OF_Diagram,
+//     GM_OF_Diagram,
+//     MGD_OF_Diagram,
+//     NoAJS_OF_Diagram,
+//     NoA_OF_Diagram,
+//     NSFA_OF_Diagram,
+//     NSFG_OF_Diagram,
+//     //TNG_OF_Diagram,
+//     TS_OF_Diagram,
+// } from "./calculateAllMetrics";
 
 //genika yparxoyn kapoies idiaiterothtes tou typou intermediate throw event einai kai to aplo
 //kyklaki kai molis tou valeis ena messageEvent apo mesa ginetai me to envelope
@@ -24,60 +26,6 @@ import {
 //TODO convert xml element names to human readable names -> with an object
 
 const parser = new DOMParser();
-
-export function analyzeXMLString(xmlDoc: Document) {
-    if (!xmlDoc) {
-        return new Map();
-    }
-    // let xmlDoc;
-    // try {
-    //     xmlDoc = parser.parseFromString(xmlStr);
-    // } catch (error) {
-    //     console.error(error);
-    // }
-
-    let allEls = select("//*", xmlDoc);
-    let allElsToNodes = allEls.map((el) => {
-        return el as Node;
-    });
-    let allElsWithLocalName = allElsToNodes.map((el) => {
-        //yparxei h idiothta sta objects alla den fainetai
-        const localName = el.nodeName.replace(/.+:/, "");
-        return { ...el, localName };
-    });
-    let elNames = allElsWithLocalName.map((el) => {
-        return el.localName;
-    });
-
-    let distinctElemsInBpmnDiagram = new Set(elNames);
-
-    let result = BpmnTagsCountOccurences(distinctElemsInBpmnDiagram, elNames);
-    //nomizw kalytera sto ui gia na mhn kanw teleiws remove pragmata apla na ta emfanizw kai na ta kryvw
-    return result;
-}
-
-function BpmnTagsCountOccurences(
-    uniqueTagsInDiagram: Set<string>,
-    allTags: string[]
-): Map<string, number> {
-    if (!uniqueTagsInDiagram) {
-        return new Map();
-    }
-    let result = new Map();
-    uniqueTagsInDiagram.forEach((tagName) => {
-        let elems = allTags.filter((name) => {
-            return name === tagName;
-        });
-        //here i can get any edge cases
-        if (tagName === "subProcess") {
-            result.set(tagName, elems.length / 2);
-        } else {
-            result.set(tagName, elems.length);
-        }
-    });
-    return result;
-}
-
 export default function calculateAllMetrics(
     xmlStr: string
 ): Map<string, number | Map<string, number> | string> {
@@ -88,26 +36,24 @@ export default function calculateAllMetrics(
         string,
         number | Map<string, number> | string
     >();
+
     //! this stays?
     computedMetricsMap.set(
         "XML DATA COUNT",
         analyzeXMLString(parsedXmlDocument)
     );
-    computedMetricsMap.set(
-        "AGD",
-        (AGD_OF_Diagram(parsedXmlDocument) as number).toFixed(2)
-    );
-    computedMetricsMap.set("MGD", MGD_OF_Diagram(parsedXmlDocument));
-    computedMetricsMap.set("NSFA", NSFA_OF_Diagram(parsedXmlDocument));
-    computedMetricsMap.set("NOA", NoA_OF_Diagram(parsedXmlDocument));
-    computedMetricsMap.set("NOAJS", NoAJS_OF_Diagram(parsedXmlDocument));
-    computedMetricsMap.set("NSFG", NSFG_OF_Diagram(parsedXmlDocument));
-    computedMetricsMap.set("CLA", CLA_OF_Diagram(parsedXmlDocument).toFixed(2));
-    computedMetricsMap.set("GH", GH_OF_Diagram(parsedXmlDocument).toFixed(2));
-    computedMetricsMap.set("TS", TS_OF_Diagram(parsedXmlDocument));
-    computedMetricsMap.set("GM", GM_OF_Diagram(parsedXmlDocument));
-    computedMetricsMap.set("CFC", CFC_OF_DIAGRAM(parsedXmlDocument));
-    computedMetricsMap.set("TNG", TNG_OF_Diagram(parsedXmlDocument));
+    computedMetricsMap.set("AGD", Metrics.AGD(parsedXmlDocument).toFixed(2));
+    computedMetricsMap.set("MGD", Metrics.MGD(parsedXmlDocument));
+    computedMetricsMap.set("NSFA", Metrics.NSFA(parsedXmlDocument));
+    computedMetricsMap.set("NOA", Metrics.NOA(parsedXmlDocument));
+    computedMetricsMap.set("NOAJS", Metrics.NOAJS(parsedXmlDocument));
+    computedMetricsMap.set("NSFG", Metrics.NSFG(parsedXmlDocument));
+    computedMetricsMap.set("CLA", Metrics.CLA(parsedXmlDocument).toFixed(2));
+    computedMetricsMap.set("GH", Metrics.GH(parsedXmlDocument).toFixed(2));
+    computedMetricsMap.set("TS", Metrics.TS(parsedXmlDocument));
+    computedMetricsMap.set("GM", Metrics.GM(parsedXmlDocument));
+    computedMetricsMap.set("CFC", Metrics.CFC(parsedXmlDocument));
+    computedMetricsMap.set("TNG", Metrics.TNG(parsedXmlDocument));
     return computedMetricsMap;
 }
 console.log("HERE CMON");

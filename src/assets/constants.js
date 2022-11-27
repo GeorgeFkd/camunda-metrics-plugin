@@ -2,6 +2,7 @@ export const BPMN_ELEMENTS = {
     XOR: "exclusiveGateway",
     OR: "inclusiveGateway",
     AND: "parallelGateway",
+    EVENT_BASED: "eventBasedGateway",
 };
 
 //ideally an enum

@@ -24,18 +24,16 @@ object-assign
 
 //! check how more nesting affects program
 
-//! this is a merge node
-
-//! this is a problematic node(it is but lets not throw errors around)
-
-//! this is a split node
-
 //! this stays?
 
 //! this works
 
+//!correct
+
 //!optimisation wise it gets it below 200ms
 
 //!same as all fns before, doesnt work for state setting
+
+//!this is temporary-> it wastes resources
 
 //!this might be causing problems

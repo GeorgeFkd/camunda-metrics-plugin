@@ -1,14 +1,21 @@
+import { DOMParser } from "xmldom";
 import xpath from "xpath";
-import { analyzeXMLString } from "../analyzeXMLString";
+import xmlStr from "../bpmn-sample";
 //TODO error values for each metric
 interface MetricCalculationError {
     source: string;
     message: string;
 }
 
-export type CalculateMetricFn<Input> = (
-    xmlDoc: Input
-) => number | MetricCalculationError;
+const parser = new DOMParser();
+
+export type CalculateMetricFn<Input> = (xmlDoc: Input) => number;
+
+export const getBranchesOfGateNode = (node: Node): number => {
+    const xpathRes = xpath.select("./*[local-name()='outgoing']", node);
+    console.log(xpathRes, "branching");
+    return xpathRes.length;
+};
 
 export const findSplitNodesOfGate = (xml: Document, gateName: string) => {
     return xpath.select(
@@ -22,7 +29,58 @@ export const getAmountOfBranchesOfThisGateNode = (node: Node): number => {
         .length;
 };
 
-export const countStructuralElements = analyzeXMLString;
+export function countStructuralElements(xmlDoc: Document): Map<string, number> {
+    if (!xmlDoc) {
+        return new Map<string, number>();
+    }
+    // let xmlDoc;
+    // try {
+    //     xmlDoc = parser.parseFromString(xmlStr);
+    // } catch (error) {
+    //     console.error(error);
+    // }
+
+    let allEls = xpath.select("//*", xmlDoc);
+    let allElsToNodes = allEls.map((el) => {
+        return el as Node;
+    });
+    let allElsWithLocalName = allElsToNodes.map((el) => {
+        //yparxei h idiothta sta objects alla den fainetai
+        const localName = el.nodeName.replace(/.+:/, "");
+        return { ...el, localName };
+    });
+    let elNames = allElsWithLocalName.map((el) => {
+        return el.localName;
+    });
+
+    let distinctElemsInBpmnDiagram = new Set(elNames);
+
+    let result = BpmnTagsCountOccurences(distinctElemsInBpmnDiagram, elNames);
+    //nomizw kalytera sto ui gia na mhn kanw teleiws remove pragmata apla na ta emfanizw kai na ta kryvw
+    return result;
+}
+
+function BpmnTagsCountOccurences(
+    uniqueTagsInDiagram: Set<string>,
+    allTags: string[]
+): Map<string, number> {
+    if (!uniqueTagsInDiagram) {
+        return new Map();
+    }
+    let result = new Map();
+    uniqueTagsInDiagram.forEach((tagName) => {
+        let elems = allTags.filter((name) => {
+            return name === tagName;
+        });
+        //here i can get any edge cases
+        if (tagName === "subProcess") {
+            result.set(tagName, elems.length / 2);
+        } else {
+            result.set(tagName, elems.length);
+        }
+    });
+    return result;
+}
 
 export const elementNameIsConsideredActivity: (arg: string) => boolean = (
     elementName: string
@@ -44,9 +102,16 @@ export const getGatewaysTypes: (arg: Document) => string[] = (
 export const getGatewaysInDiagram: (arg: Document) => Node[] = (
     xmlDoc: Document
 ) => {
-    return [];
+    const gatewayXPathRes = xpath.select(
+        "//*[ends-with(local-name(),'Gateway') and local-name()!='Bounds']",
+        xmlDoc
+    ) as Node[];
+    return gatewayXPathRes;
 };
-
+console.log(
+    "TS GETTING GATEWAYS",
+    getGatewaysInDiagram(parser.parseFromString(xmlStr))
+);
 export const removeDuplicates = (arr: string[]) => {
     return arr.filter((item, index) => arr.indexOf(item) === index);
 };

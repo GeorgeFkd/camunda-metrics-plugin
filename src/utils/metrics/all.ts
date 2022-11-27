@@ -10,5 +10,10 @@ import NSFA from "./NSFA";
 import NSFG from "./NSFG";
 import TNG from "./TNG";
 import TS from "./TS";
+// import { readdirSync } from "fs";
+// // const fs = window.require("fs");
+// console.log("not messed up yet");
+// const allfiles = readdirSync("../metrics");
+// console.log(allfiles);
 
 export { AGD, CFC, CLA, GH, MGD, NOA, NOAJS, NSFA, NSFG, TNG, TS, GM };

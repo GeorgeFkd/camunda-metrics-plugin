@@ -1,17 +1,17 @@
 import xpath from "xpath";
 // import { parse, select } from "xpath";
 import { DOMParser } from "xmldom";
-import { analyzeXMLString } from "./analyzeXMLString";
+import { countStructuralElements as analyzeXMLString } from "./metrics/utils";
 import { BPMN_ELEMENTS } from "../assets/constants";
 
-type CalculateMetricFn<Input> = (xmlDoc: Input) => number | "error";
+type CalculateMetricFn<Input> = (xmlDoc: Input) => number;
 
 const parser = new DOMParser();
 export const CFC_OF_DIAGRAM: CalculateMetricFn<Document> = (
     xmlDoc: Document
 ) => {
     if (!xmlDoc) {
-        return "error";
+        return -1;
     }
 
     //const xmlDoc = parser.parseFromString(xmlStr);
@@ -59,9 +59,7 @@ export const CFC_OF_DIAGRAM: CalculateMetricFn<Document> = (
         //prettier-ignore
         return (total as number) + 1;
     }, 0);
-    return (
-        (CFC_OF_OR as number) + (CFC_OF_AND as number) + (CFC_OF_XOR as number)
-    );
+    return CFC_OF_OR + CFC_OF_AND + CFC_OF_XOR;
 };
 
 export const AGD_OF_Diagram: CalculateMetricFn<Document> = (
@@ -215,7 +213,7 @@ export function NoA_OF_Diagram(xmlDoc: Document) {
     //epishs ta callActivity einai diaforetika
     //prepei na ta kanw include
     const result = allTypesOfTasks.reduce((total, value) => {
-        return (total += data.get(value));
+        return (total += data.get(value) as number);
     }, 0);
     return result;
 }
@@ -228,7 +226,7 @@ export function NoAJS_OF_Diagram(xmlDoc: Document) {
         }
     );
     const sumOfAllGateways = typesOfGateways.reduce((total, current) => {
-        return (total += xmlElementsCount.get(current));
+        return (total += xmlElementsCount.get(current) as number);
     }, 0);
     console.log(NoA, sumOfAllGateways);
 
@@ -317,7 +315,7 @@ export function TNG_OF_Diagram(xmlDoc: Document) {
     const result = Array.from(xmlElementsCount.keys()).reduce(
         (total, currentbpmnElement) => {
             if (currentbpmnElement.endsWith("Gateway")) {
-                total += xmlElementsCount.get(currentbpmnElement);
+                total += xmlElementsCount.get(currentbpmnElement) as number;
             }
             return total;
         },
@@ -329,7 +327,7 @@ export function TNG_OF_Diagram(xmlDoc: Document) {
 export function TS_OF_Diagram(xmlDoc: Document) {
     //i have to get all or , and gates and then count their outgoing children-1
     //const xmlDoc = parser.parseFromString(diagramXml);
-    const and_or_gateways = [BPMN_ELEMENTS.OR, BPMN_ELEMENTS.XOR];
+    const and_or_gateways = [BPMN_ELEMENTS.OR, BPMN_ELEMENTS.OR];
     const sum = and_or_gateways.reduce((total, current) => {
         //const evaluator = xpath.parse(`//*[local-name()='${current}']`);
         ///*[local-name()='outgoing']

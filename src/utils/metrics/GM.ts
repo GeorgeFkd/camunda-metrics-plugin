@@ -1,6 +1,47 @@
-import { CalculateMetricFn } from "./utils";
+import { BPMN_ELEMENTS } from "../../assets/constants";
+import { CalculateMetricFn, getGatewaysInDiagram } from "./utils";
+import xpath from "xpath";
 const GM: CalculateMetricFn<Document> = (xmlDoc: Document) => {
-    return 0;
+    const gatewaysOfDiagram = getGatewaysInDiagram(xmlDoc);
+    const xor_gateways = gatewaysOfDiagram.filter(
+        (node) => node.nodeName.replace(/.+:/, "") === BPMN_ELEMENTS.XOR
+    );
+    const or_gateways = gatewaysOfDiagram.filter(
+        (node) => node.nodeName.replace(/.+:/, "") === BPMN_ELEMENTS.OR
+    );
+    const and_gateways = gatewaysOfDiagram.filter(
+        (node) => node.nodeName.replace(/.+:/, "") === BPMN_ELEMENTS.AND
+    );
+
+    const allGatewaysPerType = [xor_gateways, or_gateways, and_gateways];
+    const result = allGatewaysPerType.reduce((total, gatewaysOftype) => {
+        const gmOfType = gatewaysOftype.reduce(
+            (totalOfType, gatewayOfCurrentType) => {
+                const incoming = xpath.select(
+                    "./*[local-name()='incoming']",
+                    gatewayOfCurrentType
+                ).length;
+                const outgoing = xpath.select(
+                    "./*[local-name()='outgoing']",
+                    gatewayOfCurrentType
+                ).length;
+                console.log(incoming, outgoing, "these we work with");
+                if (incoming > outgoing) {
+                    //it is a merge node
+                    return totalOfType - incoming;
+                } else if (incoming === outgoing) {
+                    //a problematic node
+                    return totalOfType;
+                } else {
+                    //this is a split node
+                    return totalOfType + outgoing;
+                }
+            },
+            0
+        );
+        return total + gmOfType;
+    }, 0);
+    return result;
 };
 
 export default GM;

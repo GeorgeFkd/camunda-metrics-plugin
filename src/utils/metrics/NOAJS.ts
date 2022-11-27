@@ -1,6 +1,9 @@
 import { CalculateMetricFn } from "./utils";
+import NOA from "./NOA";
+import TNG from "./TNG";
 const NOAJS: CalculateMetricFn<Document> = (xmlDoc: Document) => {
-    return 0;
+    //!correct
+    return NOA(xmlDoc) + TNG(xmlDoc);
 };
 
 export default NOAJS;
