@@ -1,6 +1,5 @@
 import React from "camunda-modeler-plugin-helpers/react";
 import { render } from "react-dom";
-import "../style.scss";
 import { Fill } from "camunda-modeler-plugin-helpers/components";
 import calculateAllMetrics, {
     analyzeXMLString,
@@ -8,7 +7,7 @@ import calculateAllMetrics, {
 import CalculateAllMetricsOptimized from "../utils/CalculateAllMetricsCombined";
 //needs the .jsx for some reason
 import MetricsApp from "./MetricsApp";
-import "./App.css";
+import app_styles from "./App.css";
 import CamundaContext from "../contexts/CamundaContext";
 const CLICKED_BTN_WITH_WINDOW_CLOSED = "NOT_OPEN_WINDOW";
 const CLICKED_BTN_WITH_WINDOW_OPEN = "OPEN_WINDOW";
@@ -68,7 +67,7 @@ export default function MetricsPlugin(props) {
         const statusBar = document.getElementsByTagName("footer")[0];
         const rootDiv = document.createElement("div");
         rootDiv.id = "table-root";
-        rootDiv.className = "toggle-hide-show";
+        rootDiv.className = app_styles.toggleHideShow;
         statusBar.parentNode.insertBefore(rootDiv, statusBar);
         function fetchData(xml) {
             dispatch({ type: DATA_FETCHED, payload: xml });
@@ -103,8 +102,8 @@ export default function MetricsPlugin(props) {
 
     function toggleTable(button) {
         const container = document.getElementById("table-root");
-        container.classList.toggle("toggle-hide-show");
-        button.classList.toggle("show-metricsPlugin-button-active");
+        container.classList.toggle(app_styles.toggleHideShow);
+        button.classList.toggle(app_styles.showMetricsPluginButtonActive);
 
         if (!state.open) {
             dispatch({ type: CLICKED_BTN_WITH_WINDOW_CLOSED });
@@ -121,7 +120,7 @@ export default function MetricsPlugin(props) {
 
             <Fill slot="status-bar__app" group="1_autosave" priority={100}>
                 <button
-                    className="show-metricsPlugin-button"
+                    className={`${app_styles.showMetricsPluginButton}`}
                     onClick={({ target }) => toggleTable(target)}
                 >
                     Metrics

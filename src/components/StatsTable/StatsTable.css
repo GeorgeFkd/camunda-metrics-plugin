@@ -2,13 +2,13 @@
 /* metrics-plugin-font-size
 metricsplugin-container-border
 metrics-plugin-font-size */
-.stats-table-container {
+.statsTableContainer {
     flex: 0.5;
-    border-right: solid 2px blue;
+    border-right:grey solid 2px;
     overflow: auto;  
 }
 
-.stats-table-elements-container {
+.statsTableElementsContainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -16,34 +16,34 @@ metrics-plugin-font-size */
     grid-row-gap: 0.5rem;
 }
 
-.stats-table-title-container {
+.statsTableTitleContainer {
     margin-bottom: 0.5rem;
 
    
 }
- .stats-table-title {
+ .statsTableTitle {
      font-size: 1.8rem;
      font-weight: 900;
  }
 
- .element-component {
+ .elementComponent {
      display: flex;
      flex-direction: row;
      align-items: center;
 
      
  }
- .element-display {
+ .elementDisplay {
      display: flex;
      align-items: center;
      border-bottom: solid 1px var(--log-resizer-border-color);
  }
 
-.element-count {
+.elementCount {
     font-size: 1.5rem;
 }
 
- .element-name {
+ .elementName {
      font-size: 1.5rem;
      margin-right: 0.5rem;
  }

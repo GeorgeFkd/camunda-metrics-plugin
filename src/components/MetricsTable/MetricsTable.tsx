@@ -5,30 +5,26 @@ import Metric from "../../utils/metrics/Metric-Class";
 import { CATEGORIES, MetricGroup } from "../../assets/typed-constants";
 import CATEGORIES_WITH_METRICS from "../../utils/metrics/init_metrics";
 import { parser } from "../../assets/config";
-import "./MetricsTable.css"
 import useSubscribe from "../../hooks/useSubscribe";
+import styles from "./MetricsTable.css"
 // import MetricLabel from "../../deprecated/MetricLabel";
 function MetricsTable({xml}:{xml:string}) {
     //TODO auto me tis cathgories pou mou eipane
     //epishs oi metrikes katatassontai kai se kathgories loipon
-    //const [categoriesState] = React.useContext(CategoriesHookContext);
     //i have to prepare my data
     //? explaining adding and removing Metrics/Categories
     //* to add/remove a metric we need the whole path to the metric
     //* to add/remove a category we need the path to the category above
     //* the category we want to remove(thats why for categories we dont need to add in path)
-    // React.useEffect(() => {
-    //     console.log("CATEGORY STATE IN METRICS TABLE UPDATED", categoriesState);
-    // }, [categoriesState]);
     // useSubscribe("app.activeTabChanged",(dataFromEvent)=>{
     //     console.log(dataFromEvent)
     //     console.log("dem hooks")
     //     return ;
     // })
     return (
-        <div className="metrics-container">
+        <div className={styles.metricsContainer}>
             <MetricsTableTitle />
-            <div className="metrics-table">
+            <div className={styles.metricsTable}>
                 {/* FOR NOW IM GONNA SWITCH IT UP */}
                 
                 {CATEGORIES_WITH_METRICS.map((MetricGroup) => {
@@ -40,7 +36,7 @@ function MetricsTable({xml}:{xml:string}) {
 }
 
 function MetricsTableTitle({}) {
-    return <div className="metrics-table-title">BPMN Metrics</div>;
+    return <div className={styles.metricsTableTitle}>BPMN Metrics</div>;
 }
 interface MetricGroupContainerProps{
     metricGroup:MetricGroup;
@@ -49,13 +45,13 @@ interface MetricGroupContainerProps{
 const  MetricGroupContainer = ({ metricGroup,xml }:MetricGroupContainerProps) => {
     const parsedDocument = parser.parseFromString(xml);
     return (
-        <div className="metrics-wrapper" style={{height:"195px"}}>
-            <div className="metrics-wrapper-title">
-                <span className="metrics-wrapper-title-name">
+        <div className={styles.metricsWrapper} style={{height:"195px"}}>
+            <div className={styles.metricsWrapperTitle}>
+                <span className={styles.metricsWrapperTitleName}>
                     {metricGroup.name}
                 </span>
             </div>
-            <div className="metrics-wrapper-children">
+            <div className={`${styles.metricsWrapperChildren}`}>
                 {metricGroup.metrics.map((metric) => (
                    <MetricLabel metric={metric} xmlDoc={parsedDocument}/> 
                 ))}
@@ -76,7 +72,7 @@ const MetricLabel = ({metric,xmlDoc}:{metric:Metric,xmlDoc:Document}) =>{
         setIsLoading(false);
         
     },[xmlDoc])
-    return (<div className="metric-element">
+    return (<div className={styles.metricElement}>
         <span className="metric-element-name">{metric.label}: &nbsp;</span>
         {isLoading ? <Spinner /> :<span className="metric-element-result">{metric.result.toFixed(2)}</span>}
     </div>);

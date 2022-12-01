@@ -1,11 +1,11 @@
-.metrics-table-title {
+.metricsTableTitle {
     font-size: 2rem;
     font-weight: 900;
     width: fit-content;
     padding: 0 0.5rem;
 }
 
-.metrics-container {
+.metricsContainer {
     flex: 2;
     padding-left: 1rem;
     border-right: solid 2px var(--metricsplugin-container-border);
@@ -13,7 +13,7 @@
     flex-direction: column;
 }
 
-.metric-element {
+.metricElement {
     display: flex;
     align-items: center;
     font-size: 1.35rem;
@@ -21,15 +21,14 @@
     border: solid 2px black;
     border-top: none;
 }
-.metrics-table {
+.metricsTable {
      display: flex;
      flex-direction: row;
-
      max-height: 150px;
  }
 
 
-.metrics-wrapper {
+.metricsWrapper {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -37,7 +36,7 @@
     font-size: 1.25rem;
 }
 
-.metrics-wrapper-title {
+.metricsWrapperTitle {
     display: flex;
     width: 100%;
     column-gap: 0.5rem;
@@ -46,7 +45,7 @@
     /* // text-align: center; */
 }
 
-.metrics-wrapper-title-name {
+.metricsWrapperTitleName {
     margin: 0 auto;
 }
 
@@ -54,7 +53,7 @@
     margin-right: auto;
 }
 
-.metrics-wrapper-children {
+.metricsWrapperChildren {
     padding-top: 0.75rem;
     padding:0.5rem;
     display: flex;

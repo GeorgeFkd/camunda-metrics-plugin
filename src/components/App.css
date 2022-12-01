@@ -1,7 +1,7 @@
 /* there is sth like a transition going on here */
 
 
-.show-metricsPlugin-button {
+.showMetricsPluginButton {
     font-size: inherit;
     color: inherit;
     border: none;
@@ -9,19 +9,19 @@
     background-color: inherit;
 }
 
-.show-metricsPlugin-button:hover{
+.showMetricsPluginButton:hover{
     background-color: var(--tab-action-hover-background-color);
 }
 
-.show-metricsPlugin-button-active {
+.showMetricsPluginButtonActive {
     background-color: var(--tab-action-active-background-color) !important;
 }
 
-.toggle-hide-show {
+.toggleHideShow {
     display: none !important;
 }
 
-.app-container {
+.appContainer {
     width: 100%;
     height: 275px;
     z-index: 105;

@@ -3,7 +3,7 @@ import { bpmnElementsDisplayed } from "../../assets/config";
 import { MAP_BPMN_ELEMENTS_TO_ICON_CLASSES } from "../../assets/constants";
 import StatsTableTitle from "./StatsTableTitle";
 import StatsTableElement from "./StatsTableElement";
-import "./StatsTable.css";
+import styles from "./StatsTable.css";
 import CamundaContext from "../../contexts/CamundaContext";
 import useSubscribe from "../../hooks/useSubscribe";
 function StatsTable({ data }) {
@@ -15,9 +15,9 @@ function StatsTable({ data }) {
     //     console.log("dem hooks v2", dataFromEvent);
     // });
     return (
-        <div className="stats-table-container">
+        <div className={styles.statsTableContainer}>
             <StatsTableTitle title="Structural Elements Count" />
-            <div className="stats-table-elements-container">
+            <div className={styles.statsTableElementsContainer}>
                 {bpmnElementsDisplayed
                     .sort((a, b) => a.order - b.order)
                     .map((bpmnEl, idx) => {
