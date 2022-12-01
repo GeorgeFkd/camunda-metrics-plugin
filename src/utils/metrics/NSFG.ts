@@ -1,3 +1,4 @@
+import Metric from "./Metric-Class";
 import {
     CalculateMetricFn,
     getBranchesOfGateNode,
@@ -11,4 +12,5 @@ const NSFG: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return result;
 };
 
-export default NSFG;
+const NSFGObj = new Metric("NSFG", -1, NSFG, ["Flow", "Gateways"]);
+export default NSFGObj;

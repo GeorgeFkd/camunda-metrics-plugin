@@ -1,12 +1,13 @@
 import React from "camunda-modeler-plugin-helpers/react";
 import StatsTable from "./StatsTable/StatsTable";
 import MetricsTable from "./MetricsTable/MetricsTable";
-import WidgetForRemovedElements from "./Widgets/WidgetForRemovedELems";
+import WidgetForRemovedElements from "../deprecated/WidgetForRemovedELems";
 import { CategoriesHookContext } from "../contexts/CategoriesContext";
 import useCategories from "../hooks/useCategories";
 import { bpmnElementsToKeep } from "../assets/default-config";
-export default function MetricsApp({ data, xmlData, calculatedMetrics }) {
-    const globalCategoriesHook = useCategories(calculatedMetrics);
+import "./App.css";
+export default function MetricsApp({ data, xmlFile, calculatedMetrics }) {
+    //const globalCategoriesHook = useCategories(calculatedMetrics);
 
     // console.info("Inside Metrics App: ", data);
 
@@ -14,17 +15,13 @@ export default function MetricsApp({ data, xmlData, calculatedMetrics }) {
         <div className="app-container">
             {data ? (
                 <React.Fragment>
-                    <CategoriesHookContext.Provider
+                    {/* <CategoriesHookContext.Provider
                         value={globalCategoriesHook}
-                    >
-                        <StatsTable data={data} />
+                    > */}
+                    <StatsTable data={data} />
 
-                        <MetricsTable />
-
-                        <div className="tools-container">
-                            <WidgetForRemovedElements />
-                        </div>
-                    </CategoriesHookContext.Provider>
+                    <MetricsTable xml={xmlFile} />
+                    {/* </CategoriesHookContext.Provider> */}
                 </React.Fragment>
             ) : (
                 <div>Loading...</div>

@@ -1,5 +1,6 @@
 import { CalculateMetricFn, elementNameIsConsideredActivity } from "./utils";
 import xpath from "xpath";
+import Metric from "./Metric-Class";
 const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     //the problem with boundaryEvents
     //they are events not tasks so?
@@ -45,4 +46,6 @@ const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return sum;
 };
 
-export default NSFA;
+const NSFAObj = new Metric("NSFA", -1, NSFA, ["Flow", "Activities"]);
+
+export default NSFAObj;

@@ -1,6 +1,6 @@
 import React from "camunda-modeler-plugin-helpers/react";
 import CategoriesContainer from "./CategoriesContainer";
-import MetricsContainer from "./MetricsContainer";
+import MetricsContainer from "../components/MetricsTable/MetricsContainer";
 
 // here there will be a warning
 //?explain the pathInTree thing
@@ -45,3 +45,16 @@ export default function CategoryTree({ category, breadth, pathInTree }) {
     }
     return ToRender;
 }
+
+/* { {categoriesState.map((cat) => {
+                    return (
+                        <CategoryTree
+                            category={cat}
+                            depth={0}
+                            breadth={categoriesState.length}
+                            pathInTree={[]}
+                        />
+                    );
+                })} 
+
+*/

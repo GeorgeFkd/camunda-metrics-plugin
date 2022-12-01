@@ -5,7 +5,7 @@ import { DOMParser } from "xmldom";
 describe("should be able to calculate NSFG", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     it("should produce NSFG(sample-188) = ", () => {
-        const result = parseFloat(NSFG(parsedDocument).toFixed(2));
+        const result = parseFloat(NSFG.calculateFn(parsedDocument).toFixed(2));
 
         expect(result).toEqual(expectedNSFG);
     });

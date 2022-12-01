@@ -1,53 +1,40 @@
 import React from "react";
-import { bpmnElementsToKeep } from "../../assets/default-config";
+import { bpmnElementsDisplayed } from "../../assets/config";
 import { MAP_BPMN_ELEMENTS_TO_ICON_CLASSES } from "../../assets/constants";
 import StatsTableTitle from "./StatsTableTitle";
 import StatsTableElement from "./StatsTableElement";
+import "./StatsTable.css";
+import CamundaContext from "../../contexts/CamundaContext";
+import useSubscribe from "../../hooks/useSubscribe";
 function StatsTable({ data }) {
     console.log("check the data ", data);
+    const thecontext = React.useContext(CamundaContext);
+    console.log("oh my goobie", thecontext);
     console.table(data);
+    // useSubscribe("tab.saved", (dataFromEvent) => {
+    //     console.log("dem hooks v2", dataFromEvent);
+    // });
     return (
         <div className="stats-table-container">
             <StatsTableTitle title="Structural Elements Count" />
             <div className="stats-table-elements-container">
-                {bpmnElementsToKeep.map((bpmnEl, idx) => {
-                    //could make a conditional if there is icon and if there isnt
-                    let classForBpmnIcon = "";
-                    if (
-                        Object.keys(MAP_BPMN_ELEMENTS_TO_ICON_CLASSES).includes(
-                            bpmnEl
-                        )
-                    ) {
-                        classForBpmnIcon =
-                            "bpmn-icon-" +
-                            MAP_BPMN_ELEMENTS_TO_ICON_CLASSES[bpmnEl];
-                    }
-                    let ToRender;
-                    if ((idx + 1) % 3 == 0) {
-                        ToRender = (
+                {bpmnElementsDisplayed
+                    .sort((a, b) => a.order - b.order)
+                    .map((bpmnEl, idx) => {
+                        //could make a conditional if there is icon and if there isnt
+
+                        return (
                             <React.Fragment>
                                 <StatsTableElement
                                     key={`stats-table-element-${idx}`}
-                                    classForBpmnIcon={classForBpmnIcon}
+                                    classForBpmnIcon={bpmnEl.iconClassname}
                                     occurencesOfElementInDiagram={data.get(
-                                        bpmnEl
+                                        bpmnEl.xmlTagName
                                     )}
                                 />
-                                <span style={{ width: "100%" }}></span>
                             </React.Fragment>
                         );
-                    } else {
-                        ToRender = (
-                            <StatsTableElement
-                                key={`stats-table-element-${idx}`}
-                                classForBpmnIcon={classForBpmnIcon}
-                                occurencesOfElementInDiagram={data.get(bpmnEl)}
-                            />
-                        );
-                    }
-
-                    return ToRender;
-                })}
+                    })}
             </div>
         </div>
     );

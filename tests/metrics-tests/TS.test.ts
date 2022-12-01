@@ -5,7 +5,7 @@ import { DOMParser } from "xmldom";
 describe("should be able to calculate TS", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     it("should produce TS(sample-188) = ", () => {
-        const result = TS(parsedDocument);
+        const result = TS.calculateFn(parsedDocument);
 
         expect(result).toEqual(expectedTS);
     });

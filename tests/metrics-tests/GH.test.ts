@@ -4,7 +4,7 @@ import { DOMParser } from "xmldom";
 describe("should be able to calculate GH", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     it("should produce GH(sample-188) = ", () => {
-        const result = parseFloat(GH(parsedDocument).toFixed(2));
+        const result = parseFloat(GH.calculateFn(parsedDocument).toFixed(2));
 
         expect(result).toEqual(expectedGH);
     });

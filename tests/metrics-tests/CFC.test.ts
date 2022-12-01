@@ -5,7 +5,7 @@ import { DOMParser } from "xmldom";
 describe("should be able to calculate CFC", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     it("should produce CFC(sample-188) = ", () => {
-        const result = CFC(parsedDocument);
+        const result = CFC.calculateFn(parsedDocument);
 
         expect(result).toEqual(expectedCFC);
     });

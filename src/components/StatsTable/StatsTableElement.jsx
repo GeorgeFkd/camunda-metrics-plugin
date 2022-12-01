@@ -6,13 +6,7 @@ export default function StatsTableElement({
 }) {
     return (
         <div className="element-component">
-            {/* edw sto mellon tha mporouse na mpei icon */}
             <div className="element-display">
-                {/* <span
-                                className={`element-name ${classForBpmnIcon}`}
-                            >
-                                {bpmnEl}:
-                            </span> */}
                 <span
                     className={classForBpmnIcon}
                     style={{ fontSize: "2rem" }}

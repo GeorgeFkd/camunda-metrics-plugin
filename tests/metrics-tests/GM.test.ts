@@ -5,7 +5,7 @@ import { DOMParser } from "xmldom";
 describe("should be able to calculate GM", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     it("should produce GM(sample-213) = ", () => {
-        const result = GM(parsedDocument);
+        const result = GM.calculateFn(parsedDocument);
 
         expect(result).toEqual(expectedGM);
     });

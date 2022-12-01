@@ -1,3 +1,4 @@
+import Metric from "./Metric-Class";
 import { CalculateMetricFn, getGatewaysInDiagram } from "./utils";
 const GH: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     const gatewaysOfDiagram = getGatewaysInDiagram(xmlDoc);
@@ -28,4 +29,5 @@ const GH: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return sum;
 };
 
-export default GH;
+const GHObj = new Metric("GH", -1, GH, ["Gateways"]);
+export default GHObj;

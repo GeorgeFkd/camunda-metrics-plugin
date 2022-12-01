@@ -9,7 +9,7 @@
     "dev": "webpack -w --mode production",
     "stats": "webpack --json build-stats.json",
     "test": "jest",
-    "test:watch":"jest --watch"
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -34,12 +34,15 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
     "@types/jest": "^29.2.3",
+    "@types/react": "^18.0.25",
     "@types/xmldom": "^0.1.31",
     "babel-jest": "^29.3.1",
     "babel-loader": "^9.0.0",
     "camunda-modeler-webpack-plugin": "^0.1.0",
     "classnames": "^2.3.2",
     "css-loader": "^6.7.1",
+    "electron-devtools-installer": "^3.2.0",
+    "electron-react-devtools": "^0.5.3",
     "eslint": "^8.26.0",
     "eslint-plugin-bpmn-io": "^0.16.0",
     "file-loader": "^6.2.0",

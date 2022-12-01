@@ -4,6 +4,7 @@ import {
     getBranchesOfGateNode,
 } from "./utils";
 import { BPMN_ELEMENTS } from "../../assets/constants";
+import Metric from "./Metric-Class";
 const CFC: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     const xorSplitNodes = findSplitNodesOfGate(xmlDoc, BPMN_ELEMENTS.XOR);
     const orSplitNodes = findSplitNodesOfGate(xmlDoc, BPMN_ELEMENTS.OR);
@@ -35,4 +36,6 @@ const CFC: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return CFC_OF_XOR + CFC_OF_OR + CFC_OF_AND + CFC_OF_EVENT_BASED;
 };
 
-export default CFC;
+const CFCObj = new Metric("CFC", -1, CFC, ["Flow", "Gateways"]);
+
+export default CFCObj;

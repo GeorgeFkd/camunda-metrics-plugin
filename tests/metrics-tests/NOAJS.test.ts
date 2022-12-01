@@ -5,7 +5,7 @@ import { DOMParser } from "xmldom";
 describe("should be able to calculate NOAJS", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     it("should produce NOAJS(sample-188) = ", () => {
-        const result = NOAJS(parsedDocument);
+        const result = NOAJS.calculateFn(parsedDocument);
 
         expect(result).toEqual(expectedNOAJS);
     });

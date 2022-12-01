@@ -1,5 +1,6 @@
 import { CalculateMetricFn, getGatewaysInDiagram } from "./utils";
 import xpath from "xpath";
+import Metric from "./Metric-Class";
 const MGD: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     const gatewaysOfDiagram = getGatewaysInDiagram(xmlDoc);
     const result = gatewaysOfDiagram.reduce((max, currentGate) => {
@@ -12,4 +13,5 @@ const MGD: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return result;
 };
 
-export default MGD;
+const MGDObj = new Metric("MGD", -1, MGD, ["Gateways"]);
+export default MGDObj;

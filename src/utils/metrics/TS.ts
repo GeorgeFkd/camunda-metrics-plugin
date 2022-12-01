@@ -1,6 +1,7 @@
 import { CalculateMetricFn, getBranchesOfGateNode } from "./utils";
 import { BPMN_ELEMENTS } from "../../assets/constants";
 import xpath from "xpath";
+import Metric from "./Metric-Class";
 const TS: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     //! seems correct
     const and_or_gateways = [BPMN_ELEMENTS.OR, BPMN_ELEMENTS.AND];
@@ -20,4 +21,5 @@ const TS: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return sum;
 };
 
-export default TS;
+const TSObj = new Metric("TS", -1, TS, ["Flow", "Gateways"]);
+export default TSObj;

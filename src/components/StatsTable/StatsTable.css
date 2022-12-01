@@ -1,0 +1,49 @@
+
+/* metrics-plugin-font-size
+metricsplugin-container-border
+metrics-plugin-font-size */
+.stats-table-container {
+    flex: 0.5;
+    border-right: solid 2px blue;
+    overflow: auto;  
+}
+
+.stats-table-elements-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 0.5rem;
+    grid-row-gap: 0.5rem;
+}
+
+.stats-table-title-container {
+    margin-bottom: 0.5rem;
+
+   
+}
+ .stats-table-title {
+     font-size: 1.8rem;
+     font-weight: 900;
+ }
+
+ .element-component {
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+
+     
+ }
+ .element-display {
+     display: flex;
+     align-items: center;
+     border-bottom: solid 1px var(--log-resizer-border-color);
+ }
+
+.element-count {
+    font-size: 1.5rem;
+}
+
+ .element-name {
+     font-size: 1.5rem;
+     margin-right: 0.5rem;
+ }

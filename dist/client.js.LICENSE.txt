@@ -22,18 +22,14 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
-//! check how more nesting affects program
-
 //! this stays?
 
-//! this works
-
 //!correct
+
+//!not the best way will remove
 
 //!optimisation wise it gets it below 200ms
 
 //!same as all fns before, doesnt work for state setting
 
 //!this is temporary-> it wastes resources
-
-//!this might be causing problems

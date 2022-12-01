@@ -1,10 +1,12 @@
 import { CalculateMetricFn } from "./utils";
 import NOA from "./NOA";
 import NSFA from "./NSFA";
+import Metric from "./Metric-Class";
 const CLA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
-    const nsfa = NSFA(xmlDoc);
+    const nsfa = NSFA.calculateFn(xmlDoc);
     if (nsfa === 0) return -1;
-    return NOA(xmlDoc) / nsfa;
+    return NOA.calculateFn(xmlDoc) / nsfa;
 };
 
-export default CLA;
+const CLAObj = new Metric("CLA", -1, CLA, ["Flow", "Activities"]);
+export default CLAObj;

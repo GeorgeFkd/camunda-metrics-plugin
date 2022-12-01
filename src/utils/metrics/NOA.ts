@@ -1,3 +1,4 @@
+import Metric from "./Metric-Class";
 import { CalculateMetricFn } from "./utils";
 import { countStructuralElements as analyzeXMLString } from "./utils";
 const NOA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
@@ -16,4 +17,5 @@ const NOA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return result;
 };
 
-export default NOA;
+const NOAObj = new Metric("NOA", -1, NOA, ["Activities"]);
+export default NOAObj;

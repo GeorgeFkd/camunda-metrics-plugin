@@ -1,7 +1,7 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import { removeMetric } from "../../assets/categories";
-import evaluateMetricWithClass from "../../utils/evaluateMetricsClass";
-import { CategoriesHookContext } from "../../contexts/CategoriesContext";
+import { removeMetric } from "../assets/categories";
+import evaluateMetricWithClass from "../utils/evaluateMetricsClass";
+import { CategoriesHookContext } from "../contexts/CategoriesContext";
 
 export default function MetricLabel({ metric, pathInTree }) {
     const evaluateIn = pathInTree[pathInTree.length - 1];
@@ -41,3 +41,5 @@ export default function MetricLabel({ metric, pathInTree }) {
         </div>
     );
 }
+
+// <MetricLabel metric={metric} pathInTree={pathInTree} />

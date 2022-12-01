@@ -1,6 +1,7 @@
 import { BPMN_ELEMENTS } from "../../assets/constants";
 import { CalculateMetricFn, getGatewaysInDiagram } from "./utils";
 import xpath from "xpath";
+import Metric from "./Metric-Class";
 const GM: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     const gatewaysOfDiagram = getGatewaysInDiagram(xmlDoc);
     const xor_gateways = gatewaysOfDiagram.filter(
@@ -52,4 +53,5 @@ const GM: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return result;
 };
 
-export default GM;
+const GMObj = new Metric("GM", -1, GM, ["Gateways"]);
+export default GMObj;

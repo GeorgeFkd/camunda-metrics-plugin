@@ -1,7 +1,8 @@
 import { CalculateMetricFn, getGatewaysInDiagram } from "./utils";
 import TNG from "./TNG";
 import xpath from "xpath";
-const AGD: CalculateMetricFn<Document> = (xmlDoc: Document) => {
+import Metric from "./Metric-Class";
+function AGD(xmlDoc: Document): number {
     // const xmlElementsCount = countStructuralElements(xmlDoc);
     // const allTypesOfGateways = new Set(
     //     Array.from(xmlElementsCount.keys()).filter((bpmnElement) => {
@@ -28,9 +29,11 @@ const AGD: CalculateMetricFn<Document> = (xmlDoc: Document) => {
         },
         0
     );
-    const sum = sumOfIncomingOutgoingOfGateways / (TNG(xmlDoc) as number);
+    const sum =
+        sumOfIncomingOutgoingOfGateways / (TNG.calculateFn(xmlDoc) as number);
 
     return sum;
-};
+}
 
-export default AGD;
+const AGDObj: Metric = new Metric("AGD", -1, AGD, ["Gateways"]);
+export default AGDObj;

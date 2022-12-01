@@ -8,11 +8,13 @@ import calculateAllMetrics, {
 import CalculateAllMetricsOptimized from "../utils/CalculateAllMetricsCombined";
 //needs the .jsx for some reason
 import MetricsApp from "./MetricsApp";
-
+import "./App.css";
+import CamundaContext from "../contexts/CamundaContext";
 const CLICKED_BTN_WITH_WINDOW_CLOSED = "NOT_OPEN_WINDOW";
 const CLICKED_BTN_WITH_WINDOW_OPEN = "OPEN_WINDOW";
 const DATA_FETCHED = "FETCHED_DATA";
 export default function MetricsPlugin(props) {
+    console.log(props, "might be good for context");
     const { config, subscribe } = props;
     const [state, dispatch] = React.useReducer(reducer, {
         open: false,
@@ -116,6 +118,7 @@ export default function MetricsPlugin(props) {
     return (
         <React.Fragment>
             {/* yparxei kai to slot toolbar */}
+
             <Fill slot="status-bar__app" group="1_autosave" priority={100}>
                 <button
                     className="show-metricsPlugin-button"
@@ -127,11 +130,15 @@ export default function MetricsPlugin(props) {
 
             {state.open
                 ? render(
-                      <MetricsApp
-                          data={state.analysisData}
-                          xmlFile={state.xmlData}
-                          calculatedMetrics={state.metrics}
-                      />,
+                      <CamundaContext.Provider
+                          value={{ subscribeToCamundaEvent: subscribe }}
+                      >
+                          <MetricsApp
+                              data={state.analysisData}
+                              xmlFile={state.xmlData}
+                              calculatedMetrics={state.metrics}
+                          />
+                      </CamundaContext.Provider>,
                       document.getElementById("table-root")
                   )
                 : null}

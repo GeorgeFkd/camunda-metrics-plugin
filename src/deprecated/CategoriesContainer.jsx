@@ -1,6 +1,6 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import { removeCategory } from "../../assets/categories";
-import { CategoriesHookContext } from "../../contexts/CategoriesContext";
+import { removeCategory } from "../assets/categories";
+import { CategoriesHookContext } from "../contexts/CategoriesContext";
 import CategoryTree from "./CategoryTree";
 
 //? THELW NA VALW STO KENTRO THN KATHGORIA

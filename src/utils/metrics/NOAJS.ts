@@ -1,9 +1,11 @@
 import { CalculateMetricFn } from "./utils";
 import NOA from "./NOA";
 import TNG from "./TNG";
+import Metric from "./Metric-Class";
 const NOAJS: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     //!correct
-    return NOA(xmlDoc) + TNG(xmlDoc);
+    return NOA.calculateFn(xmlDoc) + TNG.calculateFn(xmlDoc);
 };
 
-export default NOAJS;
+const NOAJSObj = new Metric("NOAJS", -1, NOAJS, ["Activities"]);
+export default NOAJSObj;

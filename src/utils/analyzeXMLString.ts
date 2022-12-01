@@ -42,18 +42,18 @@ export default function calculateAllMetrics(
         "XML DATA COUNT",
         analyzeXMLString(parsedXmlDocument)
     );
-    computedMetricsMap.set("AGD", Metrics.AGD(parsedXmlDocument).toFixed(2));
-    computedMetricsMap.set("MGD", Metrics.MGD(parsedXmlDocument));
-    computedMetricsMap.set("NSFA", Metrics.NSFA(parsedXmlDocument));
-    computedMetricsMap.set("NOA", Metrics.NOA(parsedXmlDocument));
-    computedMetricsMap.set("NOAJS", Metrics.NOAJS(parsedXmlDocument));
-    computedMetricsMap.set("NSFG", Metrics.NSFG(parsedXmlDocument));
-    computedMetricsMap.set("CLA", Metrics.CLA(parsedXmlDocument).toFixed(2));
-    computedMetricsMap.set("GH", Metrics.GH(parsedXmlDocument).toFixed(2));
-    computedMetricsMap.set("TS", Metrics.TS(parsedXmlDocument));
-    computedMetricsMap.set("GM", Metrics.GM(parsedXmlDocument));
-    computedMetricsMap.set("CFC", Metrics.CFC(parsedXmlDocument));
-    computedMetricsMap.set("TNG", Metrics.TNG(parsedXmlDocument));
+    // computedMetricsMap.set("AGD", Metrics.AGD(parsedXmlDocument).toFixed(2));
+    // computedMetricsMap.set("MGD", Metrics.MGD(parsedXmlDocument));
+    // computedMetricsMap.set("NSFA", Metrics.NSFA(parsedXmlDocument));
+    // computedMetricsMap.set("NOA", Metrics.NOA(parsedXmlDocument));
+    // computedMetricsMap.set("NOAJS", Metrics.NOAJS(parsedXmlDocument));
+    // computedMetricsMap.set("NSFG", Metrics.NSFG(parsedXmlDocument));
+    // computedMetricsMap.set("CLA", Metrics.CLA(parsedXmlDocument).toFixed(2));
+    // computedMetricsMap.set("GH", Metrics.GH(parsedXmlDocument).toFixed(2));
+    // computedMetricsMap.set("TS", Metrics.TS(parsedXmlDocument));
+    // computedMetricsMap.set("GM", Metrics.GM(parsedXmlDocument));
+    // computedMetricsMap.set("CFC", Metrics.CFC(parsedXmlDocument));
+    // computedMetricsMap.set("TNG", Metrics.TNG(parsedXmlDocument));
     return computedMetricsMap;
 }
 console.log("HERE CMON");

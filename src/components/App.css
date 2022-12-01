@@ -1,0 +1,34 @@
+/* there is sth like a transition going on here */
+
+
+.show-metricsPlugin-button {
+    font-size: inherit;
+    color: inherit;
+    border: none;
+    /* background-color: var(--metrics-plugin-open-plugin-button-color); */
+    background-color: inherit;
+}
+
+.show-metricsPlugin-button:hover{
+    background-color: var(--tab-action-hover-background-color);
+}
+
+.show-metricsPlugin-button-active {
+    background-color: var(--tab-action-active-background-color) !important;
+}
+
+.toggle-hide-show {
+    display: none !important;
+}
+
+.app-container {
+    width: 100%;
+    height: 275px;
+    z-index: 105;
+    border-top: solid 1px var(--log-resizer-border-color);
+    /* border-top: black solid 2px; */
+    padding: 1rem;
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: space-around;
+}

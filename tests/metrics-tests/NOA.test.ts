@@ -5,7 +5,7 @@ import { DOMParser } from "xmldom";
 describe("should be able to calculate NOA", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     it("should produce NOA(sample-188) = ", () => {
-        const result = parseFloat(NOA(parsedDocument).toFixed(2));
+        const result = parseFloat(NOA.calculateFn(parsedDocument).toFixed(2));
 
         expect(result).toEqual(expectedNOA);
     });

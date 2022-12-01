@@ -4,7 +4,7 @@ import { DOMParser } from "xmldom";
 describe("should be able to calculate MGD", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     it("should produce MGD(sample-188) = ", () => {
-        const result = MGD(parsedDocument);
+        const result = MGD.calculateFn(parsedDocument);
 
         expect(result).toEqual(expectedMGD);
     });

@@ -1,3 +1,4 @@
+import Metric from "./Metric-Class";
 import { countStructuralElements } from "./utils";
 import { CalculateMetricFn } from "./utils";
 const TNG: CalculateMetricFn<Document> = (xmlDoc: Document) => {
@@ -16,4 +17,5 @@ const TNG: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return result;
 };
 
-export default TNG;
+const TNGObj = new Metric("TNG", -1, TNG, ["Gateways"]);
+export default TNGObj;

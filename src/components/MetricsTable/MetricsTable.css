@@ -1,0 +1,67 @@
+.metrics-table-title {
+    font-size: 2rem;
+    font-weight: 900;
+    width: fit-content;
+    padding: 0 0.5rem;
+}
+
+.metrics-container {
+    flex: 2;
+    padding-left: 1rem;
+    border-right: solid 2px var(--metricsplugin-container-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.metric-element {
+    display: flex;
+    align-items: center;
+    font-size: 1.35rem;
+    padding: 4px;
+    border: solid 2px black;
+    border-top: none;
+}
+.metrics-table {
+     display: flex;
+     flex-direction: row;
+
+     max-height: 150px;
+ }
+
+
+.metrics-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: black 1px solid;
+    font-size: 1.25rem;
+}
+
+.metrics-wrapper-title {
+    display: flex;
+    width: 100%;
+    column-gap: 0.5rem;
+    border-bottom: black 2px solid;
+
+    /* // text-align: center; */
+}
+
+.metrics-wrapper-title-name {
+    margin: 0 auto;
+}
+
+.metrics-wrapper-title-remove {
+    margin-right: auto;
+}
+
+.metrics-wrapper-children {
+    padding-top: 0.75rem;
+    padding:0.5rem;
+    display: flex;
+    /* //flex-direction: column;
+    //flex-wrap: wrap; */
+    flex-flow: row wrap;
+    overflow-y: auto;
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
+}
