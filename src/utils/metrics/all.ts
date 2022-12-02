@@ -22,18 +22,18 @@ import CNC from "./CNC";
 //edw tha mporousa na kanw thn Metric class me -> result,label,calculateFN kai na ekana export ta objects
 console.log("AGD", AGD);
 export default [
-    AGD,
+    //AGD,
     CFC,
-    CLA,
-    GH,
-    MGD,
+    //CLA,
+    //GH,
+    //MGD,
     NOA,
     NOAJS,
-    NSFA,
-    NSFG,
-    TNG,
-    TS,
-    GM,
+    //NSFA,
+    //NSFG,
+    //TNG,
+    //TS,
+    //GM,
     DENSITY,
     CNC,
 ];
