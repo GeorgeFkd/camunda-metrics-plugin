@@ -11,6 +11,8 @@ import NSFA from "./NSFA";
 import NSFG from "./NSFG";
 import TNG from "./TNG";
 import TS from "./TS";
+import DENSITY from "./DENSITY";
+import CNC from "./CNC";
 // import { readdirSync } from "fs";
 // // const fs = window.require("fs");
 // console.log("not messed up yet");
@@ -19,7 +21,22 @@ import TS from "./TS";
 
 //edw tha mporousa na kanw thn Metric class me -> result,label,calculateFN kai na ekana export ta objects
 console.log("AGD", AGD);
-export default [AGD, CFC, CLA, GH, MGD, NOA, NOAJS, NSFA, NSFG, TNG, TS, GM];
+export default [
+    AGD,
+    CFC,
+    CLA,
+    GH,
+    MGD,
+    NOA,
+    NOAJS,
+    NSFA,
+    NSFG,
+    TNG,
+    TS,
+    GM,
+    DENSITY,
+    CNC,
+];
 // const metricObjects = arrOfMetrics.map((metricWithNameAndCalculateFn) => {
 //     return new Metric(
 //         metricWithNameAndCalculateFn.name,
