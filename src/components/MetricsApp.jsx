@@ -6,26 +6,24 @@ import { CategoriesHookContext } from "../contexts/CategoriesContext";
 import useCategories from "../hooks/useCategories";
 import { bpmnElementsToKeep } from "../assets/default-config";
 import styles from "./App.css";
-export default function MetricsApp({ data, xmlFile, calculatedMetrics }) {
+export default function MetricsApp({ xmlFile }) {
     //const globalCategoriesHook = useCategories(calculatedMetrics);
 
     // console.info("Inside Metrics App: ", data);
 
-    return (
+    const ToRender = (
         <div className={styles.appContainer}>
-            {data ? (
-                <React.Fragment>
-                    {/* <CategoriesHookContext.Provider
+            <React.Fragment>
+                {/* <CategoriesHookContext.Provider
                         value={globalCategoriesHook}
                     > */}
-                    <StatsTable data={data} />
+                <StatsTable />
 
-                    <MetricsTable xml={xmlFile} />
-                    {/* </CategoriesHookContext.Provider> */}
-                </React.Fragment>
-            ) : (
-                <div>Loading...</div>
-            )}
+                <MetricsTable xml={xmlFile} />
+                {/* </CategoriesHookContext.Provider> */}
+            </React.Fragment>
         </div>
     );
+
+    return ToRender;
 }

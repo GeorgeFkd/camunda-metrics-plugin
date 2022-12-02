@@ -1,9 +1,11 @@
 import React from "camunda-modeler-plugin-helpers/react";
+import { Spinner } from "../Spinner";
 import styles from "./StatsTable.css";
 export default function StatsTableElement({
     classForBpmnIcon,
     occurencesOfElementInDiagram,
 }) {
+    console.log(occurencesOfElementInDiagram, "occurrences");
     return (
         <div className={styles.elementComponent}>
             <div className={styles.elementDisplay}>
@@ -12,12 +14,20 @@ export default function StatsTableElement({
                     style={{ fontSize: "2rem" }}
                 ></span>
                 <span style={{ fontSize: "2rem" }}>&rarr;</span>
-                <span className={styles.elementCount}>
-                    {/* an kati den yparxei kan na to vgazei 0 */}
-                    {occurencesOfElementInDiagram
-                        ? occurencesOfElementInDiagram
-                        : 0}
-                </span>
+                {/* this will be loading */}
+
+                {/* {occurencesOfElementInDiagram ? } */}
+                <div className="container">
+                    {occurencesOfElementInDiagram === -1 ? (
+                        <div className={styles.spinnerContainer}>
+                            <Spinner />
+                        </div>
+                    ) : (
+                        <span className={styles.elementCount}>
+                            {occurencesOfElementInDiagram}
+                        </span>
+                    )}
+                </div>
             </div>
         </div>
     );

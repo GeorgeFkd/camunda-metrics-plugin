@@ -8,20 +8,67 @@ import { parser } from "../../assets/config";
 import useSubscribe from "../../hooks/useSubscribe";
 import styles from "./MetricsTable.css";
 import spinner from "./Spinner.css";
+import { Spinner } from "../Spinner";
+import CamundaContext from "../../contexts/CamundaContext";
+import { DOMParser } from "xmldom";
 // import MetricLabel from "../../deprecated/MetricLabel";
-function MetricsTable({ xml }: { xml: string }) {
-    //TODO auto me tis cathgories pou mou eipane
-    //epishs oi metrikes katatassontai kai se kathgories loipon
-    //i have to prepare my data
+// { xml }: { xml: string } props
+function MetricsTable() {
     //? explaining adding and removing Metrics/Categories
     //* to add/remove a metric we need the whole path to the metric
     //* to add/remove a category we need the path to the category above
     //* the category we want to remove(thats why for categories we dont need to add in path)
-    // useSubscribe("app.activeTabChanged",(dataFromEvent)=>{
-    //     console.log(dataFromEvent)
-    //     console.log("dem hooks")
-    //     return ;
-    // })
+    const [xmlDoc,setXmlDoc] = React.useState({});
+    const { triggerCamundaAction } = React.useCallback(
+        React.useContext(CamundaContext),
+        []
+    );
+    const parserRef = React.useRef(new DOMParser());
+    React.useEffect(() => {
+        //this is needed to trigger a rerender
+        //on the first mount so that i have subscribed to the events
+        //to actually react to them
+        console.log(triggerCamundaAction, "trig");
+        triggerCamundaAction("save").then((tab:any) => {
+            if (!tab) {
+                console.error("failed to save");
+            }
+            console.log("tab");
+        });
+    }, []);
+
+    useSubscribe("tab.saved", (dataFromEvent) => {
+        // console.log("dem hooks v2", dataFromEvent.tab);
+        console.log("tab was saved in Metrics table");
+        
+        if (dataFromEvent.tab.type === "empty") {
+            console.log("tab is empty do nothing");
+        } else {
+            const parsedDocument = parserRef.current.parseFromString(
+                dataFromEvent.tab.file.contents
+            );
+            // console.log(parsedDocument);
+            console.log("name of tab:",dataFromEvent.tab.name)
+            setXmlDoc(parsedDocument)
+            
+        }
+    });
+    useSubscribe("app.activeTabChanged", (dataFromEvent) => {
+        //console.log("dem hooks v2", dataFromEvent.activeTab.file.contents);
+        console.log("active Tab Changed in Metrics Table");
+        if (dataFromEvent.activeTab.type === "empty") {
+            console.log("tab is empty do nothing");
+        } else {
+            const parsedDocument = parserRef.current.parseFromString(
+                dataFromEvent.activeTab.file.contents
+            );
+            // console.log(parsedDocument);
+            console.log("name of tab",dataFromEvent.activeTab.name)
+            setXmlDoc(parsedDocument)
+        }
+    });
+
+    console.log("current doc",xmlDoc)
     return (
         <div className={styles.metricsContainer}>
             <MetricsTableTitle />
@@ -32,7 +79,7 @@ function MetricsTable({ xml }: { xml: string }) {
                     return (
                         <MetricGroupContainer
                             metricGroup={MetricGroup}
-                            xml={xml}
+                            xmlDoc={xmlDoc}
                         />
                     );
                 })}
@@ -46,13 +93,13 @@ function MetricsTableTitle({}) {
 }
 interface MetricGroupContainerProps {
     metricGroup: MetricGroup;
-    xml: string;
+    xmlDoc: Document;
 }
 const MetricGroupContainer = ({
     metricGroup,
-    xml,
+    xmlDoc,
 }: MetricGroupContainerProps) => {
-    const parsedDocument = parser.parseFromString(xml);
+    
     return (
         <div className={styles.metricsWrapper} style={{ height: "195px" }}>
             <div className={styles.metricsWrapperTitle}>
@@ -62,7 +109,7 @@ const MetricGroupContainer = ({
             </div>
             <div className={`${styles.metricsWrapperChildren}`}>
                 {metricGroup.metrics.map((metric) => (
-                    <MetricLabel metric={metric} xmlDoc={parsedDocument} />
+                    <MetricLabel metric={metric} xmlDoc={xmlDoc} />
                 ))}
             </div>
         </div>
@@ -76,15 +123,17 @@ const MetricLabel = ({
     metric: Metric;
     xmlDoc: Document;
 }) => {
-    const [metricResult, setMetricResult] = React.useState(-1);
     const [isLoading, setIsLoading] = React.useState(true);
+    const [result,setResult] = React.useState(metric.result)
     React.useEffect(() => {
         //here we calculate the metric,when it is loading display spinner
+        console.time("Metric: " + metric.label);
         setIsLoading(true);
-        //gotta see if this works
         metric.calculateAndUpdateResult(xmlDoc);
         setIsLoading(false);
-    }, [xmlDoc]);
+        setResult(metric.result);
+        console.timeEnd("Metric: " + metric.label)
+    },[xmlDoc]);
     return (
         <div className={styles.metricElement}>
             <span className="metric-element-name">{metric.label}: &nbsp;</span>
@@ -92,21 +141,12 @@ const MetricLabel = ({
                 <Spinner />
             ) : (
                 <span className="metric-element-result">
-                    {metric.result.toFixed(2)}
+                    {result.toFixed(2)}
                 </span>
             )}
         </div>
     );
 };
-console.log("css", spinner);
-const Spinner = () => {
-    return (
-        <div className={spinner.container}>
-            <div className={`${spinner.spin}`}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-        </div>
-    );
-};
-
 //for categoriescontainer and metricscontainer
 const RemoveElementBtn = ({ onClickFn }: { onClickFn: () => void }) => {
     return (

@@ -14,16 +14,12 @@ const CLICKED_BTN_WITH_WINDOW_OPEN = "OPEN_WINDOW";
 const DATA_FETCHED = "FETCHED_DATA";
 export default function MetricsPlugin(props) {
     console.log(props, "might be good for context");
-    const { config, subscribe } = props;
+    const { config, subscribe, triggerAction } = props;
     const [state, dispatch] = React.useReducer(reducer, {
         open: false,
         analysisData: new Map(),
         xmlData: "",
     });
-
-    React.useEffect(() => {
-        console.log("CURRENTLY CALCULATED METRICS", state.metrics);
-    }, [state.metrics]);
 
     function reducer(state, action) {
         //state.open apo to button clicked anoigokleinei to app
@@ -41,9 +37,9 @@ export default function MetricsPlugin(props) {
                 };
             }
             case DATA_FETCHED: {
-                console.time("XML analysis not combined");
-                const calculatedMetrics = calculateAllMetrics(action.payload);
-                console.timeEnd("XML analysis not combined");
+                // console.time("XML analysis not combined");
+                // const calculatedMetrics = calculateAllMetrics(action.payload);
+                // console.timeEnd("XML analysis not combined");
 
                 // console.time("XML analysis optimised");
                 // const calculatedMetrics = CalculateAllMetricsOptimized(
@@ -52,9 +48,9 @@ export default function MetricsPlugin(props) {
                 // console.timeEnd("XML analysis optimised");
                 return {
                     ...state,
-                    analysisData: calculatedMetrics.get("XML DATA COUNT"),
+                    //analysisData: calculatedMetrics.get("XML DATA COUNT"),
                     xmlData: action.payload,
-                    metrics: calculatedMetrics,
+                    //metrics: calculatedMetrics,
                 };
             }
         }
@@ -69,35 +65,8 @@ export default function MetricsPlugin(props) {
         rootDiv.id = "table-root";
         rootDiv.className = app_styles.toggleHideShow;
         statusBar.parentNode.insertBefore(rootDiv, statusBar);
-        function fetchData(xml) {
-            dispatch({ type: DATA_FETCHED, payload: xml });
-        }
-
-        subscribe("bpmn.modeler.created", (arg) => {
-            console.info("event modeler created", arg);
-            if (arg.tab.type === "empty") {
-                console.log("no diagram yet");
-            } else {
-                fetchData(arg.tab.file.contents);
-            }
-        });
-        subscribe("app.activeTabChanged", ({ activeTab }) => {
-            //this event is also fired when the app closes
-            console.info("event active tab changed", activeTab);
-            if (activeTab.type === "empty") {
-                console.log("byeeee");
-            } else {
-                fetchData(activeTab.file.contents);
-            }
-        });
-        subscribe("tab.saved", ({ tab }) => {
-            console.info("event tab.saved", tab);
-            if (tab.type === "empty") {
-                console.log("empty");
-            } else {
-                fetchData(tab.file.contents);
-            }
-        });
+        //if it is ever needed again i can bring back the subscribes here
+        //! it feels faster
     }, []);
 
     function toggleTable(button) {
@@ -130,12 +99,14 @@ export default function MetricsPlugin(props) {
             {state.open
                 ? render(
                       <CamundaContext.Provider
-                          value={{ subscribeToCamundaEvent: subscribe }}
+                          value={{
+                              subscribeToCamundaEvent: subscribe,
+                              triggerCamundaAction: triggerAction,
+                          }}
                       >
                           <MetricsApp
                               data={state.analysisData}
                               xmlFile={state.xmlData}
-                              calculatedMetrics={state.metrics}
                           />
                       </CamundaContext.Provider>,
                       document.getElementById("table-root")

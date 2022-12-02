@@ -22,6 +22,10 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
+//! solution: για κάθε ζευγάρι tasks βλέπω incoming του 1ου και outgoing του 2ου και αντίστροφα
+
+//! takes too long to calculate
+
 //! this stays?
 
 //!correct

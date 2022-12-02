@@ -85,8 +85,10 @@ export const elementNameIsConsideredActivity: (arg: string) => boolean = (
     elementName: string
 ) => {
     //first any exceptions
+
     if (typeof elementName !== "string")
         throw Error("element name supplied is not of type string");
+    if (elementName === "subProcess") return true;
     let thematches = elementName.match(/.*(T|t)ask$/g);
     if (thematches === null) return false;
     return thematches.length > 0;
