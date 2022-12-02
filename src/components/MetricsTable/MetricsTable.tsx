@@ -6,9 +6,10 @@ import { CATEGORIES, MetricGroup } from "../../assets/typed-constants";
 import CATEGORIES_WITH_METRICS from "../../utils/metrics/init_metrics";
 import { parser } from "../../assets/config";
 import useSubscribe from "../../hooks/useSubscribe";
-import styles from "./MetricsTable.css"
+import styles from "./MetricsTable.css";
+import spinner from "./Spinner.css";
 // import MetricLabel from "../../deprecated/MetricLabel";
-function MetricsTable({xml}:{xml:string}) {
+function MetricsTable({ xml }: { xml: string }) {
     //TODO auto me tis cathgories pou mou eipane
     //epishs oi metrikes katatassontai kai se kathgories loipon
     //i have to prepare my data
@@ -26,9 +27,14 @@ function MetricsTable({xml}:{xml:string}) {
             <MetricsTableTitle />
             <div className={styles.metricsTable}>
                 {/* FOR NOW IM GONNA SWITCH IT UP */}
-                
+
                 {CATEGORIES_WITH_METRICS.map((MetricGroup) => {
-                    return <MetricGroupContainer metricGroup={MetricGroup} xml={xml}/>;
+                    return (
+                        <MetricGroupContainer
+                            metricGroup={MetricGroup}
+                            xml={xml}
+                        />
+                    );
                 })}
             </div>
         </div>
@@ -38,14 +44,17 @@ function MetricsTable({xml}:{xml:string}) {
 function MetricsTableTitle({}) {
     return <div className={styles.metricsTableTitle}>BPMN Metrics</div>;
 }
-interface MetricGroupContainerProps{
-    metricGroup:MetricGroup;
-    xml:string
+interface MetricGroupContainerProps {
+    metricGroup: MetricGroup;
+    xml: string;
 }
-const  MetricGroupContainer = ({ metricGroup,xml }:MetricGroupContainerProps) => {
+const MetricGroupContainer = ({
+    metricGroup,
+    xml,
+}: MetricGroupContainerProps) => {
     const parsedDocument = parser.parseFromString(xml);
     return (
-        <div className={styles.metricsWrapper} style={{height:"195px"}}>
+        <div className={styles.metricsWrapper} style={{ height: "195px" }}>
             <div className={styles.metricsWrapperTitle}>
                 <span className={styles.metricsWrapperTitleName}>
                     {metricGroup.name}
@@ -53,42 +62,58 @@ const  MetricGroupContainer = ({ metricGroup,xml }:MetricGroupContainerProps) =>
             </div>
             <div className={`${styles.metricsWrapperChildren}`}>
                 {metricGroup.metrics.map((metric) => (
-                   <MetricLabel metric={metric} xmlDoc={parsedDocument}/> 
+                    <MetricLabel metric={metric} xmlDoc={parsedDocument} />
                 ))}
             </div>
         </div>
     );
-}
+};
 
-
-const MetricLabel = ({metric,xmlDoc}:{metric:Metric,xmlDoc:Document}) =>{
-    const [metricResult,setMetricResult] = React.useState(-1);
-    const [isLoading,setIsLoading] = React.useState(true);
-    React.useEffect(()=>{
+const MetricLabel = ({
+    metric,
+    xmlDoc,
+}: {
+    metric: Metric;
+    xmlDoc: Document;
+}) => {
+    const [metricResult, setMetricResult] = React.useState(-1);
+    const [isLoading, setIsLoading] = React.useState(true);
+    React.useEffect(() => {
         //here we calculate the metric,when it is loading display spinner
         setIsLoading(true);
         //gotta see if this works
         metric.calculateAndUpdateResult(xmlDoc);
         setIsLoading(false);
-        
-    },[xmlDoc])
-    return (<div className={styles.metricElement}>
-        <span className="metric-element-name">{metric.label}: &nbsp;</span>
-        {isLoading ? <Spinner /> :<span className="metric-element-result">{metric.result.toFixed(2)}</span>}
-    </div>);
-}
-
-const Spinner = () =>{
-    return (<div>Spin</div>)
-}
+    }, [xmlDoc]);
+    return (
+        <div className={styles.metricElement}>
+            <span className="metric-element-name">{metric.label}: &nbsp;</span>
+            {isLoading ? (
+                <Spinner />
+            ) : (
+                <span className="metric-element-result">
+                    {metric.result.toFixed(2)}
+                </span>
+            )}
+        </div>
+    );
+};
+console.log("css", spinner);
+const Spinner = () => {
+    return (
+        <div className={spinner.container}>
+            <div className={`${spinner.spin}`}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
+    );
+};
 
 //for categoriescontainer and metricscontainer
-const RemoveElementBtn = ({ onClickFn }:({onClickFn:()=>void}) ) => {
+const RemoveElementBtn = ({ onClickFn }: { onClickFn: () => void }) => {
     return (
         <button className="metrics-wrapper-title-remove" onClick={onClickFn}>
             X
         </button>
     );
-}
+};
 
 export default MetricsTable;
