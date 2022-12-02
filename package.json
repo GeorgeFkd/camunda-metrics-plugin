@@ -16,8 +16,8 @@
     "url": "git+https://github.com/GeorgeFkd/camunda-metrics-plugin.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "George Fkd",
+  "license": "CC-BY-NC-4.0",
   "bugs": {
     "url": "https://github.com/GeorgeFkd/camunda-metrics-plugin/issues"
   },

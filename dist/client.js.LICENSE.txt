@@ -24,10 +24,6 @@ object-assign
 
 //! //*[matches(local-name(),'.+Event')]
 
-//! solution: για κάθε ζευγάρι tasks βλέπω incoming του 1ου και outgoing του 2ου και αντίστροφα
-
-//! takes too long to calculate
-
 //! this stays?
 
 //!correct
