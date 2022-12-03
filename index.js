@@ -8,7 +8,7 @@
 // }
 
 module.exports = {
-    name: "Metrics-Plugin",
+    name: "Metrics-Plugin-lite",
     menu: "./menu/menu.js",
     // had to change it to import the new stuff
     style: "./dist/main.css",

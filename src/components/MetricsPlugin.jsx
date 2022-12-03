@@ -87,12 +87,12 @@ export default function MetricsPlugin(props) {
         <React.Fragment>
             {/* yparxei kai to slot toolbar */}
 
-            <Fill slot="status-bar__app" group="1_autosave" priority={100}>
+            <Fill slot="status-bar__file" group="3_autosave" priority={-5}>
                 <button
                     className={`${app_styles.showMetricsPluginButton}`}
                     onClick={({ target }) => toggleTable(target)}
                 >
-                    Metrics
+                    metrics
                 </button>
             </Fill>
 
