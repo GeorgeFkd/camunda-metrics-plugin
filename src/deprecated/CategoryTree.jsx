@@ -1,6 +1,6 @@
 import React from "camunda-modeler-plugin-helpers/react";
 import CategoriesContainer from "./CategoriesContainer";
-import MetricsContainer from "../components/MetricsTable/MetricsContainer";
+import MetricsContainer from "./MetricsContainer";
 
 // here there will be a warning
 //?explain the pathInTree thing

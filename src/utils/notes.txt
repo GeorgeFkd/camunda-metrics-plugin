@@ -31,3 +31,7 @@ ti kanoume me gateways poy exoun 1 incoming 1 outgoing?
                     xmlData: action.payload,
                     //metrics: calculatedMetrics,
                 };
+
+//* to add/remove a metric we need the whole path to the metric
+    //* to add/remove a category we need the path to the category above
+    //* the category we want to remove(thats why for categories we dont need to add in path)

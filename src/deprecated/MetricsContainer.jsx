@@ -1,7 +1,7 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import { removeCategory } from "../../assets/categories";
-import { CategoriesHookContext } from "../../contexts/CategoriesContext";
-import MetricLabel from "../../deprecated/MetricLabel.jsx";
+import { removeCategory } from "../assets/categories";
+import { CategoriesHookContext } from "../contexts/CategoriesContext";
+import MetricLabel from "./MetricLabel.jsx";
 
 export default function MetricsContainer({ category, breadth, pathInTree }) {
     const actualPath = pathInTree.slice(0, -1);

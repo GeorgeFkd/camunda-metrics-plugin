@@ -1,17 +1,9 @@
 import React from "camunda-modeler-plugin-helpers/react";
 import { render } from "react-dom";
 import { Fill } from "camunda-modeler-plugin-helpers/components";
-import calculateAllMetrics, {
-    analyzeXMLString,
-} from "../utils/analyzeXMLString";
-import CalculateAllMetricsOptimized from "../utils/CalculateAllMetricsCombined";
-//needs the .jsx for some reason
 import MetricsApp from "./MetricsApp";
 import app_styles from "./App.css";
 import CamundaContext from "../contexts/CamundaContext";
-const CLICKED_BTN_WITH_WINDOW_CLOSED = "NOT_OPEN_WINDOW";
-const CLICKED_BTN_WITH_WINDOW_OPEN = "OPEN_WINDOW";
-const DATA_FETCHED = "FETCHED_DATA";
 export default function MetricsPlugin(props) {
     console.log(props, "might be good for context");
     const { config, subscribe, triggerAction } = props;

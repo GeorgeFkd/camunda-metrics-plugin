@@ -30,14 +30,8 @@ object-assign
 
 //! takes too long to calculate
 
-//! this stays?
-
 //!correct
 
 //!not the best way will remove
-
-//!optimisation wise it gets it below 200ms
-
-//!same as all fns before, doesnt work for state setting
 
 //!this is temporary-> it wastes resources
