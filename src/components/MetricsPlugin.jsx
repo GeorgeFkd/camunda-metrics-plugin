@@ -15,48 +15,9 @@ const DATA_FETCHED = "FETCHED_DATA";
 export default function MetricsPlugin(props) {
     console.log(props, "might be good for context");
     const { config, subscribe, triggerAction } = props;
-    const [state, dispatch] = React.useReducer(reducer, {
-        open: false,
-        analysisData: new Map(),
-        xmlData: "",
-    });
-
-    function reducer(state, action) {
-        //state.open apo to button clicked anoigokleinei to app
-        //data fetched einai sta events pou prokaloun allagh sta dedomena
-        console.log(action.type);
-        switch (action.type) {
-            case CLICKED_BTN_WITH_WINDOW_CLOSED: {
-                return { ...state, open: true };
-            }
-            case CLICKED_BTN_WITH_WINDOW_OPEN: {
-                console.info("hiding app");
-                return {
-                    ...state,
-                    open: false,
-                };
-            }
-            case DATA_FETCHED: {
-                // console.time("XML analysis not combined");
-                // const calculatedMetrics = calculateAllMetrics(action.payload);
-                // console.timeEnd("XML analysis not combined");
-
-                // console.time("XML analysis optimised");
-                // const calculatedMetrics = CalculateAllMetricsOptimized(
-                //     action.payload
-                // );
-                // console.timeEnd("XML analysis optimised");
-                return {
-                    ...state,
-                    //analysisData: calculatedMetrics.get("XML DATA COUNT"),
-                    xmlData: action.payload,
-                    //metrics: calculatedMetrics,
-                };
-            }
-        }
-        throw Error("Unknown action " + action.type);
-    }
-
+    const [open, setOpen] = React.useState(false);
+    //old way: getting the subscribe function creating a huge state and passing it down
+    //new way: context for subscribe and then whoever wants to subscribes
     React.useEffect(() => {
         //pairnw thn bara katw katw,vazw ena element prin apo authn
         //kai ekei mesa kanw meta render ton pinaka me auta pou thelw(cant do sth cleaner yet)
@@ -65,28 +26,19 @@ export default function MetricsPlugin(props) {
         rootDiv.id = "table-root";
         rootDiv.className = app_styles.toggleHideShow;
         statusBar.parentNode.insertBefore(rootDiv, statusBar);
-        //if it is ever needed again i can bring back the subscribes here
-        //! it feels faster
     }, []);
 
     function toggleTable(button) {
         const container = document.getElementById("table-root");
         container.classList.toggle(app_styles.toggleHideShow);
         button.classList.toggle(app_styles.showMetricsPluginButtonActive);
-
-        if (!state.open) {
-            dispatch({ type: CLICKED_BTN_WITH_WINDOW_CLOSED });
-        } else {
-            dispatch({ type: CLICKED_BTN_WITH_WINDOW_OPEN });
-        }
+        setOpen((isOpen) => !isOpen);
     }
 
-    // shows a click me button at the bottom part of the app
-    console.log("why u running");
     return (
         <React.Fragment>
             {/* yparxei kai to slot toolbar */}
-
+            {/* // shows a click me button at the bottom part of the app */}
             <Fill slot="status-bar__app" group="1_autosave" priority={100}>
                 <button
                     className={`${app_styles.showMetricsPluginButton}`}
@@ -95,8 +47,7 @@ export default function MetricsPlugin(props) {
                     Metrics
                 </button>
             </Fill>
-
-            {state.open
+            {open
                 ? render(
                       <CamundaContext.Provider
                           value={{
@@ -104,10 +55,7 @@ export default function MetricsPlugin(props) {
                               triggerCamundaAction: triggerAction,
                           }}
                       >
-                          <MetricsApp
-                              data={state.analysisData}
-                              xmlFile={state.xmlData}
-                          />
+                          <MetricsApp />
                       </CamundaContext.Provider>,
                       document.getElementById("table-root")
                   )

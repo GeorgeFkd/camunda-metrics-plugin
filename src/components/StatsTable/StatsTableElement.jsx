@@ -4,10 +4,19 @@ import styles from "./StatsTable.css";
 export default function StatsTableElement({
     classForBpmnIcon,
     occurencesOfElementInDiagram,
+    onDragStart,
+    onDragOver,
+    onDrop,
 }) {
     console.log(occurencesOfElementInDiagram, "occurrences");
     return (
-        <div className={styles.elementComponent}>
+        <div
+            className={styles.elementComponent}
+            draggable="true"
+            onDragStart={onDragStart}
+            onDragOver={onDragOver}
+            onDrop={onDrop}
+        >
             <div className={styles.elementDisplay}>
                 <span
                     className={classForBpmnIcon}

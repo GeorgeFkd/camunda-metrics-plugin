@@ -6,3 +6,28 @@ performance expectations if possible:
 how can i make the app more predictable for you
 
 ti kanoume me gateways poy exoun 1 incoming 1 outgoing?
+
+//state.open apo to button clicked anoigokleinei to app
+        //data fetched einai sta events pou prokaloun allagh sta dedomena
+
+         // console.time("XML analysis not combined");
+                // const calculatedMetrics = calculateAllMetrics(action.payload);
+                // console.timeEnd("XML analysis not combined");
+
+                // console.time("XML analysis optimised");
+                // const calculatedMetrics = CalculateAllMetricsOptimized(
+                //     action.payload
+                // );
+                // console.timeEnd("XML analysis optimised");
+ return {
+                    ...state,
+                    //analysisData: calculatedMetrics.get("XML DATA COUNT"),
+                    xmlData: action.payload,
+                    //metrics: calculatedMetrics,
+                };
+                 return {
+                    ...state,
+                    //analysisData: calculatedMetrics.get("XML DATA COUNT"),
+                    xmlData: action.payload,
+                    //metrics: calculatedMetrics,
+                };

@@ -19,7 +19,7 @@ export default function MetricsApp({ xmlFile }) {
                     > */}
                 <StatsTable />
 
-                <MetricsTable xml={xmlFile} />
+                <MetricsTable />
                 {/* </CategoriesHookContext.Provider> */}
             </React.Fragment>
         </div>

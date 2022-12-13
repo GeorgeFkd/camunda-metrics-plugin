@@ -1,5 +1,5 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import { bpmnElementsDisplayed } from "../../assets/config";
+import { bpmnElementsDisplayed as bpmnElemsWithInitialOrder } from "../../assets/config";
 import { MAP_BPMN_ELEMENTS_TO_ICON_CLASSES } from "../../assets/constants";
 import StatsTableTitle from "./StatsTableTitle";
 import StatsTableElement from "./StatsTableElement";
@@ -14,6 +14,9 @@ function StatsTable() {
     const { triggerCamundaAction } = React.useCallback(
         React.useContext(CamundaContext),
         []
+    );
+    const [bpmnElementsToDisplay, setBpmnElementsToDisplay] = React.useState(
+        bpmnElemsWithInitialOrder
     );
 
     React.useEffect(() => {
@@ -57,11 +60,42 @@ function StatsTable() {
         }
     });
 
+    const onDragOverElement = (e) => {
+        //do sth
+        e.preventDefault();
+    };
+    const onDragStartElement = React.useCallback((e, order) => {
+        //do sth
+        console.log("drag start", order);
+        e.dataTransfer.setData("order", order);
+    }, []);
+    const onDropElement = React.useCallback(
+        (e, oldOrder) => {
+            //do sth
+            const newOrder = parseInt(e.dataTransfer.getData("order"));
+            console.log("to drop:", newOrder);
+            console.log("to switch with", oldOrder);
+            console.log("pre switch", xmlStructuralElems);
+            if (!bpmnElementsToDisplay) return;
+            const newElems = bpmnElementsToDisplay.map((elem) => {
+                if (elem.order === newOrder)
+                    return { ...elem, order: oldOrder };
+                if (elem.order === oldOrder)
+                    return { ...elem, order: newOrder };
+                return elem;
+            });
+            console.log("new state", newElems);
+            //console.log(newOrd)
+            setBpmnElementsToDisplay(newElems);
+        },
+        [bpmnElementsToDisplay]
+    );
+    //! probably the onDragStart and onDragOver should be here
     return (
         <div className={styles.statsTableContainer}>
             <StatsTableTitle title="Structural Elements Count" />
             <div className={styles.statsTableElementsContainer}>
-                {bpmnElementsDisplayed
+                {bpmnElementsToDisplay
                     .sort((a, b) => a.order - b.order)
                     .map((bpmnEl, idx) => {
                         //could make a conditional if there is icon and if there isnt
@@ -84,6 +118,13 @@ function StatsTable() {
                         return (
                             <React.Fragment>
                                 <StatsTableElement
+                                    onDragOver={(e) => onDragOverElement(e)}
+                                    onDragStart={(e) =>
+                                        onDragStartElement(e, bpmnEl.order)
+                                    }
+                                    onDrop={(e) =>
+                                        onDropElement(e, bpmnEl.order)
+                                    }
                                     key={`stats-table-element-${idx}`}
                                     classForBpmnIcon={bpmnEl.iconClassname}
                                     occurencesOfElementInDiagram={result}
