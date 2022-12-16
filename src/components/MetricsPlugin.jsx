@@ -7,9 +7,11 @@ import CamundaContext from "../contexts/CamundaContext";
 export default function MetricsPlugin(props) {
     console.log(props, "might be good for context");
     const { config, subscribe, triggerAction } = props;
+
     const [open, setOpen] = React.useState(false);
     //old way: getting the subscribe function creating a huge state and passing it down
     //new way: context for subscribe and then whoever wants to subscribes
+    console.log("hello");
     React.useEffect(() => {
         //pairnw thn bara katw katw,vazw ena element prin apo authn
         //kai ekei mesa kanw meta render ton pinaka me auta pou thelw(cant do sth cleaner yet)
@@ -33,7 +35,7 @@ export default function MetricsPlugin(props) {
             {/* // shows a click me button at the bottom part of the app */}
             <Fill slot="status-bar__app" group="1_autosave" priority={100}>
                 <button
-                    className={`${app_styles.showMetricsPluginButton}`}
+                    className={app_styles.showMetricsPluginButton}
                     onClick={({ target }) => toggleTable(target)}
                 >
                     Metrics

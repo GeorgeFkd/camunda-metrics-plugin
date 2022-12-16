@@ -8,7 +8,7 @@ export default class Metric {
         public readonly label: string,
         public readonly nullValue: number,
         public readonly calculateFn: CalculateMetricFn<Document>,
-        public readonly displayInGroups: Group[]
+        public readonly displayInGroups: string[]
     ) {
         this.label = label;
         this._result = nullValue;

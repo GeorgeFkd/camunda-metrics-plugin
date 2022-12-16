@@ -40,6 +40,7 @@ enum MODIFIABILITY_EVALUATIONS {
     VERY_EASY_TO_MODIFY = "very easy to modify",
 }
 
+//more like default groups
 export type Group = "Gateways" | "Events" | "Activities" | "Flow";
 
 enum CORRECTNESS_EVALUATIONS {
@@ -51,4 +52,6 @@ export interface MetricGroup {
     name: string;
     metrics: Metric[];
 }
+
+//i dont use this bcs new categories can be added
 export const CATEGORIES: Group[] = ["Gateways", "Activities", "Flow"];

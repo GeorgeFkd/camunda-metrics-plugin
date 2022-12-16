@@ -31,7 +31,45 @@ ti kanoume me gateways poy exoun 1 incoming 1 outgoing?
                     xmlData: action.payload,
                     //metrics: calculatedMetrics,
                 };
-
+//? explaining adding and removing Metrics/Categories
 //* to add/remove a metric we need the whole path to the metric
     //* to add/remove a category we need the path to the category above
     //* the category we want to remove(thats why for categories we dont need to add in path)
+//!this will be used for pools as warning
+    // props.displayNotification({
+    //     title: "giannhs",
+    //     type: "warning",
+    //     content: "oh my god",
+    //     duration: 6000,
+    // });
+    props.log("hello");
+
+
+    // 'app:quit-aborted',
+//   'app:quit-allowed',
+//   'client:error',
+//   'client:ready',
+//   'config:get',
+//   'config:set',
+//   'context-menu:open',
+//   'dialog:open-file-error',
+//   'dialog:open-file-explorer',
+//   'dialog:open-files',
+//   'dialog:save-file',
+//   'dialog:show',
+//   'errorTracking:turnedOff',
+//   'errorTracking:turnedOn',
+//   'external:open-url',
+//   'file:read',
+//   'file:read-stats',
+//   'file:write',
+//   'menu:register',
+//   'menu:update',
+//   'system-clipboard:write-text',
+//   'toggle-plugins',
+//   'workspace:restore',
+//   'workspace:save',
+//   'zeebe:checkConnection',
+//   'zeebe:deploy',
+//   'zeebe:getGatewayVersion',
+//   'zeebe:run'

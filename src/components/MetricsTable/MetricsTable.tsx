@@ -13,16 +13,24 @@ import CamundaContext from "../../contexts/CamundaContext";
 import { DOMParser } from "xmldom";
 import MetricLabel from "./MetricLabel";
 import MetricGroupContainer from "./MetricGroupContainer";
+import CustomOverlay from "../ModifyGroupsOverlay";
 // import MetricLabel from "../../deprecated/MetricLabel";
 // { xml }: { xml: string } props
 function MetricsTable() {
-    //? explaining adding and removing Metrics/Categories
-    
+    //!HOW WILL THE CONFIGURE GROUPS THING WORK
+    //here there will be a state with initial one the default
+    //this state will be passed to the overlay
+    //the overlay will return sth
+    //this sth will reflect back on state
+
     const [xmlDoc, setXmlDoc] = React.useState({});
     const { triggerCamundaAction } = React.useCallback(
         React.useContext(CamundaContext),
         []
     );
+    const [metricGroups,setMetricGroups] = React.useState(CATEGORIES_WITH_METRICS)
+    const [configOpen, setConfigOpen] = React.useState(false);
+    const titleRef = React.useRef(null);
     const parserRef = React.useRef(new DOMParser());
     //? some attention to this somewhen
     React.useEffect(() => {
@@ -55,13 +63,36 @@ function MetricsTable() {
         setXmlDoc(parsedDocument);
     });
 
+    function updateGroups(newGroups:MetricGroup[]){
+        setMetricGroups(newGroups)
+    }
+
     console.log("current doc", xmlDoc);
     return (
         <div className={styles.metricsContainer}>
+            {/*TODO-> PUT HEADER HERE THAT CONTAINS THE TITLE THE CONFIGURE GROUPS AND THE COPY TO CLIPBOARD */}
+            <div className={styles.metricsHeader}>
+            
             <MetricsTableTitle />
+            <button
+                ref={titleRef}
+                onClick={() => setConfigOpen((prev: boolean) => !prev)}
+                >
+                Configure Groups
+            </button>
+                </div>
+            {configOpen && (
+                <CustomOverlay
+                    anchor={titleRef.current}
+                    existingGroups={metricGroups}
+                    onClose={() => setConfigOpen(false)}
+                    onSubmit={updateGroups}
+                />
+            )}
+
             <div className={styles.metricsTable}>
                 {/* this will soon be context */}
-                {CATEGORIES_WITH_METRICS.map((MetricGroup) => {
+                {metricGroups.map((MetricGroup:MetricGroup) => {
                     return (
                         <MetricGroupContainer
                             metricGroup={MetricGroup}
@@ -75,6 +106,9 @@ function MetricsTable() {
 }
 
 function MetricsTableTitle({}) {
+    const [configOpen, setConfigOpen] = React.useState(false);
+    const titleRef = React.useRef(null);
+
     return <div className={styles.metricsTableTitle}>BPMN Metrics</div>;
 }
 

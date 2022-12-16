@@ -1,33 +1,36 @@
-const isDev = true;
-const {
-    default: installExtension,
-    REACT_DEVELOPER_TOOLS,
-} = require("electron-devtools-installer");
-const reactDevTools = require("electron-react-devtools");
-reactDevTools.install();
+// const isDev = true;
+// const {
+//     default: installExtension,
+//     REACT_DEVELOPER_TOOLS,
+// } = require("electron-devtools-installer");
+// const reactDevTools = require("electron-react-devtools");
+// reactDevTools.install();
+//!this works
+const electron = require("electron");
+// function getAuth_edClient() {
+//     return new Promise((resolve, reject) => {
+//         const oAuth2Client = new OAuth2Client(
+//             keys.client_id,
+//             keys.client_secret
+//             //keys.redirect_uris[0]
+//         );
+//         const authorizeUrl = oAuth2Client.generateAuthUrl({
+//             access_type: "offline",
+//             scope: "https://www.googleapis.com/auth/drive",
+//         });
+
+//         console.log("hello");
+//         //open(authorizeUrl, { wait: false }).then((cp) => cp.unref());
+//     });
+// }
+
 module.exports = function (electronApp, menuState) {
     return [
         {
             label: "Configure Categories",
             accelerator: "j",
             enabled: () => menuState.bpmn && menuState.platform === "platform",
-            action: function () {
-                // console.info(electronApp);
-                //reactDevTools.install();
-                console.info(electronApp.remote.process.pid);
-                // electronApp.on("menu:action", async () => {
-                //     console.info("inside event");
-                //     if (isDev) {
-                //         await installExtension([REACT_DEVELOPER_TOOLS])
-                //             .then((name) =>
-                //                 console.info("Added extension ", name)
-                //             )
-                //             .catch((err) =>
-                //                 console.info("An error occurred", err)
-                //             );
-                //     }
-                // });
-            },
+            action: async function () {},
         },
     ];
 };
