@@ -1,0 +1,43 @@
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+
+.metricGroup{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.metricDropdown{
+   padding:0.25rem;
+   
+}
+
+.dropdown{
+    display: flex;
+    flex-direction: column;
+    border:solid 2px grey;
+    padding:0.25rem;
+}
+
+.dropdownLabel{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dropdownOptions{
+    display: flex;
+    flex-direction:column;
+    height:7rem;
+    width:6rem;
+    overflow-y: auto;
+}
+
+.dropdownOption{
+    display: flex;
+    align-items: center;
+}
