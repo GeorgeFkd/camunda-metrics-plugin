@@ -32,6 +32,8 @@ object-assign
 
 //! takes too long to calculate
 
+//! watch out for this
+
 //!HOW WILL THE CONFIGURE GROUPS THING WORK
 
 //!correct

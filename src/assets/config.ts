@@ -77,24 +77,16 @@ export const bpmnElementsDisplayed = [
         xmlTagName: BPMN_ELEMENTS.USER_TASK,
         order: 7,
     },
-    // { iconClassname: "gateway-xor", xmlTagName: "exclusiveGateway", order: 1 },
-    // { iconClassname: "gateway-xor", xmlTagName: "exclusiveGateway", order: 1 },
-];
-
-export const bpmnElementsToKeep = [
-    //main
-    "task",
-    "manualTask",
-    "sequenceFlow",
-    //gateways
-    "exclusiveGateway",
-    "inclusiveGateway",
-    "parallelGateway",
-    //task types
-    "userTask",
-    "businessRuleTask",
-    "serviceTask",
-    "scriptTask",
+    {
+        iconClassname: "bpmn-icon-participant",
+        xmlTagName: BPMN_ELEMENTS.POOL,
+        order: 11,
+    },
+    {
+        iconClassname: "bpmn-icon-data-object",
+        xmlTagName: BPMN_ELEMENTS.DATA_OBJECT,
+        order: 12,
+    },
 ];
 
 export const parser = new DOMParser();

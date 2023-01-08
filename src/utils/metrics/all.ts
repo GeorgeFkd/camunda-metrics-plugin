@@ -13,6 +13,8 @@ import TNG from "./TNG";
 import TS from "./TS";
 import DENSITY from "./DENSITY";
 import CNC from "./CNC";
+import NMF from "./NMF";
+import NSFE from "./NSFE";
 // import { readdirSync } from "fs";
 // // const fs = window.require("fs");
 // console.log("not messed up yet");
@@ -36,6 +38,8 @@ export default [
     GM,
     DENSITY,
     CNC,
+    NMF,
+    NSFE,
 ];
 // const metricObjects = arrOfMetrics.map((metricWithNameAndCalculateFn) => {
 //     return new Metric(

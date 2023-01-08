@@ -13,8 +13,6 @@
 }
 
 
-/* note sass as npm package is slower */
-
 /* not supported in firefox or in edge prior version 79 */
 /* ::-webkit-scrollbar{
     width:8px;

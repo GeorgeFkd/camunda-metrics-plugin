@@ -8,6 +8,7 @@ import CamundaContext from "../../contexts/CamundaContext";
 import useSubscribe from "../../hooks/useSubscribe";
 import { countStructuralElements } from "../../utils/metrics/utils";
 import { DOMParser } from "xmldom";
+
 function StatsTable() {
     const [xmlStructuralElems, setXmlStructuralElems] = React.useState(null);
     const parserRef = React.useRef(new DOMParser());

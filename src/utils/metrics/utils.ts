@@ -16,6 +16,11 @@ export const getBranchesOfGateNode = (node: Node): number => {
     return xpathRes.length;
 };
 
+export const getOutgoingFlowsOfNode = (node: Node): number => {
+    const xpathRes = xpath.select("./*[local-name()='outgoing']", node);
+    return xpathRes.length;
+};
+
 export const findSplitNodesOfGate = (xml: Document, gateName: string) => {
     return xpath.select(
         `//*[local-name()='${gateName}'][count(./*[local-name()='outgoing'])>1]`,
@@ -81,6 +86,14 @@ function BpmnTagsCountOccurences(
     return result;
 }
 
+export const getEventsInDiagram = (xmlDoc: Document): Node[] => {
+    const xpathRes = xpath.select(
+        "//*[matches(local-name(),'.+Event$')]",
+        xmlDoc
+    ) as Node[];
+    return xpathRes;
+};
+
 export const elementNameIsConsideredActivity: (arg: string) => boolean = (
     elementName: string
 ) => {
@@ -88,7 +101,8 @@ export const elementNameIsConsideredActivity: (arg: string) => boolean = (
 
     if (typeof elementName !== "string")
         throw Error("element name supplied is not of type string");
-    if (elementName === "subProcess") return true;
+    //! watch out for this
+    //if (elementName === "subProcess") return true;
     let thematches = elementName.match(/.*(T|t)ask$/g);
     if (thematches === null) return false;
     return thematches.length > 0;
