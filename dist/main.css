@@ -106,6 +106,7 @@ metrics-plugin-font-size */
     display: flex;
     align-items: center;
     justify-content: start;
+    column-gap:1rem;
 }
 .LaJ0JUQDNWM6LnKjTVPs {
      display: flex;

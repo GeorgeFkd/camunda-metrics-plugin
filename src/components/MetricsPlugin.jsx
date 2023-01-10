@@ -6,12 +6,12 @@ import app_styles from "./App.css";
 import CamundaContext from "../contexts/CamundaContext";
 export default function MetricsPlugin(props) {
     console.log(props, "might be good for context");
-    const { config, subscribe, triggerAction } = props;
+    const { config, subscribe, triggerAction, displayNotification } = props;
 
     const [open, setOpen] = React.useState(false);
     //old way: getting the subscribe function creating a huge state and passing it down
     //new way: context for subscribe and then whoever wants to subscribes
-    console.log("hello");
+
     React.useEffect(() => {
         //pairnw thn bara katw katw,vazw ena element prin apo authn
         //kai ekei mesa kanw meta render ton pinaka me auta pou thelw(cant do sth cleaner yet)
@@ -47,6 +47,7 @@ export default function MetricsPlugin(props) {
                           value={{
                               subscribeToCamundaEvent: subscribe,
                               triggerCamundaAction: triggerAction,
+                              displayNotification: displayNotification,
                           }}
                       >
                           <MetricsApp />

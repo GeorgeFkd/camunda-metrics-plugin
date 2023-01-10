@@ -1,4 +1,4 @@
-import React from "camunda-modeler-plugin-helpers/react";
+import React from "react";
 import { Overlay, Section } from "camunda-modeler-plugin-helpers/components";
 import styles from "./Overlay.css";
 import availableMetrics from "../../utils/metrics/all";
@@ -6,7 +6,7 @@ import { MetricGroup } from "../../assets/typed-constants";
 import Metric from "../../utils/metrics/Metric-Class";
 const OFFSET = { left: 0 };
 interface ConfigureMetricsOverlayProps {
-    anchor: HTMLElement;
+    anchor: HTMLElement | HTMLButtonElement | null;
     onClose: () => void;
     existingGroups: MetricGroup[];
     onSubmit: (finalObj: MetricGroup[]) => void;
@@ -138,7 +138,8 @@ function EditGroup({ group, onChangeSelect, onRemoveGroup }: EditGroupProps) {
     const ref = React.useRef(null);
     React.useEffect(() => {
         if (isBeingEdited) {
-            ref.current.focus();
+            
+            //ref.current.focus();
         }
     }, [isBeingEdited]);
     function groupHasMetricWithName(MGroup:MetricGroup,metricName: string) {
@@ -183,7 +184,7 @@ function EditGroup({ group, onChangeSelect, onRemoveGroup }: EditGroupProps) {
                 name={nameOfGroup}
                 multiple
                 required
-                onChange={(e) => onChangeSelect(e, nameOfGroup)}
+                onChange={(e) => onChangeSelect(e, group)}
             >
                 <option value="">Select Metrics:</option>
                 {availableMetrics.map((metric) => {

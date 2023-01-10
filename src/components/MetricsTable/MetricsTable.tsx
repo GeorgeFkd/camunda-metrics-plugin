@@ -1,50 +1,35 @@
-import React from "camunda-modeler-plugin-helpers/react";
-import { CategoriesHookContext } from "../../contexts/CategoriesContext";
-import CategoryTree from "../../deprecated/CategoryTree";
-import Metric from "../../utils/metrics/Metric-Class";
-import { CATEGORIES, MetricGroup } from "../../assets/typed-constants";
+import React from "react";
+import { MetricGroup } from "../../assets/typed-constants";
 import CATEGORIES_WITH_METRICS from "../../utils/metrics/init_metrics";
-import { parser } from "../../assets/config";
 import useSubscribe from "../../hooks/useSubscribe";
 import styles from "./MetricsTable.css";
-import spinner from "./Spinner.css";
-import { Spinner } from "../Spinner";
 import CamundaContext from "../../contexts/CamundaContext";
 import { DOMParser } from "xmldom";
-import MetricLabel from "./MetricLabel";
 import MetricGroupContainer from "./MetricGroupContainer";
 import CustomOverlay from "../ModifyGroupsOverlay";
-// import MetricLabel from "../../deprecated/MetricLabel";
-// { xml }: { xml: string } props
+import CopyResultsButton from "./CopyResultsButton";
 function MetricsTable() {
-    //!HOW WILL THE CONFIGURE GROUPS THING WORK
-    //here there will be a state with initial one the default
-    //this state will be passed to the overlay
-    //the overlay will return sth
-    //this sth will reflect back on state
 
-    const [xmlDoc, setXmlDoc] = React.useState({});
-    const { triggerCamundaAction } = React.useCallback(
-        React.useContext(CamundaContext),
-        []
-    );
+    const [xmlDoc, setXmlDoc] = React.useState<Document>(new Document());
+    const { triggerCamundaAction } = 
+        React.useContext(CamundaContext)
     const [metricGroups,setMetricGroups] = React.useState(CATEGORIES_WITH_METRICS)
     const [configOpen, setConfigOpen] = React.useState(false);
-    const titleRef = React.useRef(null);
+    const titleRef = React.useRef<HTMLButtonElement>(null);
     const parserRef = React.useRef(new DOMParser());
     //? some attention to this somewhen
-    React.useEffect(() => {
-        //this is needed to trigger a rerender
-        //on the first mount so that i have subscribed to the events
-        //to actually react to them
-        console.log(triggerCamundaAction, "trig");
-        triggerCamundaAction("save").then((tab: any) => {
-            if (!tab) {
-                console.error("failed to save");
-            }
-            console.log("tab");
-        });
-    }, []);
+    // React.useEffect(() => {
+    //     //this is needed to trigger a rerender
+    //     //on the first mount so that i have subscribed to the events
+    //     //to actually react to them
+    //     console.log(triggerCamundaAction, "trig");
+    //     triggerCamundaAction("save").then((tab: any) => {
+    //         if (!tab) {
+    //             console.error("failed to save");
+    //         }
+    //         console.log("tab");
+    //     });
+    // }, []);
 
     useSubscribe("tab.saved", (dataFromEvent) => {
         //console.log("tab was saved in Metrics table",dataFromEvent);
@@ -77,9 +62,11 @@ function MetricsTable() {
             <button
                 ref={titleRef}
                 onClick={() => setConfigOpen((prev: boolean) => !prev)}
+                className="btn btn-primary"
                 >
                 Configure Groups
             </button>
+             <CopyResultsButton xmlDoc={xmlDoc} metricGroups={metricGroups}/>
                 </div>
             {configOpen && (
                 <CustomOverlay
@@ -89,7 +76,7 @@ function MetricsTable() {
                     onSubmit={updateGroups}
                 />
             )}
-
+           
             <div className={styles.metricsTable}>
                 {/* this will soon be context */}
                 {metricGroups.map((MetricGroup:MetricGroup) => {

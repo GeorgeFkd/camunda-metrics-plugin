@@ -19,6 +19,7 @@
     display: flex;
     align-items: center;
     justify-content: start;
+    column-gap:1rem;
 }
 .metricsTable {
      display: flex;

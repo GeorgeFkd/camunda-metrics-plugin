@@ -34,8 +34,6 @@ object-assign
 
 //! watch out for this
 
-//!HOW WILL THE CONFIGURE GROUPS THING WORK
-
 //!correct
 
 //!not the best way will remove
