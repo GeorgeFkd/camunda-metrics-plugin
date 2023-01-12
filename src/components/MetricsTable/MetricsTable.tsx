@@ -8,51 +8,24 @@ import { DOMParser } from "xmldom";
 import MetricGroupContainer from "./MetricGroupContainer";
 import CustomOverlay from "../ModifyGroupsOverlay";
 import CopyResultsButton from "./CopyResultsButton";
+import useXmlFile from "../../hooks/useXmlFile";
 function MetricsTable() {
 
-    const [xmlDoc, setXmlDoc] = React.useState<Document>(new Document());
+    // const [xmlDoc, setXmlDoc] = React.useState<Document>(new Document());
+    const xmlFile = useXmlFile();
     const { triggerCamundaAction } = 
         React.useContext(CamundaContext)
     const [metricGroups,setMetricGroups] = React.useState(CATEGORIES_WITH_METRICS)
     const [configOpen, setConfigOpen] = React.useState(false);
     const titleRef = React.useRef<HTMLButtonElement>(null);
     const parserRef = React.useRef(new DOMParser());
-    //? some attention to this somewhen
-    // React.useEffect(() => {
-    //     //this is needed to trigger a rerender
-    //     //on the first mount so that i have subscribed to the events
-    //     //to actually react to them
-    //     console.log(triggerCamundaAction, "trig");
-    //     triggerCamundaAction("save").then((tab: any) => {
-    //         if (!tab) {
-    //             console.error("failed to save");
-    //         }
-    //         console.log("tab");
-    //     });
-    // }, []);
-
-    useSubscribe("tab.saved", (dataFromEvent) => {
-        //console.log("tab was saved in Metrics table",dataFromEvent);
-        if (dataFromEvent.tab.type === "empty") return;
-        const parsedDocument = parserRef.current.parseFromString(
-            dataFromEvent.tab.file.contents
-        );
-        setXmlDoc(parsedDocument);
-    });
-    useSubscribe("app.activeTabChanged", (dataFromEvent) => {
-        // console.log("active Tab Changed in Metrics Table",dataFromEvent);
-        if (dataFromEvent.activeTab.type === "empty") return;
-        const parsedDocument = parserRef.current.parseFromString(
-            dataFromEvent.activeTab.file.contents
-        );
-        setXmlDoc(parsedDocument);
-    });
-
+    const xmlDoc = xmlFile ? parserRef.current.parseFromString(xmlFile,"text/xml") : new Document();
+    React.useEffect(()=>{
+        triggerCamundaAction("save")
+    },[])
     function updateGroups(newGroups:MetricGroup[]){
         setMetricGroups(newGroups)
     }
-
-    console.log("current doc", xmlDoc);
     return (
         <div className={styles.metricsContainer}>
             {/*TODO-> PUT HEADER HERE THAT CONTAINS THE TITLE THE CONFIGURE GROUPS AND THE COPY TO CLIPBOARD */}
