@@ -28,6 +28,8 @@ const MetricLabel = ({
                 <Spinner />
             ) : (
                 <span className="metric-element-result">
+                    {metric.calculateAndUpdateResult(xmlDoc)}
+                    {console.log(`${metric.result.toFixed(2)}`)}
                     {result.toFixed(2)}
                 </span>
             )}

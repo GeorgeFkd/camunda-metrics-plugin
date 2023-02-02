@@ -7,11 +7,13 @@ import styles from "./StatsTable.css";
 import { countStructuralElements } from "../../utils/metrics/utils";
 import { DOMParser } from "xmldom";
 import useXmlFile from "../../hooks/useXmlFile";
+import useStore from "../../store/store";
 
+const parser = new DOMParser();
 function StatsTable() {
     const xmlFile = useXmlFile();
-    const parserRef = React.useRef(new DOMParser());
-    const xmlDoc = xmlFile ? parserRef.current.parseFromString(xmlFile,"text/xml") : new Document();
+    const state = useStore()
+    const xmlDoc = xmlFile ? parser.parseFromString(xmlFile,"text/xml") : new Document();
     const xmlStructuralElems = countStructuralElements(xmlDoc);
     const [bpmnElementsToDisplay, setBpmnElementsToDisplay] = React.useState(
         bpmnElemsWithInitialOrder

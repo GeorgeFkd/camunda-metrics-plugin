@@ -3,7 +3,7 @@ import { CalculateMetricFn } from "./utils";
 import { countStructuralElements as analyzeXMLString } from "./utils";
 const NOA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     //!this is temporary-> it wastes resources
-    //!correct
+    //!correct //*[matches(local-name(),'$t|Task')]
     const data = analyzeXMLString(xmlDoc);
     const allTypesOfTasks = Array.from(data.keys()).filter((bpmnElement) => {
         return bpmnElement.toLowerCase().includes("task");

@@ -28,6 +28,42 @@ export const findSplitNodesOfGate = (xml: Document, gateName: string) => {
     );
 };
 
+export const getProcessWithRefAttr = (xml: Document, processRef: string) => {
+    return xpath.select(
+        `//*[local-name()='process'][@id='${processRef}']`,
+        xml
+    )[0] as Document;
+};
+//!
+export const getParticipants = (xml: Document) => {
+    console.log("GETTING PARTICIPANTS IN ", xml);
+    type NodeWithAttrs<Node> = { attributes: any[] } & Node;
+    const xpathRes = xpath.select(
+        "//*[local-name()='participant']",
+        xml
+    ) as NodeWithAttrs<Node>[];
+
+    const result = [];
+    const attrsWanted = ["name", "processRef"];
+    for (let participant = 0; participant < xpathRes.length; participant++) {
+        let obj: any = {};
+        for (let i = 0; i < xpathRes[participant].attributes.length; i++) {
+            const elem = xpathRes[participant].attributes[i];
+            console.log(elem.textContent);
+            if (attrsWanted.includes(elem.nodeName)) {
+                //{name:"",processRef:""}
+
+                obj[elem.name] = elem.textContent;
+                console.log(obj, "pushed");
+            }
+        }
+        result.push(obj);
+    }
+    //filter out black boxes
+    const withoutBlackBoxPools = result.filter((obj) => obj.processRef);
+    return withoutBlackBoxPools;
+};
+
 export const getAmountOfBranchesOfThisGateNode = (node: Node): number => {
     return xpath.select("count(self::node()/*[local-name()='outgoing'])", node)
         .length;
