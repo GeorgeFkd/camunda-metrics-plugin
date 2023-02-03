@@ -36,7 +36,7 @@ function SelectSubProcessOverlay({
                 </div>
             </Overlay.Body>
             <Overlay.Footer>
-                <button onClick={onClose}>Close</button>
+                <button className="btn" onClick={onClose}>Close</button>
             </Overlay.Footer>
         </Overlay>
     );
