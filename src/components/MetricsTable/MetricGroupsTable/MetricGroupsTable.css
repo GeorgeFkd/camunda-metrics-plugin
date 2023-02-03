@@ -1,0 +1,5 @@
+.metricsTable {
+    display: flex;
+    flex-direction: row;
+    max-height: 150px;
+}

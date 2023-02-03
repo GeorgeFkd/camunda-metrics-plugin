@@ -11,9 +11,10 @@ import useStore from "../../store/store";
 
 const parser = new DOMParser();
 function StatsTable() {
-    const xmlFile = useXmlFile();
-    const state = useStore()
-    const xmlDoc = xmlFile ? parser.parseFromString(xmlFile,"text/xml") : new Document();
+    
+    const xmlDoc = useStore((state)=>state.xmlDoc);
+    console.log("I RERENDER STATS TABLE")
+    //const xmlDoc = xmlFile ? parser.parseFromString(xmlFile,"text/xml") : new Document();
     const xmlStructuralElems = countStructuralElements(xmlDoc);
     const [bpmnElementsToDisplay, setBpmnElementsToDisplay] = React.useState(
         bpmnElemsWithInitialOrder
@@ -58,7 +59,8 @@ function StatsTable() {
 
     return (
         <div className={styles.statsTableContainer}>
-            <StatsTableTitle title="Structural Elements Count" />
+            <StatsTableTitle title="Structural Elements" />
+            
             <div className={styles.statsTableElementsContainer}>
                 {bpmnElementsToDisplay
                     .sort((a, b) => a.order - b.order)

@@ -18,12 +18,20 @@ metrics-plugin-font-size */
 
 .statsTableTitleContainer {
     margin-bottom: 0.5rem;
-
+    display: flex;
+    flex-direction: column;
    
+}
+
+.currentParticipant{
+    font-size: small;
+    color:gray;
+    display: inline;
 }
  .statsTableTitle {
      font-size: 1.8rem;
      font-weight: 900;
+     display: inline;
  }
 
  .elementComponent {

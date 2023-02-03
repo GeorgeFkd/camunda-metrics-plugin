@@ -11,50 +11,30 @@ import CopyResultsButton from "./CopyResultsButton";
 import useXmlFile from "../../hooks/useXmlFile";
 import SelectSubprocessButton from "./SelectSubprocessButton";
 import SelectSubProcessOverlay from "./SelectSubprocessOverlay";
-import { getParticipants, getProcessWithRefAttr } from "../../utils/metrics/utils";
+import { getParticipants, getProcessXmlDocWithRefAttr } from "../../utils/metrics/utils";
+import useStore from "../../store/store";
+import MetricGroupsTable from "./MetricGroupsTable";
 const parser = new DOMParser();
+const MemoizedTable = React.memo(MetricGroupsTable);
+
 function MetricsTable() {
 
     // const [xmlDoc, setXmlDoc] = React.useState<Document>(new Document());
-    const xmlFile = useXmlFile();
+    //const xmlFile = useXmlFile();
+    const xmlDoc = useStore((state)=>state.xmlDoc);
+    const updateGroups = useStore((state)=>state.updateGroups)
+    const metricGroups = useStore((state)=>state.metricGroups)
+    const setParticipant = useStore((state)=>state.setParticipant)
     const { triggerCamundaAction } = 
         React.useContext(CamundaContext)
-    const [metricGroups,setMetricGroups] = React.useState(CATEGORIES_WITH_METRICS)
     const [configOpen, setConfigOpen] = React.useState(false);
     const [selectProcessOpen,setSelectProcessOpen] = React.useState(false);
     const configGroupsBtnRef = React.useRef<HTMLButtonElement>(null);
     const selectSubProcessRef = React.useRef<HTMLButtonElement>(null);
-    const [participant,setParticipant] = React.useState("")
-    let xmlDoc:Document;
-    //const xmlDoc = xmlFile ? parser.parseFromString(xmlFile,"text/xml") : new Document();
-    if(participant == ""){
-        //oloklhro 
-        console.log("We keep the whole one")
-        xmlDoc = xmlFile ? parser.parseFromString(xmlFile,"text/xml") : new Document();
-    }else{
-        console.log("We zoom in on participant")
-        const wholeDoc = xmlFile ? parser.parseFromString(xmlFile,"text/xml") : new Document();
-        xmlDoc = getProcessWithRefAttr(wholeDoc,participant)
-    }
-    //const [xmlDoc,setXmlDoc] = React.useState<Document>(new Document());
+    console.log("I RERENDER METRICS TABLE")
     React.useEffect(()=>{
         triggerCamundaAction("save")
-        
-        //setXmlDoc(doc)
     },[])
-    function updateGroups(newGroups:MetricGroup[]){
-        setMetricGroups(newGroups)
-    }
-
-    function setXmlToParticipant(processRef:string){
-        //setXmlDoc(getProcessWithRefAttr(parser.parseFromString(xmlFile),processRef))
-    }
-
-    
-    console.log("The Xml Doc is",xmlDoc)
-    
-    
-    console.log("the currently selected participant is:",participant)
     const participants = getParticipants(xmlDoc)
     return (
         <div className={styles.metricsContainer}>
@@ -77,25 +57,16 @@ function MetricsTable() {
                     onSubmit={updateGroups}
                 />
             )}
-             <CopyResultsButton xmlDoc={xmlDoc} metricGroups={metricGroups}/>
-             <button className='btn btn-primary' ref={selectSubProcessRef} onClick={()=>setSelectProcessOpen(isOpen=>!isOpen)}>Select Subprocess</button>
+             <CopyResultsButton metricGroups={metricGroups}/>
+             <button className='btn btn-primary' ref={selectSubProcessRef} onClick={()=>setSelectProcessOpen(isOpen=>!isOpen)}>Select Pool</button>
              {selectProcessOpen && (
-                <SelectSubProcessOverlay anchor={selectSubProcessRef.current} onClose={()=>setSelectProcessOpen(false)} onSubmit={(processRef:string)=>setParticipant(processRef)} options={participants}/>
+                <SelectSubProcessOverlay anchor={selectSubProcessRef.current} onClose={()=>setSelectProcessOpen(false)} onSubmit={setParticipant} options={participants}/>
              )}
                 </div>
+            {/* probably could use memo */}
+            {/* <MetricGroupsTable metricGroups={metricGroups} xmlDoc={xmlDoc}/> */}
+            <MemoizedTable metricGroups={metricGroups}/>
             
-
-            <div className={styles.metricsTable}>
-                {/* this will soon be context */}
-                {metricGroups.map((MetricGroup:MetricGroup) => {
-                    return (
-                        <MetricGroupContainer
-                            metricGroup={MetricGroup}
-                            xmlDoc={xmlDoc}
-                        />
-                    );
-                })}
-            </div>
         </div>
     );
 }

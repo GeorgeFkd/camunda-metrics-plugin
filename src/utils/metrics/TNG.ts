@@ -1,20 +1,15 @@
 import Metric from "./Metric-Class";
 import { countStructuralElements } from "./utils";
 import { CalculateMetricFn } from "./utils";
+import xpath from "xpath";
 const TNG: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     //!not the best way will remove
-    const xmlElementsCount = countStructuralElements(xmlDoc);
-    const result = Array.from(xmlElementsCount.keys()).reduce(
-        (total, currentbpmnElement) => {
-            if (currentbpmnElement.endsWith("Gateway")) {
-                total += xmlElementsCount.get(currentbpmnElement) as number;
-            }
-            return total;
-        },
-        0
+    const result = xpath.select(
+        ".//*[ends-with(local-name(),'Gateway')]",
+        xmlDoc
     );
 
-    return result;
+    return result.length;
 };
 
 const TNGObj = new Metric("TNG", -1, TNG, ["Gateways"]);

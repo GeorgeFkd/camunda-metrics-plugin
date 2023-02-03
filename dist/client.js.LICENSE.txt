@@ -51,9 +51,3 @@ object-assign
 //! takes too long to calculate
 
 //! watch out for this
-
-//!correct //*[matches(local-name(),'$t|Task')]
-
-//!not the best way will remove
-
-//!this is temporary-> it wastes resources

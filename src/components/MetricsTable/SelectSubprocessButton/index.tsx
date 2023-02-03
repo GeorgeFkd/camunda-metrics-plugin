@@ -8,7 +8,7 @@ function SelectSubprocessButton({onClick}:ISelectSubprocessButtonProps) {
 
     
   return (
-    <button className='btn btn-primary' onClick={onClick}>Select Subprocess</button>
+    <button className='btn btn-primary' onClick={onClick}>Select Pool</button>
   )
 }
 

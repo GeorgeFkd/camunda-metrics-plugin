@@ -1,0 +1,16 @@
+.participantButtons{
+    display: flex;
+    flex-direction: column;
+    row-gap:0.5rem;
+    
+}
+
+.button{
+    width:fit-content;
+    align-self:start;
+    padding-left:0;
+}
+
+.button:first-child(){
+    margin-left:3rem;
+}

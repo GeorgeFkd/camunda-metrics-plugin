@@ -13,13 +13,13 @@ const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     //(kapoy exw kanei to assumption oti feugei
     //mono ena sequenceFlow apo to task kai checkarw mono auto)
     if (!xmlDoc) return -1;
-    console.time("Optimal NSFA");
-    const allNodes = xpath.select("//*", xmlDoc) as Node[];
-    console.time("NoA");
+    //console.time("Optimal NSFA");
+    const allNodes = xpath.select(".//*", xmlDoc) as Node[];
+    //console.time("NoA");
     const allActivities = allNodes.filter((node) =>
         elementNameIsConsideredActivity(node.nodeName.replace(/.+:/, ""))
     );
-    console.timeEnd("NoA");
+    //console.timeEnd("NoA");
     let newsum = 0;
     console.log("choose from: ", allActivities.length);
     for (let i = 0; i < allActivities.length - 1; i++) {
@@ -83,7 +83,7 @@ const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
             }
         }
     }
-    console.timeEnd("Optimal NSFA");
+    //console.timeEnd("Optimal NSFA");
     return newsum;
     console.time("Non Optimal NSFA");
     const allSFs = xpath.select(

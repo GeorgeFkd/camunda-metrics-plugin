@@ -3,15 +3,16 @@ import { MetricGroup } from "../../../assets/typed-constants";
 // import Metric from '../../../utils/metrics/Metric-Class';
 import metricResultsToText from "../../../utils/metricResultsToText";
 import CamundaContext from "../../../contexts/CamundaContext";
+import useStore from "../../../store/store";
 interface CopyResultsProps {
-    xmlDoc: Document;
     metricGroups: MetricGroup[];
 }
 
-function CopyResultsButton({ xmlDoc, metricGroups }: CopyResultsProps) {
+function CopyResultsButton({  metricGroups }: CopyResultsProps) {
     // i could make an overlay that gives choice to the user but not needed
     const {displayNotification} = React.useContext(CamundaContext);
     const [btnText,setBtnText] = React.useState("Copy Results");
+    const xmlDoc = useStore((state)=>state.xmlDoc)
     function onCopySuccess() {
       //display success notification
       setBtnText("Results Copied!")

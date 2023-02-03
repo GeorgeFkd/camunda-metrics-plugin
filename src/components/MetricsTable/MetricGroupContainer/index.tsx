@@ -11,7 +11,6 @@ const MetricGroupContainer = ({
     metricGroup,
     xmlDoc,
 }: MetricGroupContainerProps) => {
-    
     return (
         <div className={styles.metricsWrapper} style={{ height: "195px" }}>
             <div className={styles.metricsWrapperTitle}>
