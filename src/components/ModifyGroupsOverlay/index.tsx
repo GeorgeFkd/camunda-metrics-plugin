@@ -4,6 +4,7 @@ import styles from "./Overlay.css";
 import availableMetrics from "../../utils/metrics/all";
 import { MetricGroup } from "../../assets/typed-constants";
 import Metric from "../../utils/metrics/Metric-Class";
+import EditGroup from "./EditGroup";
 const OFFSET = { left: 0 };
 interface ConfigureMetricsOverlayProps {
     anchor: HTMLElement | HTMLButtonElement | null;
@@ -29,34 +30,25 @@ function CustomOverlay({
 
     const [groups, setGroups] = React.useState(existingGroups);
     //the e type is workaround bcs i dont have typechecking
-    function onSelect(
-        e: { target: { selectedOptions: HTMLOptionElement[] } },
-        currentGroup: MetricGroup
-    ) {
-        console.log(e.target.selectedOptions, currentGroup);
-        const selectedOptions = Array.from(e.target.selectedOptions).map(
-            (option: HTMLOptionElement) => {
-                //returns the dom element
-                console.log(option);
-                return option.value;
-            }
-        );
-        console.log(selectedOptions);
+    
+
+    function getUniqueGroupNamesFromFormData(data:FormData){
+        const groupNamesSet: Set<string> = new Set();
+        for(let [nameOfGroup,metricName] of data.entries()){
+            groupNamesSet.add(nameOfGroup);
+        }
+        return groupNamesSet;
     }
 
     function handleSubmit(e: any) {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const groupNamesSet: Set<string> = new Set();
-        for (let pair of formData.entries()) {
-            console.log(pair[0], ": ", pair[1]);
-            groupNamesSet.add(pair[0]);
-        }
-        let obj: MetricGroup[] = Array.from(groupNamesSet).map((groupName) => {
+        const groupNames:Set<string> = getUniqueGroupNamesFromFormData(formData)
+        let groupsToSubmit: MetricGroup[] = Array.from(groupNames).map((groupName) => {
             return { name: groupName, metrics: new Array<Metric>() };
         });
         for (let [groupName, metricName] of formData.entries()) {
-            const groupObj = obj.find((group) => group.name === groupName)!;
+            const groupObj = groupsToSubmit.find((group) => group.name === groupName)!;
             const metricObj = availableMetrics.find(
                 (metric) => metric.label === metricName
             );
@@ -68,7 +60,7 @@ function CustomOverlay({
             }
         }
 
-        onSubmit(obj);
+        onSubmit(groupsToSubmit);
         onClose();
     }
 
@@ -98,7 +90,7 @@ function CustomOverlay({
                             return (
                                 <EditGroup
                                     group={group}
-                                    onChangeSelect={onSelect}
+                                   
                                     key={group.name}
                                     onRemoveGroup={removeExistingGroup}
                                 />
@@ -107,9 +99,6 @@ function CustomOverlay({
                         <button onClick={createEmptyGroup}>Add Group</button>
                     </div>
                 </form>
-                {/* user should be able to create groups and add metrics(display all available metrics) to them */}
-                {/* modify the names of existing groups */}
-                {/* add and remove metrics from existing groups */}
             </Overlay.Body>
             <Overlay.Footer>
                 <button
@@ -125,94 +114,6 @@ function CustomOverlay({
 }
 
 
-
-
-interface EditGroupProps {
-    group: MetricGroup;
-    onChangeSelect: (e: any, group: MetricGroup) => void;
-    onRemoveGroup: (e: any, groupToBeRemoved: string) => void;
-}
-function EditGroup({ group, onChangeSelect, onRemoveGroup }: EditGroupProps) {
-    const [isBeingEdited, setIsBeingEdited] = React.useState(false);
-    const [nameOfGroup, setNameOfGroup] = React.useState(group.name);
-    const ref = React.useRef(null);
-    React.useEffect(() => {
-        if (isBeingEdited) {
-            
-            //ref.current.focus();
-        }
-    }, [isBeingEdited]);
-    function groupHasMetricWithName(MGroup:MetricGroup,metricName: string) {
-        return (
-            MGroup.metrics.filter((metric) => metric.label === metricName)
-                .length > 0
-        );
-    }
-    return (
-        <div className={styles.metricGroup}>
-            {/* the editable name thing can be done as a span that when clicked on is turned into an input and focused */}
-            {/* <label htmlFor={group.name}>{group.name}</label> */}
-
-            <input
-                value={nameOfGroup}
-                id={group.name}
-                type="text"
-                onChange={(e) => setNameOfGroup(e.target.value)}
-                onBlur={(e) => setIsBeingEdited(false)}
-                ref={ref}
-                style={{
-                    display: `${isBeingEdited ? "" : "none"}`,
-                    width: "5rem",
-                    font: "inherit",
-                }}
-            />
-
-            <span
-                onClick={() => setIsBeingEdited(true)}
-                style={{
-                    display: `${!isBeingEdited ? "" : "none"}`,
-                    width: "5rem",
-                }}
-            >
-                {nameOfGroup}
-            </span>
-
-            <select
-                className={styles.metricDropdown}
-                id={group.name}
-                // this feels weird
-                name={nameOfGroup}
-                multiple
-                required
-                onChange={(e) => onChangeSelect(e, group)}
-            >
-                <option value="">Select Metrics:</option>
-                {availableMetrics.map((metric) => {
-                    return (
-                        <option
-                            value={metric.label}
-                            selected={groupHasMetricWithName(group,metric.label)}
-                        >
-                            {metric.label}
-                        </option>
-                    );
-                })}
-            </select>
-            {/* <MetricsDropdown
-                MGroup={group}
-                selectElement={() => {}}
-                unselectElement={() => {}}
-                key={group.name}
-            /> */}
-            <button
-                onClick={(e) => onRemoveGroup(e, nameOfGroup)}
-                type="button"
-            >
-                Remove
-            </button>
-        </div>
-    );
-}
 
 //? Available events
 

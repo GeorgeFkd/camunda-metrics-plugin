@@ -1,20 +1,13 @@
 import React from "react";
-import { MetricGroup } from "../../assets/typed-constants";
-import CATEGORIES_WITH_METRICS from "../../utils/metrics/init_metrics";
-import useSubscribe from "../../hooks/useSubscribe";
+
 import styles from "./MetricsTable.css";
 import CamundaContext from "../../contexts/CamundaContext";
-import { DOMParser } from "xmldom";
-import MetricGroupContainer from "./MetricGroupContainer";
 import CustomOverlay from "../ModifyGroupsOverlay";
 import CopyResultsButton from "./CopyResultsButton";
-import useXmlFile from "../../hooks/useXmlFile";
-import SelectSubprocessButton from "./SelectSubprocessButton";
 import SelectSubProcessOverlay from "./SelectSubprocessOverlay";
-import { getParticipants, getProcessXmlDocWithRefAttr } from "../../utils/metrics/utils";
+import { getParticipants } from "../../utils/metrics/utils";
 import useStore from "../../store/store";
 import MetricGroupsTable from "./MetricGroupsTable";
-const parser = new DOMParser();
 const MemoizedTable = React.memo(MetricGroupsTable);
 
 function MetricsTable() {
@@ -38,7 +31,6 @@ function MetricsTable() {
     const participants = getParticipants(xmlDoc)
     return (
         <div className={styles.metricsContainer}>
-            {/*TODO-> PUT HEADER HERE THAT CONTAINS THE TITLE THE CONFIGURE GROUPS AND THE COPY TO CLIPBOARD */}
             <div className={styles.metricsHeader}>
             
             <MetricsTableTitle />
@@ -63,8 +55,7 @@ function MetricsTable() {
                 <SelectSubProcessOverlay anchor={selectSubProcessRef.current} onClose={()=>setSelectProcessOpen(false)} onSubmit={setParticipant} options={participants}/>
              )}
                 </div>
-            {/* probably could use memo */}
-            {/* <MetricGroupsTable metricGroups={metricGroups} xmlDoc={xmlDoc}/> */}
+            
             <MemoizedTable metricGroups={metricGroups}/>
             
         </div>
@@ -74,14 +65,5 @@ function MetricsTable() {
 function MetricsTableTitle({}) {
     return <div className={styles.metricsTableTitle}>BPMN Metrics</div>;
 }
-
-//for categoriescontainer and metricscontainer
-const RemoveElementBtn = ({ onClickFn }: { onClickFn: () => void }) => {
-    return (
-        <button className="metrics-wrapper-title-remove" onClick={onClickFn}>
-            X
-        </button>
-    );
-};
 
 export default MetricsTable;

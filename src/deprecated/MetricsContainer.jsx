@@ -1,5 +1,5 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import { removeCategory } from "../assets/categories";
+import { removeCategory } from "./categories";
 import { CategoriesHookContext } from "../contexts/CategoriesContext";
 import MetricLabel from "./MetricLabel.jsx";
 

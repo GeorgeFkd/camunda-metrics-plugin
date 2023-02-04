@@ -1,4 +1,4 @@
-import { CATEGORIES } from "./constants";
+import { CATEGORIES } from "../assets/constants";
 
 const categories = [
     {

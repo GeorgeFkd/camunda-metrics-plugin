@@ -5,11 +5,7 @@ import StatsTableTitle from "./StatsTableTitle";
 import StatsTableElement from "./StatsTableElement";
 import styles from "./StatsTable.css";
 import { countStructuralElements } from "../../utils/metrics/utils";
-import { DOMParser } from "xmldom";
-import useXmlFile from "../../hooks/useXmlFile";
 import useStore from "../../store/store";
-
-const parser = new DOMParser();
 function StatsTable() {
     
     const xmlDoc = useStore((state)=>state.xmlDoc);

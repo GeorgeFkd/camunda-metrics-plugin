@@ -1,5 +1,5 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import { removeMetric } from "../assets/categories";
+import { removeMetric } from "./categories";
 import evaluateMetricWithClass from "../utils/evaluateMetricsClass";
 import { CategoriesHookContext } from "../contexts/CategoriesContext";
 

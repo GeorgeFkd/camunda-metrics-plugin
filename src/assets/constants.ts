@@ -12,7 +12,6 @@ export const BPMN_ELEMENTS = {
     MESSAGE_FLOW: "messageFlow",
     MANUAL_TASK: "manualTask",
     POOL: "participant",
-    MESSAGE_FLOW: "messageFlow",
     DATA_OBJECT: "dataObject",
 };
 
