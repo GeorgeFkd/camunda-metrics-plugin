@@ -1,9 +1,9 @@
 import React from "react";
 import { Overlay, Section } from "camunda-modeler-plugin-helpers/components";
 import styles from "./Overlay.css";
-import availableMetrics from "../../utils/metrics/all";
-import { MetricGroup } from "../../assets/typed-constants";
-import Metric from "../../utils/metrics/Metric-Class";
+import availableMetrics from "../../../../../utils/metrics/all";
+import { MetricGroup } from "../../../../../assets/typed-constants";
+import Metric from "../../../../../utils/metrics/Metric-Class";
 import EditGroup from "./EditGroup";
 const OFFSET = { left: 0 };
 interface ConfigureMetricsOverlayProps {
@@ -12,6 +12,9 @@ interface ConfigureMetricsOverlayProps {
     existingGroups: MetricGroup[];
     onSubmit: (finalObj: MetricGroup[]) => void;
 }
+
+
+
 
 function CustomOverlay({
     anchor,

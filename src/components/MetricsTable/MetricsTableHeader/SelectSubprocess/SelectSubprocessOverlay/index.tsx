@@ -1,6 +1,6 @@
 import React from "react";
 import { Overlay, Section } from "camunda-modeler-plugin-helpers/components";
-import { Participant } from "../../../store/store";
+import { Participant } from "../../../../../store/store";
 import styles from "./SelectSubprocessOverlay.css"
 interface ISelectSubProcessOverlayProps {
     anchor: HTMLElement | HTMLButtonElement | null;

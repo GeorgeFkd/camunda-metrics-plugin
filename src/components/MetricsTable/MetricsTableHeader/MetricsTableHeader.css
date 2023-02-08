@@ -1,0 +1,16 @@
+.metricsHeader {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    column-gap: 1rem;
+}
+
+.metricsTableTitle {
+    font-size: 2rem;
+    font-weight: 900;
+    width: fit-content;
+    padding: 0 0.5rem;
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+}

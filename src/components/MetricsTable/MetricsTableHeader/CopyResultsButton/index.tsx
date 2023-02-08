@@ -1,9 +1,9 @@
 import React from "react";
-import { MetricGroup } from "../../../assets/typed-constants";
+import { MetricGroup } from "../../../../assets/typed-constants";
 // import Metric from '../../../utils/metrics/Metric-Class';
-import metricResultsToText,{calculateMetricsResults} from "../../../utils/metricResultsToText";
-import CamundaContext from "../../../contexts/CamundaContext";
-import useStore from "../../../store/store";
+import metricResultsToText,{calculateMetricsResults} from "../../../../utils/metricResultsToText";
+import CamundaContext from "../../../../contexts/CamundaContext";
+import useStore from "../../../../store/store";
 interface CopyResultsProps {
     metricGroups: MetricGroup[];
 }

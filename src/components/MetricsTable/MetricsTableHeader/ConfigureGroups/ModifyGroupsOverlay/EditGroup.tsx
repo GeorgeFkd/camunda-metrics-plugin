@@ -1,7 +1,7 @@
-import { MetricGroup } from "../../assets/typed-constants";
+import { MetricGroup } from "../../../../../assets/typed-constants";
 import React from "react";
 import styles from "./Overlay.css"
-import availableMetrics from "../../utils/metrics/all";
+import availableMetrics from "../../../../../utils/metrics/all";
 
 interface EditGroupProps {
     group: MetricGroup;
