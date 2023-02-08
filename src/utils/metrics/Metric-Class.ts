@@ -22,7 +22,7 @@ export default class Metric {
 
     calculateAndUpdateResult(input: Document): number {
         const res = this.calculateFn(input);
-        this._result = this.calculateFn(input);
-        return res;
+        this._result = Number(this.calculateFn(input).toFixed(2));
+        return Number(res.toFixed(2));
     }
 }

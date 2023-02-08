@@ -34,7 +34,7 @@ const GM: CalculateMetricFn<Document> = (xmlDoc: Document) => {
                     "./*[local-name()='outgoing']",
                     gatewayOfCurrentType
                 ).length;
-                console.log(incoming, outgoing, "these we work with");
+
                 if (incoming > outgoing) {
                     //it is a merge node
                     return totalOfType - incoming;

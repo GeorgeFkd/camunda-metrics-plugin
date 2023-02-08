@@ -21,7 +21,6 @@ const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     );
     //console.timeEnd("NoA");
     let newsum = 0;
-    console.log("choose from: ", allActivities.length);
     for (let i = 0; i < allActivities.length - 1; i++) {
         for (let j = i + 1; j < allActivities.length; j++) {
             const choice1 = allActivities[i];

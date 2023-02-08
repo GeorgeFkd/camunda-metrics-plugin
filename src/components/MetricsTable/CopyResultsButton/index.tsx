@@ -1,7 +1,7 @@
 import React from "react";
 import { MetricGroup } from "../../../assets/typed-constants";
 // import Metric from '../../../utils/metrics/Metric-Class';
-import metricResultsToText from "../../../utils/metricResultsToText";
+import metricResultsToText,{calculateMetricsResults} from "../../../utils/metricResultsToText";
 import CamundaContext from "../../../contexts/CamundaContext";
 import useStore from "../../../store/store";
 interface CopyResultsProps {
@@ -50,16 +50,5 @@ function CopyResultsButton({  metricGroups }: CopyResultsProps) {
     );
 }
 
-function calculateMetricsResults(
-    xmlDoc: Document,
-    metricGroups: MetricGroup[]
-): MetricGroup[] {
-    metricGroups.forEach(({ metrics: metricsInGroup }) => {
-        metricsInGroup.forEach((metric) =>
-            metric.calculateAndUpdateResult(xmlDoc)
-        );
-    });
-    console.log("ALL METRIC GROUPS WITH RESULTS");
-    return metricGroups;
-}
+
 export default CopyResultsButton;

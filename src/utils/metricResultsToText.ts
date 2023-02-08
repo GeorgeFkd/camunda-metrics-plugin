@@ -1,11 +1,26 @@
 import { MetricGroup } from "../assets/typed-constants";
 import { removeDuplicates } from "./metrics/utils";
+
+export function calculateMetricsResults(
+    xmlDoc: Document,
+    metricGroups: MetricGroup[]
+): MetricGroup[] {
+    metricGroups.forEach(({ metrics: metricsInGroup }) => {
+        metricsInGroup.forEach((metric) =>
+            metric.calculateAndUpdateResult(xmlDoc)
+        );
+    });
+    console.log("ALL METRIC GROUPS WITH RESULTS");
+    return metricGroups;
+}
+
 export default function metricResultsToText(
     metricGroupsWithCalculatedResults: MetricGroup[]
 ): string {
     const CELL_DELIMITER = ",";
     const LINE_DELIMITER = "\n";
     //get the metrics out of the groups
+
     const metrics = metricGroupsWithCalculatedResults.flatMap(({ metrics }) => {
         return metrics;
     });

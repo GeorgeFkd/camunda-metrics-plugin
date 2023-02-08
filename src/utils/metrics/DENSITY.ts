@@ -10,7 +10,7 @@ const DENSITY: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     if (nodes < 2) return -1;
     //  or local-name()='messageFlow']
     const arcs = xpath.select(
-        "//*[local-name()='sequenceFlow']",
+        ".//*[local-name()='sequenceFlow']",
         xmlDoc
     ).length;
 
