@@ -1,7 +1,7 @@
 import React from 'react'
 import CustomOverlay from './ModifyGroupsOverlay';
 import useStore from '../../../../store/store';
-
+import { METRICS_TABLE_TEXT } from '../../../../assets/text_content';
 function ConfigureGroups() {
   const configGroupsBtnRef = React.useRef<HTMLButtonElement>(null);
   const [configOpen, setConfigOpen] = React.useState(false);
@@ -14,7 +14,7 @@ function ConfigureGroups() {
                 onClick={() => setConfigOpen((prev: boolean) => !prev)}
                 className="btn btn-primary"
                 >
-                Configure Groups
+                {METRICS_TABLE_TEXT.CONFIGURE_GROUPS_BTN}
             </button>
             {configOpen && (
                 <CustomOverlay

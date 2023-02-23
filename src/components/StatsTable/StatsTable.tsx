@@ -55,7 +55,7 @@ function StatsTable() {
 
     return (
         <div className={styles.statsTableContainer}>
-            <StatsTableTitle title="Structural Elements" />
+            <StatsTableTitle />
             
             <div className={styles.statsTableElementsContainer}>
                 {bpmnElementsToDisplay

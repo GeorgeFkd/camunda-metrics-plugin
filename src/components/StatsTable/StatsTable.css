@@ -23,10 +23,15 @@ metrics-plugin-font-size */
    
 }
 
+
+.noParticipant{
+    color:crimson !important;
+}
 .currentParticipant{
-    font-size: small;
-    color:gray;
+    font-size: 1.1rem;
+    color:rgb(79, 77, 77);
     display: inline;
+    font-weight:800;
 }
  .statsTableTitle {
      font-size: 1.8rem;

@@ -2,6 +2,7 @@ import React from "react";
 import { Overlay, Section } from "camunda-modeler-plugin-helpers/components";
 import { Participant } from "../../../../../store/store";
 import styles from "./SelectSubprocessOverlay.css"
+import { STATS_TABLE_TEXT } from "../../../../../assets/text_content";
 interface ISelectSubProcessOverlayProps {
     anchor: HTMLElement | HTMLButtonElement | null;
     onClose: () => void;
@@ -22,14 +23,14 @@ function SelectSubProcessOverlay({
             <Overlay.Body>
               <div className={styles.participantButtons}>
                 <span>Participants in Diagram:</span>
-                <button className={`${styles.button} btn`} onClick={(e)=>onSubmit({name:"",processRef:""})}>Whole Diagram</button>
+                <button className={`${styles.button} btn`} onClick={(e)=>onSubmit({name:"",processRef:""})}>{STATS_TABLE_TEXT.WHOLE_MODEL}</button>
                 {options.map((option) => (
                   <button className={`${styles.button} btn`}
                   onClick={(e) => {
                     onSubmit(option);
                   }}
                   >
-                        Participant: {option.name}
+                        {STATS_TABLE_TEXT.WITH_PARTICIPANT} {option.name}
                     </button>
                 ))}
                 
