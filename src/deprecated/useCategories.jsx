@@ -1,5 +1,5 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import initialcategories from "../assets/categories";
+import initialcategories from "./categories";
 export default function useCategories(calculatedMetrics) {
     //const [categories, setCategories] = React.useState(initialcategories);
     //const [removed, setRemoved] = React.useState([]);

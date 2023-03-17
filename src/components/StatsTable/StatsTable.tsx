@@ -5,13 +5,12 @@ import StatsTableTitle from "./StatsTableTitle";
 import StatsTableElement from "./StatsTableElement";
 import styles from "./StatsTable.css";
 import { countStructuralElements } from "../../utils/metrics/utils";
-import { DOMParser } from "xmldom";
-import useXmlFile from "../../hooks/useXmlFile";
-
+import useStore from "../../store/store";
 function StatsTable() {
-    const xmlFile = useXmlFile();
-    const parserRef = React.useRef(new DOMParser());
-    const xmlDoc = xmlFile ? parserRef.current.parseFromString(xmlFile,"text/xml") : new Document();
+    
+    const xmlDoc = useStore((state)=>state.xmlDoc);
+    console.log("I RERENDER STATS TABLE")
+    //const xmlDoc = xmlFile ? parser.parseFromString(xmlFile,"text/xml") : new Document();
     const xmlStructuralElems = countStructuralElements(xmlDoc);
     const [bpmnElementsToDisplay, setBpmnElementsToDisplay] = React.useState(
         bpmnElemsWithInitialOrder
@@ -56,7 +55,8 @@ function StatsTable() {
 
     return (
         <div className={styles.statsTableContainer}>
-            <StatsTableTitle title="Structural Elements Count" />
+            <StatsTableTitle />
+            
             <div className={styles.statsTableElementsContainer}>
                 {bpmnElementsToDisplay
                     .sort((a, b) => a.order - b.order)

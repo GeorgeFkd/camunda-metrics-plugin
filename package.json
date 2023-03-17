@@ -26,7 +26,8 @@
     "camunda-modeler-plugin-helpers": "^5.1.0",
     "react-dom": "^16.8.0",
     "xmldom": "^0.6.0",
-    "xpath": "^0.0.32"
+    "xpath": "^0.0.32",
+    "zustand": "^4.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",

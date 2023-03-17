@@ -18,12 +18,25 @@ metrics-plugin-font-size */
 
 .rBdGFl4_uUiQmuhW9z6o {
     margin-bottom: 0.5rem;
-
+    display: flex;
+    flex-direction: column;
    
+}
+
+
+.VXPoezBDuZygElg1Fper{
+    color:crimson !important;
+}
+._O61F8bKiTYYgTwj81IK{
+    font-size: 1.1rem;
+    color:rgb(79, 77, 77);
+    display: inline;
+    font-weight:800;
 }
  .tXovr4jfFuc293aRoJfd {
      font-size: 1.8rem;
      font-weight: 900;
+     display: inline;
  }
 
  .aio5ZKVUFBkRxkPPrMMC {
@@ -85,15 +98,7 @@ metrics-plugin-font-size */
      transform: translate3d(-50%, -50%, 0);
      will-change: transform;
  }
-._i77iC5g0SYey8U6D1bT {
-    font-size: 2rem;
-    font-weight: 900;
-    width: fit-content;
-    padding: 0 0.5rem;
-    display: flex;
-    align-items: center;
-    column-gap: 1rem;
-}
+
 
 .E_LhTvsGPmnbbnG3Uv_K {
     flex: 2;
@@ -157,38 +162,75 @@ metrics-plugin-font-size */
     column-gap: 0.5rem;
     row-gap: 0.5rem;
 }
-.FD6nr6GdKAX5qL6UuwQw{
+.AAXKtn0XI9AsFjgzr_QH {
+    display: flex;
+    flex-direction: row;
+    max-height: 150px;
+}
+.DronNL11MxnrBvSYxnkJ {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    column-gap: 1rem;
+}
+
+.yzp_iPWayHvYQvWwimAt {
+    font-size: 2rem;
+    font-weight: 900;
+    width: fit-content;
+    padding: 0 0.5rem;
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+}
+.OF7e14M2kPK51aiQd9tJ{
+    display: flex;
+    flex-direction: column;
+    row-gap:0.5rem;
+    
+}
+
+.uxWrUs3ENfX8qG6mOUU7{
+    width:fit-content;
+    align-self:start;
+    padding-left:0;
+}
+
+.uxWrUs3ENfX8qG6mOUU7:first-child(){
+    margin-left:3rem;
+}
+.RhF5WEedsIrROADWLjLQ{
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
 }
 
 
-.AzB6rG0LxlP9aZR3uVtm{
+.xU9tCs6L1xc_H_0azmfk{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.Q6vDw5n2YmCAoM8Q_u0L{
+.Nu5L3_LcdbYdXZafkmqD{
    padding:0.25rem;
    
 }
 
-.JkvlOaCIH6avPOZt60db{
+.Gp_nYzv35Qyebn3NWSlp{
     display: flex;
     flex-direction: column;
     border:solid 2px grey;
     padding:0.25rem;
 }
 
-.vVl6HHun5P_qck1fX_lo{
+.Z9aWMDo5nFSNOslNqkGt{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.cMnQ3ClAkM9iX_oeBIDN{
+.xGUDAXWiQShLXXr0ZEfV{
     display: flex;
     flex-direction:column;
     height:7rem;
@@ -196,7 +238,7 @@ metrics-plugin-font-size */
     overflow-y: auto;
 }
 
-.jes3gNpz28Gf2GvRHsP4{
+.CLfrmlgzFMhkFlkIevRQ{
     display: flex;
     align-items: center;
 }

@@ -10,7 +10,7 @@ const TS: CalculateMetricFn<Document> = (xmlDoc: Document) => {
         //const evaluator = xpath.parse(`//*[local-name()='${current}']`);
         ///*[local-name()='outgoing']
         const xpathRes = xpath.select(
-            `//*[local-name()='${current}']`,
+            `.//*[local-name()='${current}']`,
             xmlDoc
         ) as Node[];
         const sumForThisTypeOfGateway = xpathRes.reduce((total, current) => {

@@ -20,7 +20,9 @@ export default class Metric {
         return this._result;
     }
 
-    calculateAndUpdateResult(input: Document): void {
-        this._result = this.calculateFn(input);
+    calculateAndUpdateResult(input: Document): number {
+        const res = this.calculateFn(input);
+        this._result = Number(this.calculateFn(input).toFixed(2));
+        return Number(res.toFixed(2));
     }
 }

@@ -7,6 +7,7 @@ export const expectedNOAJS = 12;
 export const expectedTNG = 4;
 export const expectedCLA = 2;
 export const expectedCFC = 6; //!
+export const expectedNSFE = 3;
 //DOAF
 export const expectedAGD = 2.75;
 export const expectedMGD = 3;

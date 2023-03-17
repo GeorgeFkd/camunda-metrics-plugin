@@ -1,6 +1,7 @@
 import { DOMParser } from "xmldom";
 import xpath from "xpath";
 import xmlStr from "../bpmn-sample";
+import { Participant } from "../../store/store";
 //TODO error values for each metric
 interface MetricCalculationError {
     source: string;
@@ -23,9 +24,59 @@ export const getOutgoingFlowsOfNode = (node: Node): number => {
 
 export const findSplitNodesOfGate = (xml: Document, gateName: string) => {
     return xpath.select(
-        `//*[local-name()='${gateName}'][count(./*[local-name()='outgoing'])>1]`,
+        `.//*[local-name()='${gateName}'][count(./*[local-name()='outgoing'])>1]`,
         xml
     );
+};
+
+export const getProcessXmlDocWithRefAttr = (
+    xml: Document,
+    processRef: string
+) => {
+    if (!xml) {
+        return new Document();
+    }
+    if (processRef === "") {
+        return xml;
+    }
+    // gia kapoio logo edw h teleia prokalei thema
+    return xpath.select(
+        `//*[local-name()='process'][@id='${processRef}']`,
+        xml
+    )[0] as Document;
+};
+//!
+export const getParticipants = (xml: Document): Participant[] => {
+    console.log("GETTING PARTICIPANTS IN ", xml);
+    if (!xml) {
+        return [];
+    }
+
+    type NodeWithAttrs<Node> = { attributes: any[] } & Node;
+    const xpathRes = xpath.select(
+        "//*[local-name()='participant']",
+        xml
+    ) as NodeWithAttrs<Node>[];
+
+    const result = [];
+    const attrsWanted = ["name", "processRef"];
+    for (let participant = 0; participant < xpathRes.length; participant++) {
+        let obj: any = {};
+        for (let i = 0; i < xpathRes[participant].attributes.length; i++) {
+            const elem = xpathRes[participant].attributes[i];
+            console.log(elem.textContent);
+            if (attrsWanted.includes(elem.nodeName)) {
+                //{name:"",processRef:""}
+
+                obj[elem.name] = elem.textContent;
+                console.log(obj, "pushed");
+            }
+        }
+        result.push(obj);
+    }
+    //filter out black boxes
+    const withoutBlackBoxPools = result.filter((obj) => obj.processRef);
+    return withoutBlackBoxPools;
 };
 
 export const getAmountOfBranchesOfThisGateNode = (node: Node): number => {
@@ -44,7 +95,7 @@ export function countStructuralElements(xmlDoc: Document): Map<string, number> {
     //     console.error(error);
     // }
 
-    let allEls = xpath.select("//*", xmlDoc);
+    let allEls = xpath.select(".//*", xmlDoc);
     let allElsToNodes = allEls.map((el) => {
         return el as Node;
     });
@@ -88,7 +139,7 @@ function BpmnTagsCountOccurences(
 
 export const getEventsInDiagram = (xmlDoc: Document): Node[] => {
     const xpathRes = xpath.select(
-        "//*[matches(local-name(),'.+Event$')]",
+        ".//*[matches(local-name(),'.+Event$')]",
         xmlDoc
     ) as Node[];
     return xpathRes;
@@ -118,7 +169,7 @@ export const getGatewaysInDiagram: (arg: Document) => Node[] = (
     xmlDoc: Document
 ) => {
     const gatewayXPathRes = xpath.select(
-        "//*[ends-with(local-name(),'Gateway') and local-name()!='Bounds']",
+        ".//*[ends-with(local-name(),'Gateway') and local-name()!='Bounds']",
         xmlDoc
     ) as Node[];
     return gatewayXPathRes;
