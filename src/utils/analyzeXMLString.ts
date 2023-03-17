@@ -3,7 +3,7 @@ import * as Metrics from "./metrics/all";
 console.log(Metrics, "tng is real");
 //import { select } from "xpath";
 import { countStructuralElements as analyzeXMLString } from "./metrics/utils";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 // import {
 //     AGD_OF_Diagram,
 //     CFC_OF_DIAGRAM,

@@ -1,4 +1,4 @@
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 import * as CollaborationDiag from "../../samples/sample-collaboration";
 
 import NSFA from "../../../src/utils/metrics/NSFA";

@@ -1,6 +1,6 @@
 import CLA from "../../src/utils/metrics/CLA";
 import { xmlStr, expectedCLA } from "../samples/sample-188";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 describe("should be able to calculate CLA", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     //! depends on the elementIsConsideredActivity so there might be weird cases

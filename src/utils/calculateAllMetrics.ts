@@ -1,6 +1,6 @@
 import xpath from "xpath";
 // import { parse, select } from "xpath";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 import { countStructuralElements as analyzeXMLString } from "./metrics/utils";
 import { BPMN_ELEMENTS } from "../assets/constants";
 

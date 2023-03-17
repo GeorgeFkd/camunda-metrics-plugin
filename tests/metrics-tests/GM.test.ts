@@ -1,7 +1,7 @@
 import GM from "../../src/utils/metrics/GM";
 //188 has problem with GM
 import { xmlStr, expectedGM } from "../samples/sample-213";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 describe("should be able to calculate GM", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     it("should produce GM(sample-213) = ", () => {

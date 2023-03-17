@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { MetricGroup } from "../assets/typed-constants";
 import { getProcessXmlDocWithRefAttr } from "../utils/metrics/utils";
 import CATEGORIES_WITH_METRICS from "../utils/metrics/init_metrics";
+import { DOMParser } from "@xmldom/xmldom";
 
 const parser = new DOMParser();
 interface State {

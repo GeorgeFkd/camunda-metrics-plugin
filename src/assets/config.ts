@@ -1,4 +1,3 @@
-import { DOMParser } from "xmldom";
 import { BPMN_ELEMENTS } from "./constants";
 
 export const MAP_BPMN_ELEMENTS_TO_ICON_CLASSES = {
@@ -88,5 +87,3 @@ export const bpmnElementsDisplayed = [
         order: 12,
     },
 ];
-
-export const parser = new DOMParser();

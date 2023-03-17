@@ -1,6 +1,6 @@
 import { parse } from "xpath";
 import xpath from "xpath";
-import { DOMParser as dom } from "xmldom";
+import { DOMParser as dom } from "@xmldom/xmldom";
 import { BPMN_ELEMENTS } from "../assets/constants";
 import { analyzeXMLString } from "./analyzeXMLString";
 function removeDuplicates(arr) {

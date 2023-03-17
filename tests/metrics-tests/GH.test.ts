@@ -1,6 +1,6 @@
 import GH from "../../src/utils/metrics/GH";
 import { xmlStr, expectedGH } from "../samples/sample-188";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 describe("should be able to calculate GH", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     it("should produce GH(sample-188) = ", () => {
