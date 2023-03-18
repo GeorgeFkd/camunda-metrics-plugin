@@ -1,7 +1,8 @@
 # camunda-metrics-plugin
 Provides a plugin for [Camunda Modeler](https://camunda.com/download/modeler/) that calculates and displays BPMN related metrics.
 
--- Insert Gif Here --
+![ezgif-3-02ee879256](https://user-images.githubusercontent.com/69716466/226136467-89fd7d6c-9a44-4750-93f0-e8427c0d8f50.gif)
+
 
 ## Usage:
 1. Download this code as zip and extract it in the resources/plugins folder of Camunda Modeler
