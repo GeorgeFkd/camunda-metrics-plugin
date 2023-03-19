@@ -4,8 +4,6 @@ import { countStructuralElements as analyzeXMLString } from "./utils";
 import xpath from "xpath";
 
 const NOA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
-    //!this is temporary-> it wastes resources
-    //!correct //*[matches(local-name(),'$t|Task')]
     const result = xpath.select(
         ".//*[matches(local-name(),'.*(t|T)ask')]",
         xmlDoc

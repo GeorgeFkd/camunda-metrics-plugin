@@ -12,7 +12,7 @@ const CNC: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     const events = getEventsInDiagram(xmlDoc).length;
     const nodes = NOA.calculateFn(xmlDoc) + TNG.calculateFn(xmlDoc) + events;
     //! //*[matches(local-name(),'.+Event')]
-    //nodes = tasks + gateways + events??
+    //nodes = tasks + gateways + events
     if (nodes === 0) return -1;
     return arcs / nodes;
 };

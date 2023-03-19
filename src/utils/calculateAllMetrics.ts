@@ -6,7 +6,6 @@ import { BPMN_ELEMENTS } from "../assets/constants";
 
 type CalculateMetricFn<Input> = (xmlDoc: Input) => number;
 
-const parser = new DOMParser();
 export const CFC_OF_DIAGRAM: CalculateMetricFn<Document> = (
     xmlDoc: Document
 ) => {

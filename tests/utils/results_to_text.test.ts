@@ -1,6 +1,4 @@
-import all from "../../src/utils/metrics/all";
-
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 import { xmlStr } from "../samples/sample-188";
 import metricResultsToText, {
     calculateMetricsResults,

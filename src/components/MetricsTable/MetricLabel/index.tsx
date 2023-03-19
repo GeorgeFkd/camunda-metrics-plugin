@@ -13,6 +13,8 @@ const MetricLabel = ({
     const [isLoading, setIsLoading] = React.useState(true);
     const [result, setResult] = React.useState(metric.result);
     React.useEffect(() => {
+        //Other methods have not worked
+        //Changes here are welcome
         setIsLoading(true);
         const res = metric.calculateAndUpdateResult(xmlDoc);
         setIsLoading(false);

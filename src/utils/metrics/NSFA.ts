@@ -5,9 +5,8 @@ const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     //! takes too long to calculate
     //the problem with subprocesses -> elementNameIsConsideredActivity helps
     //the problem with boundaryEvents
-    //exei ena themataki dioti apo ta prwta pairnei ta
-    //incoming kai apo ta deutera ta outgoing opote se sygkekrimenes
-    //! solution: για κάθε ζευγάρι tasks βλέπω incoming του 1ου και outgoing του 2ου και αντίστροφα
+    //! solution: for each pair of tasks i check incoming of the 1st one and
+    //! outgoing of the 2nd one and vice versa
     //periptwseis den tha ta metrhsei
     //they are events not tasks so?
     //(kapoy exw kanei to assumption oti feugei
@@ -48,18 +47,9 @@ const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
                 choice2
             ) as Node[];
 
-            // console.log(
-            //     "1 outgoing",
-            //     outgoingOfFirst.length,
-            //     "2 incoming",
-            //     incomingOfSecond.length
-            // );
-            // console.log(
-            //     "2 outgoing",
-            //     outgoingOfSecond.length,
-            //     "1 incoming",
-            //     incomingOfFirst.length
-            // );
+            //Compare the outgoing of the first with the incoming of the second
+            //If their textContent matches that means it's the same sequenceFlow
+            //and we add 1 to the sum
             if (outgoingOfFirst.length !== 0 && incomingOfSecond.length !== 0) {
                 for (let outgoing of outgoingOfFirst) {
                     for (let incoming of incomingOfSecond) {
@@ -84,6 +74,7 @@ const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     }
     //console.timeEnd("Optimal NSFA");
     return newsum;
+    //? That's the old code which took longer to run
     console.time("Non Optimal NSFA");
     const allSFs = xpath.select(
         "//*[local-name()='sequenceFlow']",

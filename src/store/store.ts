@@ -9,7 +9,7 @@ interface State {
     xmlfile: string;
     xmlDoc: Document;
     metricGroups: MetricGroup[];
-    //probably not string
+    //probably not string,not used yet but will soon
     structuralElementsTracked: string[];
     currentSelectedParticipant: { name: string; processRef: string };
 }

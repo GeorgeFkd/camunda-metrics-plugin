@@ -1,6 +1,6 @@
 import { getProcessXmlDocWithRefAttr } from "../../src/utils/metrics/utils";
 import { xmlStrOfParticipant, xmlStr } from "../samples/sample-collaboration";
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 describe("should be able to get participant document from collaboration diagram document", () => {
     const parsedDocument = new DOMParser().parseFromString(xmlStr, "text/xml");
     const participantDocument = new DOMParser().parseFromString(

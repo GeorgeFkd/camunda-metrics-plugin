@@ -13,45 +13,38 @@ interface ConfigureMetricsOverlayProps {
     onSubmit: (finalObj: MetricGroup[]) => void;
 }
 
-
-
-
 function CustomOverlay({
     anchor,
     onClose,
     existingGroups,
     onSubmit,
 }: ConfigureMetricsOverlayProps) {
-    //MetricGroup-> name:string,metrics:Metric[]
-    //!
-    //* this will take some state as input (arr[{name:"X",metrics:[new Metric()]}])
-    //* use it to render components that have an editable group name
-    //* for the name to be editable there will be some state here that will be initialised
-    //* with the input received and then as the user is writing on the name the onChange
-    //* event will change the value of this specific one
-    //* onChangeSelect will remove/add metrics from the specific object (based on name filtering it out)
-
     const [groups, setGroups] = React.useState(existingGroups);
     //the e type is workaround bcs i dont have typechecking
-    
 
-    function getUniqueGroupNamesFromFormData(data:FormData){
+    function getUniqueGroupNamesFromFormData(data: FormData) {
         const groupNamesSet: Set<string> = new Set();
-        for(let [nameOfGroup,metricName] of data.entries()){
+        for (let [nameOfGroup, metricName] of data.entries()) {
             groupNamesSet.add(nameOfGroup);
         }
         return groupNamesSet;
     }
 
+    //TODO: fix the explicit any type
     function handleSubmit(e: any) {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const groupNames:Set<string> = getUniqueGroupNamesFromFormData(formData)
-        let groupsToSubmit: MetricGroup[] = Array.from(groupNames).map((groupName) => {
-            return { name: groupName, metrics: new Array<Metric>() };
-        });
+        const groupNames: Set<string> =
+            getUniqueGroupNamesFromFormData(formData);
+        let groupsToSubmit: MetricGroup[] = Array.from(groupNames).map(
+            (groupName) => {
+                return { name: groupName, metrics: new Array<Metric>() };
+            }
+        );
         for (let [groupName, metricName] of formData.entries()) {
-            const groupObj = groupsToSubmit.find((group) => group.name === groupName)!;
+            const groupObj = groupsToSubmit.find(
+                (group) => group.name === groupName
+            )!;
             const metricObj = availableMetrics.find(
                 (metric) => metric.label === metricName
             );
@@ -82,7 +75,6 @@ function CustomOverlay({
         });
     }
 
-    // app.tabsChanged
     return (
         <Overlay anchor={anchor} onClose={onClose} offset={OFFSET}>
             <Overlay.Title>Configure Metric Groups</Overlay.Title>
@@ -93,7 +85,6 @@ function CustomOverlay({
                             return (
                                 <EditGroup
                                     group={group}
-                                   
                                     key={group.name}
                                     onRemoveGroup={removeExistingGroup}
                                 />
@@ -115,9 +106,5 @@ function CustomOverlay({
         </Overlay>
     );
 }
-
-
-
-//? Available events
 
 export default CustomOverlay;

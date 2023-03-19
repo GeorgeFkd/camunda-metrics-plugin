@@ -2,7 +2,7 @@ import Metric from "./Metric-Class";
 import { CalculateMetricFn, getGatewaysInDiagram } from "./utils";
 const GH: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     const gatewaysOfDiagram = getGatewaysInDiagram(xmlDoc);
-    //? asxoloumaste me olwn twn eidwn ta gateways? h mono or-xor-and?
+    //? Are all gateways included in the calculation or only AND, XOR, OR?
     // /.+:/
     const numberOfGatewaysInDiagram = gatewaysOfDiagram.length;
     if (numberOfGatewaysInDiagram === 0) return -1;

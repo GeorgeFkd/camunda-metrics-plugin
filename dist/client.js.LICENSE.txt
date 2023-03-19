@@ -42,11 +42,11 @@ object-assign
  * LICENSE file in the root directory of this source tree.
  */
 
-//!
-
 //! //*[matches(local-name(),'.+Event')]
 
-//! solution: για κάθε ζευγάρι tasks βλέπω incoming του 1ου και outgoing του 2ου και αντίστροφα
+//! outgoing of the 2nd one and vice versa
+
+//! solution: for each pair of tasks i check incoming of the 1st one and
 
 //! takes too long to calculate
 

@@ -9,22 +9,19 @@ import { getParticipants } from "../../utils/metrics/utils";
 import useStore from "../../store/store";
 import MetricGroupsTable from "./MetricGroupsTable";
 import MetricsTableHeader from "./MetricsTableHeader";
-// const MemoizedTable = React.memo(MetricGroupsTable);
 
 function MetricsTable() {
-
-    // const [xmlDoc, setXmlDoc] = React.useState<Document>(new Document());
-    //const xmlFile = useXmlFile();
-    const metricGroups = useStore((state)=>state.metricGroups)
-    const { triggerCamundaAction } = 
-        React.useContext(CamundaContext)
-    React.useEffect(()=>{
-        triggerCamundaAction("save")
-    },[])
+    const metricGroups = useStore((state) => state.metricGroups);
+    const { triggerCamundaAction } = React.useContext(CamundaContext);
+    React.useEffect(() => {
+        //This seems to be needed to update the metrics properly
+        //when opening the metrics table, remove it if there is a way to do so.
+        triggerCamundaAction("save");
+    }, []);
     return (
         <div className={styles.metricsContainer}>
-            <MetricsTableHeader />           
-            <MetricGroupsTable metricGroups={metricGroups}/>
+            <MetricsTableHeader />
+            <MetricGroupsTable metricGroups={metricGroups} />
         </div>
     );
 }

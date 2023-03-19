@@ -5,23 +5,23 @@ import { getParticipants } from "../../../../utils/metrics/utils";
 
 function SelectSubprocess() {
     const xmlDoc = useStore((state) => state.xmlDoc);
-    const selectSubProcessRef = React.useRef<HTMLButtonElement>(null);
-    const [selectProcessOpen, setSelectProcessOpen] = React.useState(false);
+    const refForOverlayAnchor = React.useRef<HTMLButtonElement>(null);
+    const [overlayOpen, setOverlayOpen] = React.useState(false);
     const setParticipant = useStore((state) => state.setParticipant);
     const participants = getParticipants(xmlDoc);
     return (
         <>
             <button
                 className="btn btn-primary"
-                ref={selectSubProcessRef}
-                onClick={() => setSelectProcessOpen((isOpen) => !isOpen)}
+                ref={refForOverlayAnchor}
+                onClick={() => setOverlayOpen((isOpen) => !isOpen)}
             >
                 Select Pool
             </button>
-            {selectProcessOpen && (
+            {overlayOpen && (
                 <SelectSubProcessOverlay
-                    anchor={selectSubProcessRef.current}
-                    onClose={() => setSelectProcessOpen(false)}
+                    anchor={refForOverlayAnchor.current}
+                    onClose={() => setOverlayOpen(false)}
                     onSubmit={setParticipant}
                     options={participants}
                 />

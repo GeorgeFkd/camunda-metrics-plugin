@@ -5,10 +5,7 @@ import Metric from "./Metric-Class";
 const TS: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     //! seems correct
     const and_or_gateways = [BPMN_ELEMENTS.OR, BPMN_ELEMENTS.AND];
-    //const sum = and_xor_gateways.reduce()
     const sum = and_or_gateways.reduce((total, current) => {
-        //const evaluator = xpath.parse(`//*[local-name()='${current}']`);
-        ///*[local-name()='outgoing']
         const xpathRes = xpath.select(
             `.//*[local-name()='${current}']`,
             xmlDoc

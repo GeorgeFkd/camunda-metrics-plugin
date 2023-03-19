@@ -6,7 +6,6 @@ import {
 } from "./utils";
 
 const NSFE: CalculateMetricFn<Document> = (xmlDoc: Document) => {
-    //vriskw ta events kai meta ta incoming/outgoing
     const eventsOfDiagram = getEventsInDiagram(xmlDoc);
     const sum = eventsOfDiagram.reduce((total, current) => {
         return total + getOutgoingFlowsOfNode(current);
