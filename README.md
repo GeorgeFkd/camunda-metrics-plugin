@@ -20,4 +20,4 @@ Provides a plugin for [Camunda Modeler](https://camunda.com/download/modeler/) t
 2. ```cd camunda-metrics-plugin```
 3. ```npm run dev```
 
-For more development related information read [Docs.md]().
+For more development related information read [Docs.md](https://github.com/GeorgeFkd/camunda-metrics-plugin/blob/master/Docs.md).
