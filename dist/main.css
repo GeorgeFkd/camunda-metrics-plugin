@@ -129,9 +129,17 @@ metrics-plugin-font-size */
     align-items: center;
     font-size: 1.35rem;
     padding: 4px;
+    column-gap:4px;
     border: solid 2px black;
     border-top: none;
 }
+
+.VsRMrTSMWbUnx5qQS9Ot {
+    display: flex;
+    align-items: center;
+}
+
+
 .v2T39AMSHqi7TDKSwisB {
     flex: 1;
     display: flex;

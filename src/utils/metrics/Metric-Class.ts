@@ -8,12 +8,14 @@ export default class Metric {
         public readonly label: string,
         public readonly nullValue: number,
         public readonly calculateFn: CalculateMetricFn<Document>,
-        public readonly displayInGroups: string[]
+        public readonly displayInGroups: string[],
+        public readonly tooltip:string
     ) {
         this.label = label;
         this._result = nullValue;
         this.calculateFn = calculateFn;
         this.displayInGroups = displayInGroups;
+        this.tooltip = tooltip;
     }
 
     public get result() {

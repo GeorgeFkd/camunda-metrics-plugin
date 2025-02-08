@@ -8,5 +8,5 @@ const TNG: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return getGatewaysInDiagram(xmlDoc).length;
 };
 
-const TNGObj = new Metric("TNG", -1, TNG, ["Gateways"]);
+const TNGObj = new Metric("TNG", -1, TNG, ["Gateways"],"TNG: Total Number of Gateways");
 export default TNGObj;

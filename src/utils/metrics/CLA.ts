@@ -8,5 +8,5 @@ const CLA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return NOA.calculateFn(xmlDoc) / nsfa;
 };
 
-const CLAObj = new Metric("CLA", -1, CLA, ["Flow", "Activities"]);
+const CLAObj = new Metric("CLA", -1, CLA, ["Flow", "Activities"],"CLA: Connectivity Level between Activities");
 export default CLAObj;

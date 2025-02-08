@@ -17,5 +17,5 @@ const DENSITY: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return arcs / (nodes * (nodes - 1));
 };
 
-const DENSITYObj = new Metric("DENSITY", -1, DENSITY, ["Flow"]);
+const DENSITYObj = new Metric("DENSITY", -1, DENSITY, ["Flow"],"Density measures how tightly connected the process is");
 export default DENSITYObj;

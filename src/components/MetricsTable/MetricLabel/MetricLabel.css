@@ -3,6 +3,13 @@
     align-items: center;
     font-size: 1.35rem;
     padding: 4px;
+    column-gap:4px;
     border: solid 2px black;
     border-top: none;
 }
+
+.metricElementResult {
+    display: flex;
+    align-items: center;
+}
+

@@ -115,6 +115,6 @@ const NSFA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return sum;
 };
 
-const NSFAObj = new Metric("NSFA", -1, NSFA, ["Flow", "Activities"]);
+const NSFAObj = new Metric("NSFA", -1, NSFA, ["Flow", "Activities"],"NSFA: Number of outgoing Sequence Flows from activities");
 
 export default NSFAObj;

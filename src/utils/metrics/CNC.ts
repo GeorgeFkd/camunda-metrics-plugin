@@ -17,6 +17,6 @@ const CNC: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return arcs / nodes;
 };
 
-const CNCObj = new Metric("CNC", -1, CNC, ["Flow"]);
+const CNCObj = new Metric("CNC", -1, CNC, ["Flow"],"CNC: Connectivity between nodes, defined as (Nodes + Events + Gateways)/Flows ");
 
 export default CNCObj;

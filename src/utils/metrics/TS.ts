@@ -18,5 +18,5 @@ const TS: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return sum;
 };
 
-const TSObj = new Metric("TS", -1, TS, ["Flow", "Gateways"]);
+const TSObj = new Metric("TS", -1, TS, ["Flow", "Gateways"],"TS: Token Split");
 export default TSObj;

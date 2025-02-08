@@ -29,5 +29,5 @@ const GH: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return sum;
 };
 
-const GHObj = new Metric("GH", -1, GH, ["Gateways"]);
+const GHObj = new Metric("GH", -1, GH, ["Gateways"],"GH: Gateway Heterogeneity, it measures the variation in gateway types");
 export default GHObj;

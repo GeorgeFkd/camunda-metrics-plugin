@@ -11,5 +11,5 @@ const NOA: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return result.length;
 };
 
-const NOAObj = new Metric("NOA", -1, NOA, ["Activities"]);
+const NOAObj = new Metric("NOA", -1, NOA, ["Activities"],"NOA: Number of Activities");
 export default NOAObj;

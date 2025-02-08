@@ -53,5 +53,5 @@ const GM: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return result;
 };
 
-const GMObj = new Metric("GM", -1, GM, ["Gateways"]);
+const GMObj = new Metric("GM", -1, GM, ["Gateways"],"GM: Gateway Mismatch, it measures inconsistencies in gateway usage.");
 export default GMObj;

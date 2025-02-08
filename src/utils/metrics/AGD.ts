@@ -35,5 +35,5 @@ function AGD(xmlDoc: Document): number {
     return sum;
 }
 
-const AGDObj: Metric = new Metric("AGD", -1, AGD, ["Gateways"]);
+const AGDObj: Metric = new Metric("AGD", -1, AGD, ["Gateways"],"AGD: Average Gateway Degree, it measures the average number of connections per gateway.");
 export default AGDObj;

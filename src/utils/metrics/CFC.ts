@@ -36,6 +36,6 @@ const CFC: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return CFC_OF_XOR + CFC_OF_OR + CFC_OF_AND + CFC_OF_EVENT_BASED;
 };
 
-const CFCObj = new Metric("CFC", -1, CFC, ["Flow", "Gateways"]);
+const CFCObj = new Metric("CFC", -1, CFC, ["Flow", "Gateways"],"CFC: Control Flow Complexity, it measures branching complexity in a process");
 
 export default CFCObj;

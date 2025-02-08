@@ -13,5 +13,5 @@ const MGD: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return result;
 };
 
-const MGDObj = new Metric("MGD", -1, MGD, ["Gateways"]);
+const MGDObj = new Metric("MGD", -1, MGD, ["Gateways"],"MGD: Maximum Gateway Degree, it measures the maximum number of incoming and outgoing connections in the diagram's gateways.");
 export default MGDObj;

@@ -12,6 +12,6 @@ const NMF: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     }
 };
 
-const NMFObj = new Metric("NMF", -1, NMF, ["Flow"]);
+const NMFObj = new Metric("NMF", -1, NMF, ["Flow"],"NMF: Number of Message Flows.");
 
 export default NMFObj;

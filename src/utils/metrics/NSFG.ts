@@ -12,5 +12,5 @@ const NSFG: CalculateMetricFn<Document> = (xmlDoc: Document) => {
     return result;
 };
 
-const NSFGObj = new Metric("NSFG", -1, NSFG, ["Flow", "Gateways"]);
+const NSFGObj = new Metric("NSFG", -1, NSFG, ["Flow", "Gateways"],"NSFG: Number of Sequence Flows from Gateways, it measures the total outgoing flows of all gateways in the diagram.");
 export default NSFGObj;

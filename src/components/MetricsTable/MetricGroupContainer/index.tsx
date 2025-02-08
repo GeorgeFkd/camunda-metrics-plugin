@@ -18,7 +18,7 @@ const MetricGroupContainer = ({
                     {metricGroup.name}
                 </span>
             </div>
-            <div className={`${styles.metricsWrapperChildren}`}>
+            <div className={styles.metricsWrapperChildren}>
                 {metricGroup.metrics.map((metric) => (
                     <MetricLabel metric={metric} xmlDoc={xmlDoc} />
                 ))}

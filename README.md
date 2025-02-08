@@ -14,7 +14,7 @@ Provides a plugin for [Camunda Modeler](https://camunda.com/download/modeler/) t
 - It can be toggled to hide it
 - Structural Elements on the right side can be switched order
 - In the configure groups overlay, to select multiple hold ctrl and click the desired metrics, or alternatively to choose multiple metrics in a row, click on one and then click on the last one holding shift.
-
+- [2025-02-08] Each Metric now has an information overlay, to ensure transparency for how metrics are calculated. 
 ## Developer Guide
 1. Clone this repo: ```git clone https://github.com/GeorgeFkd/camunda-metrics-plugin.git```
 2. ```cd camunda-metrics-plugin```

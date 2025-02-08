@@ -12,6 +12,7 @@ const parser = new DOMParser();
 
 export type CalculateMetricFn<Input> = (xmlDoc: Input) => number;
 
+//TODO
 export const getBranchesOfGateNode = (node: Node): number => {
     const xpathRes = xpath.select("./*[local-name()='outgoing']", node);
     return xpathRes.length;
