@@ -15,6 +15,7 @@ Provides a plugin for [Camunda Modeler](https://camunda.com/download/modeler/) t
 - Structural Elements on the right side can be switched order
 - In the configure groups overlay, to select multiple hold ctrl and click the desired metrics, or alternatively to choose multiple metrics in a row, click on one and then click on the last one holding shift.
 - [2025-02-08] Each Metric now has an information overlay, to ensure transparency for how metrics are calculated. 
+- [2026-09-03] Your configured groups are now remembered between sessions. Submitting the configure groups overlay saves the selection per diagram file (a saved diagram keeps its own groups); new/unsaved diagrams start from a global default. Tick **"Also set as default for new diagrams"** in the overlay to push the current selection to that global default (it is forced on for an unsaved diagram, since that is the only place its config can go). **Reset groups** drops the stored config for the current scope so it falls back to the global default, then the built-in one. Everything is stored through the Camunda Modeler config store.
 ## Developer Guide
 1. Clone this repo: ```git clone https://github.com/GeorgeFkd/camunda-metrics-plugin.git```
 2. ```cd camunda-metrics-plugin```
