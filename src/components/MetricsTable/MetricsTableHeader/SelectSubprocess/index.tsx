@@ -8,7 +8,10 @@ function SelectSubprocess() {
     const refForOverlayAnchor = React.useRef<HTMLButtonElement>(null);
     const [overlayOpen, setOverlayOpen] = React.useState(false);
     const setParticipant = useStore((state) => state.setParticipant);
-    const participants = getParticipants(xmlDoc);
+    const participants = React.useMemo(
+        () => getParticipants(xmlDoc),
+        [xmlDoc]
+    );
     return (
         <>
             <button

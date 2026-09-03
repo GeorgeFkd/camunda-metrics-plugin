@@ -1,30 +1,81 @@
 import React from "camunda-modeler-plugin-helpers/react";
-import { render } from "react-dom";
+import { createPortal } from "react-dom";
 import { Fill } from "camunda-modeler-plugin-helpers/components";
 import MetricsApp from "./MetricsApp";
 import app_styles from "./App.css";
 import CamundaContext from "../contexts/CamundaContext";
+import useStore from "../store/store";
 export default function MetricsPlugin(props) {
     //getting all i need from Camunda Modeler props
     //and passing it to the CamundaContext
     const { config, subscribe, triggerAction, displayNotification } = props;
     const [open, setOpen] = React.useState(false);
+    const [container, setContainer] = React.useState(null);
+
+    //stable context value: a fresh object here would re-render the whole
+    //Metrics subtree every time the Modeler re-renders the plugin host
+    const camundaContextValue = React.useMemo(
+        () => ({
+            subscribeToCamundaEvent: subscribe,
+            triggerCamundaAction: triggerAction,
+            displayNotification: displayNotification,
+        }),
+        [subscribe, triggerAction, displayNotification]
+    );
 
     React.useEffect(() => {
         //getting the lower bar of the app to insert the table
         //haven't found a better way to do it
         const statusBar = document.getElementsByTagName("footer")[0];
+        const anchor = statusBar || document.body.lastChild;
+        const parent = (anchor && anchor.parentNode) || document.body;
         const rootDiv = document.createElement("div");
         rootDiv.id = "table-root";
-        rootDiv.className = app_styles.toggleHideShow;
-        statusBar.parentNode.insertBefore(rootDiv, statusBar);
+        parent.insertBefore(rootDiv, anchor || null);
+        setContainer(rootDiv);
+        return () => {
+            rootDiv.remove();
+        };
     }, []);
 
-    function toggleTable(button) {
-        const container = document.getElementById("table-root");
-        container.classList.toggle(app_styles.toggleHideShow);
-        button.classList.toggle(app_styles.showMetricsPluginButtonActive);
-        setOpen((isOpen) => !isOpen);
+    //Keep the store's XML in sync with the active tab.
+    //This component is mounted for the whole session, so these subscriptions
+    //live once (no leak) and we never need to force a disk save just to read
+    //the current diagram - forcing "save" ran the file indexer + a Zeebe
+    //connection check on every open, which froze the UI for seconds.
+    React.useEffect(() => {
+        if (typeof subscribe !== "function") return;
+        const { changeXmlFile, updateXmlFile } = useStore.getState();
+        const subs = [
+            subscribe("app.activeTabChanged", ({ activeTab }) => {
+                if (!activeTab || activeTab.type === "empty") return;
+                changeXmlFile((activeTab.file && activeTab.file.contents) || "");
+            }),
+            subscribe("tab.saved", ({ tab }) => {
+                if (!tab || tab.type === "empty") return;
+                updateXmlFile((tab.file && tab.file.contents) || "");
+            }),
+        ];
+        return () => {
+            subs.forEach((s) => s && typeof s.cancel === "function" && s.cancel());
+        };
+    }, [subscribe]);
+
+    function toggleOpen() {
+        setOpen((isOpen) => {
+            const next = !isOpen;
+            //Cold-start fallback: if the panel is opened before the first save
+            //or tab switch, the store is still empty - ask for a single save
+            //once so the metrics have something to show.
+            if (
+                next &&
+                !useStore.getState().xmlfile &&
+                typeof triggerAction === "function"
+            ) {
+                Promise.resolve(triggerAction("save")).catch(() => {});
+            }
+            return next;
+        });
     }
 
     return (
@@ -33,24 +84,22 @@ export default function MetricsPlugin(props) {
             {/* // shows a click me button at the bottom part of the app */}
             <Fill slot="status-bar__app" group="1_autosave" priority={100}>
                 <button
-                    className={app_styles.showMetricsPluginButton}
-                    onClick={({ target }) => toggleTable(target)}
+                    className={
+                        open
+                            ? app_styles.showMetricsPluginButtonActive
+                            : app_styles.showMetricsPluginButton
+                    }
+                    onClick={toggleOpen}
                 >
                     Metrics
                 </button>
             </Fill>
-            {open
-                ? render(
-                      <CamundaContext.Provider
-                          value={{
-                              subscribeToCamundaEvent: subscribe,
-                              triggerCamundaAction: triggerAction,
-                              displayNotification: displayNotification,
-                          }}
-                      >
+            {open && container
+                ? createPortal(
+                      <CamundaContext.Provider value={camundaContextValue}>
                           <MetricsApp />
                       </CamundaContext.Provider>,
-                      document.getElementById("table-root")
+                      container
                   )
                 : null}
         </React.Fragment>

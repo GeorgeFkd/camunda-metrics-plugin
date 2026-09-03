@@ -12,12 +12,10 @@ import MetricsTableHeader from "./MetricsTableHeader";
 
 function MetricsTable() {
     const metricGroups = useStore((state) => state.metricGroups);
-    const { triggerCamundaAction } = React.useContext(CamundaContext);
-    React.useEffect(() => {
-        //This seems to be needed to update the metrics properly
-        //when opening the metrics table, remove it if there is a way to do so.
-        triggerCamundaAction("save");
-    }, []);
+    //NOTE: this component used to call triggerCamundaAction("save") on mount to
+    //force fresh XML. That writes the file to disk and runs post-save hooks
+    //(file indexer + Zeebe connection check) on every open, which froze the UI.
+    //XML is now kept current via subscriptions in MetricsPlugin instead.
     return (
         <div className={styles.metricsContainer}>
             <MetricsTableHeader />

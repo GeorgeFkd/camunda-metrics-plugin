@@ -8,7 +8,12 @@ import { countStructuralElements } from "../../utils/metrics/utils";
 import useStore from "../../store/store";
 function StatsTable() {
     const xmlDoc = useStore((state) => state.xmlDoc);
-    const xmlStructuralElems = countStructuralElements(xmlDoc);
+    //expensive (walks + clones every node); only recompute when the doc changes,
+    //not on every drag/hover re-render
+    const xmlStructuralElems = React.useMemo(
+        () => countStructuralElements(xmlDoc),
+        [xmlDoc]
+    );
     const [bpmnElementsToDisplay, setBpmnElementsToDisplay] = React.useState(
         bpmnElemsWithInitialOrder
     );

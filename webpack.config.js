@@ -3,6 +3,7 @@ const BundleAnalyzerPlugin =
     require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const CamundaModelerWebpackPlugin = require("camunda-modeler-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 //env var
 module.exports = {
     target: "node",
@@ -10,6 +11,21 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "client.js",
+    },
+    optimization: {
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    // The Camunda Modeler pipes every console.* call through
+                    // Sentry's CaptureConsole integration, which deep-serialises
+                    // each argument (whole XML Documents included) and queues it
+                    // as a breadcrumb. The debug logging scattered through this
+                    // plugin therefore froze the UI for seconds on every render.
+                    // Strip all console.* from the production bundle.
+                    compress: { drop_console: true },
+                },
+            }),
+        ],
     },
     plugins: [
         // { filename: "style.css" }

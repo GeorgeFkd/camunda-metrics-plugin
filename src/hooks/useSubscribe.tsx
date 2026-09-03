@@ -8,12 +8,30 @@ export default function useSubscribe(
     action: (eventData: any) => void
 ) {
     const { subscribeToCamundaEvent } = React.useContext(CamundaContext);
-    console.log("The context: ", React.useContext(CamundaContext));
-    //TODO: find a way to unsubscribe, it has not caused any problems yet
+
+    //keep the latest callback without forcing a re-subscribe on every render
+    const actionRef = React.useRef(action);
     React.useEffect(() => {
-        subscribeToCamundaEvent(event, (eventArgs: any) => {
-            console.info("For event: ", event, "Calling FN: ", action);
-            action(eventArgs);
-        });
-    }, []);
+        actionRef.current = action;
+    });
+
+    React.useEffect(() => {
+        if (typeof subscribeToCamundaEvent !== "function") return;
+
+        const subscription = subscribeToCamundaEvent(
+            event,
+            (eventArgs: any) => {
+                actionRef.current(eventArgs);
+            }
+        );
+
+        //Camunda Modeler's subscribe() returns { cancel }. Without this the
+        //listener stays registered forever and stacks up every time the
+        //Metrics panel is re-opened, which freezes the app.
+        return () => {
+            if (subscription && typeof subscription.cancel === "function") {
+                subscription.cancel();
+            }
+        };
+    }, [event, subscribeToCamundaEvent]);
 }
