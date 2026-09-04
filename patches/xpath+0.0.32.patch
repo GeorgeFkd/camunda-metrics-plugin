@@ -1,0 +1,43 @@
+diff --git a/node_modules/xpath/xpath.js b/node_modules/xpath/xpath.js
+index d58a4b8..cab79b0 100644
+--- a/node_modules/xpath/xpath.js
++++ b/node_modules/xpath/xpath.js
+@@ -3400,6 +3400,8 @@ var xpath = (typeof exports === 'undefined') ? {} : exports;
+         this.functions["{}string"] = Functions.string;
+         this.functions["{}concat"] = Functions.concat;
+         this.functions["{}starts-with"] = Functions.startsWith;
++        this.functions["{}ends-with"] = Functions.endsWith;
++        this.functions["{}matches"] = Functions.matches;
+         this.functions["{}contains"] = Functions.contains;
+         this.functions["{}substring-before"] = Functions.substringBefore;
+         this.functions["{}substring-after"] = Functions.substringAfter;
+@@ -3633,6 +3635,29 @@ var xpath = (typeof exports === 'undefined') ? {} : exports;
+         return new XBoolean(s1.substring(0, s2.length) == s2);
+     };
+ 
++    Functions.endsWith = function () {
++        var c = arguments[0];
++        if(arguments.length != 3){
++            throw new Error("Function endsWith expects (string, string)");
++        }
++        var s1 = arguments[1].evaluate(c).stringValue();
++        var s2 = arguments[2].evaluate(c).stringValue();
++        return new XBoolean(s1.endsWith(s2));
++    }
++
++    Functions.matches = function () {
++        var c = arguments[0];
++        if(arguments.length != 3){
++            throw new Error("Function matches expects (string, string)");
++        }
++        var s1 = arguments[1].evaluate(c).stringValue();
++        var s2 = arguments[2].evaluate(c).stringValue();
++
++        var matches = s1.match(s2);
++        if(!matches)return new XBoolean(false);
++        return new XBoolean(matches.length > 0);
++    }
++
+     Functions.contains = function () {
+         var c = arguments[0];
+         if (arguments.length != 3) {
