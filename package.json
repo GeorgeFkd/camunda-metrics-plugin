@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/GeorgeFkd/camunda-metrics-plugin#readme",
   "dependencies": {
-    "@xmldom/xmldom": "^0.8.6",
+    "@xmldom/xmldom": "^0.9.12",
     "camunda-modeler-plugin-helpers": "^5.1.0",
     "react-dom": "^19.2.0",
     "xpath": "^0.0.32",
